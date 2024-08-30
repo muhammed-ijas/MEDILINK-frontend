@@ -1,0 +1,13 @@
+.swal2-popup {
+    background-color: #000 !important; /* Black background */
+    color: #fff !important; /* White text */
+  }
+  .swal2-confirm {
+    background-color: #00bcd4 !important; /* Custom button color */
+    color: #fff !important; /* White text on button */
+  }
+  .swal2-cancel {
+    background-color: #d33 !important; /* Custom button color */
+    color: #fff !important; /* White text on button */
+  }
+  
