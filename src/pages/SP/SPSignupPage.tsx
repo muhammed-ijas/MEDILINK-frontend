@@ -2,13 +2,14 @@ import { useState, FormEvent } from "react";
 import { IoEyeSharp, IoEyeOffSharp } from "react-icons/io5";
 import { Link, useNavigate } from "react-router-dom";
 import { SPSignup } from "../../api/SP";
-import { toast } from "react-toastify";
-import validator from "validator";
+ import validator from "validator";
 import Modal from "react-modal";
 import { MdLocationOn } from "react-icons/md";
 import MyMap from "../../Components/common/MapBox";
 import logo from "../../../public/logo/userSideBeforeHome/logo.png";
 import signupImage from "../../../public/logo/HomePage/image1.jpg"; // Add your image path
+import {toast ,Toaster} from 'react-hot-toast'
+
 
 Modal.setAppElement("#root");
 
@@ -180,6 +181,7 @@ function SPSignupPage() {
   return (
     <div className="flex h-screen">
       {/* Left Half: Image section */}
+      <Toaster   position="top-center"/>
       <div className="w-1/2 h-full">
         <img
           src={signupImage}

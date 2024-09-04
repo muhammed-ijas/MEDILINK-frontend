@@ -21,7 +21,7 @@ interface ProfileProps {
   state: (data: boolean) => void;
 }
 
-const Profile = ({ profile = { name: '', email: '', phone: '', area: '', city: '', district: '', state: '', pincode: 0, latitude: 0, longitude: 0, openingTime: '', closingTime: '' }, state }: ProfileProps) => {
+const Profile = ({ profile = { _id : '',name: '', email: '', phone: '', area: '', city: '', district: '', state: '', pincode: 0, latitude: 0, longitude: 0, openingTime: '', closingTime: '' }, state }: ProfileProps) => {
   const [name, setName] = useState(profile.name);
   const [email, setEmail] = useState(profile.email);
   const [phone, setPhone] = useState(profile.phone);

@@ -9,11 +9,14 @@ import { toast } from "react-toastify";
 import { RootState } from "../../redux/store";
 import { useBoolean } from "@chakra-ui/react";
 import logo from '/logo/userSideBeforeHome/logo.png';
+import LogoutModal from "../common/LogoutModal";
 
 function Header() {
   let { userInfo } = useSelector((state: RootState) => state.auth);
   const [isDropdownOpen, setIsDropdownOpen] = useBoolean();
   const [isHamburger, setIsHamburger] = useState(false);
+  const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false); // State for modal visibility
+
   let navigate = useNavigate();
   let dispatch = useDispatch();
   const location = useLocation();
@@ -29,14 +32,33 @@ function Header() {
     textDecoration: "none",
   };
 
-  const handleLogout = async () => {
+  
+  const handleLogout = () => {
+    setIsLogoutModalVisible(true); // Show the modal
+  };
+
+  const confirmLogout = async () => {
     setIsDropdownOpen.off();
     setIsHamburger(false);
     localStorage.removeItem("token");
     dispatch(userLogout());
     navigate("/user/home");
     toast.success("Logged out successfully", { position: "top-center" });
+    setIsLogoutModalVisible(false); // Hide the modal after logout
   };
+
+  const cancelLogout = () => {
+    setIsLogoutModalVisible(false); // Hide the modal when canceled
+  };
+
+  // const handleLogout = async () => {
+  //   setIsDropdownOpen.off();
+  //   setIsHamburger(false);
+  //   localStorage.removeItem("token");
+  //   dispatch(userLogout());
+  //   navigate("/user/home");
+  //   toast.success("Logged out successfully", { position: "top-center" });
+  // };
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-white shadow-md border border-gray-200  lg:px-8 py-4 relative">
@@ -63,6 +85,13 @@ function Header() {
             Services
           </NavLink>
           <NavLink
+            to="/user/appointment"
+            className="text-sm text-gray-800 hover:text-gray-600 transition-colors duration-200"
+            style={({ isActive }) => (isActive ? activeStyle : undefined)}
+          >
+            Search
+          </NavLink>
+          <NavLink
             to="/user/about"
             className="text-sm text-gray-800 hover:text-gray-600 transition-colors duration-200"
             style={({ isActive }) => (isActive ? activeStyle : undefined)}
@@ -76,13 +105,7 @@ function Header() {
           >
             Contact
           </NavLink>
-          <NavLink
-            to="/user/appointment"
-            className="text-sm text-gray-800 hover:text-gray-600 transition-colors duration-200"
-            style={({ isActive }) => (isActive ? activeStyle : undefined)}
-          >
-            Appointment
-          </NavLink>
+       
         </div>
   
         {/* User Profile Dropdown (Right) */}
@@ -211,6 +234,11 @@ function Header() {
           </div>
         )}
       </div>
+      <LogoutModal
+        isVisible={isLogoutModalVisible}
+        onConfirm={confirmLogout}
+        onCancel={cancelLogout}
+      />
     </nav>
   );
 }

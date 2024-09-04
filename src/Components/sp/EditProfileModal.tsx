@@ -19,6 +19,7 @@ interface Profile {
   serviceType: string;
   openingTime: string;
   closingTime: string;
+  departments:string[];
 }
 
 
@@ -27,6 +28,8 @@ interface EditProfileModalProps {
   onClose: () => void;
   onSave: (updatedProfile: Profile) => Promise<void>;
 }
+
+
 
 
 const EditProfileModal: React.FC<EditProfileModalProps> = ({
@@ -49,6 +52,11 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
     await onSave(editedProfile);
     onClose();
   };
+
+  console.log("editedProfile.departments :.",editedProfile.departments)
+
+  const isServiceTypeDisabled = editedProfile.isVerified===true;
+
 
   
   return (
@@ -154,18 +162,25 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
               name="serviceType"
               value={editedProfile.serviceType}
               onChange={handleChange}
-              className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white">
+              className="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 appearance-none bg-white"
+              disabled={isServiceTypeDisabled}
+            >
               <option value="">Select a service type</option>
               <option value="hospital">Hospital</option>
               <option value="clinic">Clinic</option>
               <option value="homeNurse">Home Nurse</option>
               <option value="ambulance">Ambulance</option>
             </select>
+            {isServiceTypeDisabled && (
+              <p className="text-red-500 text-sm mt-1">
+                Service type cannot be changed once verified by Admin.
+              </p>
+            )}
           </div>
 
 
           
-          <div>
+          {/* <div>
             <label className="block font-semibold text-gray-700">
               Opening Time:
             </label>
@@ -188,7 +203,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
               onChange={handleChange}
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
-          </div>
+          </div> */}
           <div className="flex justify-end gap-4 mt-4">
             <button
               type="button"

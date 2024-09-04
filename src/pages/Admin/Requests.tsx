@@ -12,6 +12,7 @@ interface ServiceProvider {
   state: string;
   profileImage: string;
   isVerified: boolean;
+ 
 }
 
 const Requests = () => {

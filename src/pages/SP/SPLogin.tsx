@@ -5,10 +5,11 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch,useSelector } from "react-redux";
 import validator from "validator";
 import { IoEyeSharp, IoEyeOffSharp } from "react-icons/io5";
-import axios from "axios";
 import { setCredentials } from "../../redux/slices/spSlice";
 import { RootState } from "../../redux/store";
 import { login } from "../../api/SP";
+import {toast,Toaster}  from "react-hot-toast"
+
 
 
 
@@ -76,14 +77,16 @@ function SPLogin (){
           localStorage.setItem('token',response.data.token);
           dispatch(setCredentials(response.data.message));
           navigate("/sp/home");
+          toast.success("Successfully logged in");
         }
       }
   };
 
-  
 
   return (
     <div className="flex justify-center items-center h-screen">
+            <Toaster position="top-center" />
+
       <a href="/" className="absolute top-4 left-4">
         <img src={logo} alt="Logo" className="w-20 h-auto" />
       </a>

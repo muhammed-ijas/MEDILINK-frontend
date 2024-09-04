@@ -5,7 +5,7 @@ import {  Link,useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import validator from "validator";
 import { IoEyeSharp, IoEyeOffSharp } from "react-icons/io5";
-import { toast } from "react-toastify";
+import { Toaster ,toast } from "react-hot-toast";
 import axios from "axios";
 import { useGoogleLogin } from "@react-oauth/google";
 import { signup } from "../../api/user";
@@ -132,6 +132,7 @@ const UserSignup: React.FC = () => {
 
   return (
     <div className="flex justify-center items-center h-screen">
+      <Toaster  position="top-center"/>
       <a href="/" className="absolute top-4 left-4">
         <img src={logo} alt="Logo" className="w-20 h-auto" />
       </a>

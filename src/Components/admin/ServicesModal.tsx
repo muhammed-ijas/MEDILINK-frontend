@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import DoctorsModal from "./DoctorsModal"; // Import the DoctorsModal component
+import DocumentFullViewModal from "../admin/DocumentFullviewModal";
+
 
 interface Department {
   _id: string;
@@ -28,7 +30,9 @@ interface ServiceProvider {
   pincode: number;
   isBlocked: boolean;
   serviceType: string;
-  departments: Department[]; // Add departments field to the ServiceProvider interface
+  departments: Department[]; 
+  firstDocumentImage: string;
+  secondDocumentImage: string;
 }
 
 interface ServiceProviderModalProps {
@@ -42,6 +46,9 @@ const ServicesModal: React.FC<ServiceProviderModalProps> = ({ provider, isOpen, 
   const [selectedDoctors, setSelectedDoctors] = useState<Doctor[]>([]);
   const [isDoctorsModalOpen, setIsDoctorsModalOpen] = useState<boolean>(false);
 
+  const [isFullViewOpen, setIsFullViewOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+
   const handleDepartmentClick = (doctors: Doctor[]) => {
     setSelectedDoctors(doctors);
     setIsDoctorsModalOpen(true);
@@ -52,11 +59,16 @@ const ServicesModal: React.FC<ServiceProviderModalProps> = ({ provider, isOpen, 
     setSelectedDoctors([]);
   };
 
+  const handleDocumentClick = (imageUrl: string) => {
+    setSelectedImage(imageUrl);
+    setIsFullViewOpen(true);
+  };
+
   if (!isOpen || !provider) return null;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-70">
-      <div className="relative bg-white p-8 rounded-xl shadow-2xl w-full max-w-lg">
+      <div className="relative bg-white p-8 rounded-xl shadow-2xl w-full max-w-lg  max-h-[90vh] overflow-y-auto">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
@@ -81,6 +93,28 @@ const ServicesModal: React.FC<ServiceProviderModalProps> = ({ provider, isOpen, 
             <p><strong>Is Blocked:</strong> {provider.isBlocked ? "true" : "false"}</p>
             <p><strong>Service Type:</strong> {provider.serviceType}</p>
             <p className="col-span-2"><strong>Email:</strong> {provider.email}</p>
+          </div>
+          <div className="grid grid-cols-2 gap-8 mt-10">
+            <div className="text-center">
+              <img
+                src={provider.firstDocumentImage}
+                alt="First Document"
+                className="w-32 h-32 mx-auto object-cover mb-2 shadow-lg rounded-lg cursor-pointer transition-transform duration-300 hover:scale-105"
+                onClick={() => handleDocumentClick(provider.firstDocumentImage)}
+              />
+              <p className="text-sm text-gray-600 mt-2">First Document</p>
+            </div>
+            <div className="text-center">
+              <img
+                src={provider.secondDocumentImage}
+                alt="Second Document"
+                className="w-32 h-32 mx-auto object-cover mb-2 shadow-lg rounded-lg cursor-pointer transition-transform duration-300 hover:scale-105"
+                onClick={() =>
+                  handleDocumentClick(provider.secondDocumentImage)
+                }
+              />
+              <p className="text-sm text-gray-600 mt-2">Second Document</p>
+            </div>
           </div>
         </div>
         {provider.departments && provider.departments.length > 0 && (
@@ -114,6 +148,13 @@ const ServicesModal: React.FC<ServiceProviderModalProps> = ({ provider, isOpen, 
           </button>
         </div>
       </div>
+      {selectedImage && (
+          <DocumentFullViewModal
+            imageUrl={selectedImage}
+            isOpen={isFullViewOpen}
+            onClose={() => setIsFullViewOpen(false)}
+          />
+        )}
 
       {/* Render the DoctorsModal */}
       <DoctorsModal

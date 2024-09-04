@@ -21,6 +21,22 @@ interface loginData {
   password?: string;
 }
 
+interface DoctorInfo {
+  _id?: string; // Include if doctor IDs are managed on the backend
+  name: string;
+  specialization: string;
+  availableFrom: string;
+  availableTo: string;
+  contact: string;
+}
+
+interface EditDepartmentData {
+  departmentId: string;
+  name: string;
+  description?: string;
+  doctors: DoctorInfo[];
+}
+
 export const SPSignup = async (SPData: SPFormData) => {
   try {
 
@@ -168,7 +184,32 @@ export const changeProfileImage = async (Id: string, profileImageUrl: string) =>
 };
 
 
+export const changeFirstDocumentImage = async (Id: string, profileImageUrl: string) => {
+  try {
+    const response = await Api.post(SPRoutes.changeFirstDocumentImage, {
+      Id: Id,
+      imageUrl: profileImageUrl,
+    });
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
 
+
+export const changeSecondDocumentImage = async (Id: string, profileImageUrl: string) => {
+  try {
+    const response = await Api.post(SPRoutes.changeSecondDocumentImage, {
+      Id: Id,
+      imageUrl: profileImageUrl,
+    });
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
 
 
 
@@ -189,5 +230,49 @@ export const addDepartment = async (
   } catch (error) {
     const err: Error = error as Error;
     return errorHandle(err);
+  }
+};
+
+
+export const getAllServiceDetails = async (spId: string) => {
+  try {
+    const response = await Api.get(`${SPRoutes.getAllServiceDetails}/${spId}`);
+
+    return response.data;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+
+
+export const editDepartment = async (spId: string, data: EditDepartmentData) => {
+  try {
+    console.log("data :",data)
+    const response = await Api.post(SPRoutes.updateDepartment ,{
+      spId,
+      data
+    });
+    console.log("response :",response)
+    return response.data;
+  } catch (error: any) {
+    console.error('Error updating department:', error);
+    throw error.response ? error.response.data : error;
+  }
+};
+
+
+
+export const deleteDepartment = async (spId:string,departmentId:string) => {
+  try {
+    const response = await Api.post(SPRoutes.deleteDepartment ,{
+      spId,
+      departmentId
+    });
+    console.log("response from deleteDepartment :",response)
+    return response;
+  } catch (error: any) {
+    throw error.response ? error.response.data : error;
   }
 };

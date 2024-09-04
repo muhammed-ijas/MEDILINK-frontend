@@ -2,14 +2,16 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaSearch } from "react-icons/fa";
 import homenurseImage from "../../../public/logo/HomePage/homenurseImage.png";
-import { faBuilding } from "@fortawesome/free-solid-svg-icons"; 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-
+import { faBuilding } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import {
   getDepartments,
   getDoctors,
-  getServiceProviders,
+  getHospitals,
+  getClinicks,
+  getAmbulances,
+  getHomeNurses,
 } from "../../api/user";
 import avatar from "../../../public/logo/HomePage/ProfileImage.png";
 
@@ -38,7 +40,35 @@ interface Doctor {
   availableTo: string;
 }
 
-interface ServiceProvider {
+interface Hospital {
+  id: string;
+  name: string;
+  area: string;
+  city: string;
+  district: string;
+  phone: string;
+  profileImage: string;
+}
+
+interface Clinick {
+  id: string;
+  name: string;
+  area: string;
+  city: string;
+  district: string;
+  phone: string;
+  profileImage: string;
+}
+interface Ambulance {
+  id: string;
+  name: string;
+  area: string;
+  city: string;
+  district: string;
+  phone: string;
+  profileImage: string;
+}
+interface HomeNurse {
   id: string;
   name: string;
   area: string;
@@ -55,47 +85,118 @@ interface ApiResult<T> {
 
 const UserAppointments: React.FC = () => {
   const [activeFilter, setActiveFilter] = useState<
-    "departments" | "doctors" | "providers"
+    | "departments"
+    | "doctors"
+    | "hospitals"
+    | "clinicks"
+    | "ambulances"
+    | "homeNurses"
   >("departments");
-  const [data, setData] = useState<Department[] | Doctor[] | ServiceProvider[]>(
-    []
-  );
+  const [data, setData] = useState<
+    Department[] | Doctor[] | Hospital[] | Clinick[] | Ambulance[] | HomeNurse[]
+  >([]);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
 
-  const fetchData = async () => {
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // const fetchData = async () => {
+  //   let result:
+  //     | ApiResult<Department>
+  //     | ApiResult<Doctor>
+  //     | ApiResult<Hospital>
+  //     | ApiResult<Clinick>
+  //     | ApiResult<Ambulance>
+  //     | ApiResult<HomeNurse>;
+  //   switch (activeFilter) {
+  //     case "departments":
+  //       result = await getDepartments(currentPage, ITEMS_PER_PAGE);
+  //       console.log("departments : ", result);
+  //       break;
+  //     case "doctors":
+  //       result = await getDoctors(currentPage, ITEMS_PER_PAGE);
+  //       console.log("doctors : ", result);
+
+  //       break;
+  //     case "hospitals":
+  //       result = await getHospitals(currentPage, ITEMS_PER_PAGE);
+  //       console.log("hospitals : ", result);
+
+  //       break;
+  //     case "clinicks":
+  //       result = await getClinicks(currentPage, ITEMS_PER_PAGE);
+  //       console.log("clinicks : ", result);
+
+  //       break;
+  //     case "ambulances":
+  //       result = await getAmbulances(currentPage, ITEMS_PER_PAGE);
+  //       console.log("ambulances : ", result);
+
+  //       break;
+  //     case "homeNurses":
+  //       result = await getHomeNurses(currentPage, ITEMS_PER_PAGE);
+  //       console.log("homeNurses : ", result);
+
+  //       break;
+  //     default:
+  //       result = { items: [], totalPages: 1 }; // Default value
+  //   }
+  //   setData(result.items);
+  //   setTotalPages(result.totalPages);
+  // };
+
+  const fetchData = async (searchTerm: string) => {
     let result:
       | ApiResult<Department>
       | ApiResult<Doctor>
-      | ApiResult<ServiceProvider>;
+      | ApiResult<Hospital>
+      | ApiResult<Clinick>
+      | ApiResult<Ambulance>
+      | ApiResult<HomeNurse>;
+
     switch (activeFilter) {
       case "departments":
-        result = await getDepartments(currentPage, ITEMS_PER_PAGE);
-        console.log("departments : ", result);
+        result = await getDepartments(currentPage, ITEMS_PER_PAGE, searchTerm);
         break;
       case "doctors":
-        result = await getDoctors(currentPage, ITEMS_PER_PAGE);
-        console.log("doctors : ", result);
-
+        result = await getDoctors(currentPage, ITEMS_PER_PAGE, searchTerm);
         break;
-      case "providers":
-        result = await getServiceProviders(currentPage, ITEMS_PER_PAGE);
-        console.log("providers : ", result);
-
+      case "hospitals":
+        result = await getHospitals(currentPage, ITEMS_PER_PAGE, searchTerm);
+        break;
+      case "clinicks":
+        result = await getClinicks(currentPage, ITEMS_PER_PAGE, searchTerm);
+        break;
+      case "ambulances":
+        result = await getAmbulances(currentPage, ITEMS_PER_PAGE, searchTerm);
+        break;
+      case "homeNurses":
+        result = await getHomeNurses(currentPage, ITEMS_PER_PAGE, searchTerm);
         break;
       default:
-        result = { items: [], totalPages: 1 }; // Default value
+        result = { items: [], totalPages: 1 };
     }
+
     setData(result.items);
     setTotalPages(result.totalPages);
   };
 
+  // useEffect(() => {
+  //   fetchData();
+  // }, [activeFilter, currentPage]);
+
   useEffect(() => {
-    fetchData();
-  }, [activeFilter, currentPage]);
+    fetchData(searchTerm);
+  }, [activeFilter, currentPage, searchTerm]);
 
   const handleFilterChange = (
-    filter: "departments" | "doctors" | "providers"
+    filter:
+      | "departments"
+      | "doctors"
+      | "hospitals"
+      | "clinicks"
+      | "ambulances"
+      | "homeNurses"
   ) => {
     setActiveFilter(filter);
     setCurrentPage(1); // Reset to first page
@@ -117,11 +218,19 @@ const UserAppointments: React.FC = () => {
         >
           {/* Search Bar */}
           <div className="relative w-full max-w-md mb-6">
+            {/* <input
+              type="text"
+              placeholder="Search for departments, doctors, hospitals, clinics..."
+              className="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 pl-10"
+            /> */}
             <input
               type="text"
               placeholder="Search for departments, doctors, hospitals, clinics..."
               className="w-full px-4 py-2 border rounded-full focus:outline-none focus:ring-2 focus:ring-blue-500 pl-10"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)} // Update searchTerm
             />
+
             <span className="absolute inset-y-0 left-0 flex items-center pl-3">
               <FaSearch className="w-5 h-5 text-gray-500" />
             </span>
@@ -130,32 +239,64 @@ const UserAppointments: React.FC = () => {
           {/* Filter Buttons */}
           <div className="flex justify-center flex-wrap gap-4 mt-4">
             <button
-              className={`bg-blue-500 text-white px-6 py-2 rounded-full shadow-lg transition ${
+              className={`bg-white text-blue-800 px-6 py-2 rounded-full border-2 border-blue-600 shadow-lg transition-transform transform ${
+                activeFilter === "homeNurses"
+                  ? "bg-gradient-to-r from-blue-500 to-blue-700 text-white scale-105"
+                  : "hover:bg-gray-200 hover:text-blue-800 hover:scale-105"
+              }`}
+              onClick={() => handleFilterChange("homeNurses")}
+            >
+              Home Nurses
+            </button>
+            <button
+              className={`bg-white text-blue-800 px-6 py-2 rounded-full border-2 border-blue-600 shadow-lg transition-transform transform ${
+                activeFilter === "ambulances"
+                  ? "bg-gradient-to-r from-blue-500 to-blue-700 text-white scale-105"
+                  : "hover:bg-gray-200 hover:text-blue-800 hover:scale-105"
+              }`}
+              onClick={() => handleFilterChange("ambulances")}
+            >
+              Ambulances
+            </button>
+            <button
+              className={`bg-white text-blue-800 px-6 py-2 rounded-full border-2 border-blue-600 shadow-lg transition-transform transform ${
+                activeFilter === "clinicks"
+                  ? "bg-gradient-to-r from-blue-500 to-blue-700 text-white scale-105"
+                  : "hover:bg-gray-200 hover:text-blue-800 hover:scale-105"
+              }`}
+              onClick={() => handleFilterChange("clinicks")}
+            >
+              Clinics
+            </button>
+            <button
+              className={`bg-white text-blue-800 px-6 py-2 rounded-full border-2 border-blue-600 shadow-lg transition-transform transform ${
+                activeFilter === "hospitals"
+                  ? "bg-gradient-to-r from-blue-500 to-blue-700 text-white scale-105"
+                  : "hover:bg-gray-200 hover:text-blue-800 hover:scale-105"
+              }`}
+              onClick={() => handleFilterChange("hospitals")}
+            >
+              Hospitals
+            </button>
+            <button
+              className={`bg-white text-blue-800 px-6 py-2 rounded-full border-2 border-blue-600 shadow-lg transition-transform transform ${
                 activeFilter === "departments"
-                  ? "bg-blue-600"
-                  : "hover:bg-blue-600"
+                  ? "bg-gradient-to-r from-blue-500 to-blue-700 text-white scale-105"
+                  : "hover:bg-gray-200 hover:text-blue-800 hover:scale-105"
               }`}
               onClick={() => handleFilterChange("departments")}
             >
               Departments
             </button>
             <button
-              className={`bg-blue-500 text-white px-6 py-2 rounded-full shadow-lg transition ${
-                activeFilter === "doctors" ? "bg-blue-600" : "hover:bg-blue-600"
+              className={`bg-white text-blue-800 px-6 py-2 rounded-full border-2 border-blue-600 shadow-lg transition-transform transform ${
+                activeFilter === "doctors"
+                  ? "bg-gradient-to-r from-blue-500 to-blue-700 text-white scale-105"
+                  : "hover:bg-gray-200 hover:text-blue-800 hover:scale-105"
               }`}
               onClick={() => handleFilterChange("doctors")}
             >
               Doctors
-            </button>
-            <button
-              className={`bg-blue-500 text-white px-6 py-2 rounded-full shadow-lg transition ${
-                activeFilter === "providers"
-                  ? "bg-blue-600"
-                  : "hover:bg-blue-600"
-              }`}
-              onClick={() => handleFilterChange("providers")}
-            >
-              Providers
             </button>
           </div>
         </motion.div>
@@ -165,78 +306,159 @@ const UserAppointments: React.FC = () => {
       <section className=" mt-11 p-6">
         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
           {data.length > 0 ? (
-            data.map((item: Department | Doctor | ServiceProvider) => {
-              if (activeFilter === "departments" && "name" in item) {
-                return (
-                  <div
-                    key={(item as Department).id}
-                    className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center text-center"
-                  >
-                    <FontAwesomeIcon
-                      icon={faBuilding} // Example icon
-                      className="text-blue-500 text-3xl mb-4"
-                    />
-                    <h3 className="text-xl font-semibold mb-2">
-                      {(item as Department).name}
-                    </h3>
-                    <p className="mb-1">
-                      {(item as Department).serviceProvider?.name}
-                    </p>
-                    <p className="mb-1">
-                      {(item as Department).serviceProvider?.area},{" "}
-                      {(item as Department).serviceProvider?.city},{" "}
-                      {(item as Department).serviceProvider?.district}
-                    </p>
-                  </div>
-                );
+            data.map(
+              (
+                item:
+                  | Department
+                  | Doctor
+                  | Hospital
+                  | Clinick
+                  | Ambulance
+                  | HomeNurse
+              ) => {
+                if (activeFilter === "homeNurses") {
+                  return (
+                    <div
+                      key={(item as HomeNurse).id}
+                      className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center text-center"
+                    >
+                      <img
+                        src={(item as HomeNurse).profileImage}
+                        alt="Provider"
+                        className="w-12 h-12 rounded-full mb-4"
+                      />
+                      <h3 className="text-xl font-semibold mb-2">
+                        {(item as HomeNurse).name}
+                      </h3>
+                      <p className="mb-1">
+                        {(item as HomeNurse).area}, {(item as HomeNurse).city},{" "}
+                        {(item as HomeNurse).district}
+                      </p>
+                      <p>{(item as HomeNurse).phone}</p>
+                    </div>
+                  );
+                }
+
+                if (activeFilter === "ambulances") {
+                  return (
+                    <div
+                      key={(item as Ambulance).id}
+                      className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center text-center"
+                    >
+                      <img
+                        src={(item as Ambulance).profileImage}
+                        alt="Provider"
+                        className="w-12 h-12 rounded-full mb-4"
+                      />
+                      <h3 className="text-xl font-semibold mb-2">
+                        {(item as Ambulance).name}
+                      </h3>
+                      <p className="mb-1">
+                        {(item as Ambulance).area}, {(item as Ambulance).city},{" "}
+                        {(item as Ambulance).district}
+                      </p>
+                      <p>{(item as Ambulance).phone}</p>
+                    </div>
+                  );
+                }
+
+                if (activeFilter === "clinicks") {
+                  return (
+                    <div
+                      key={(item as Clinick).id}
+                      className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center text-center"
+                    >
+                      <img
+                        src={(item as Clinick).profileImage}
+                        alt="Provider"
+                        className="w-12 h-12 rounded-full mb-4"
+                      />
+                      <h3 className="text-xl font-semibold mb-2">
+                        {(item as Clinick).name}
+                      </h3>
+                      <p className="mb-1">
+                        {(item as Clinick).area}, {(item as Clinick).city},{" "}
+                        {(item as Clinick).district}
+                      </p>
+                      <p>{(item as Clinick).phone}</p>
+                    </div>
+                  );
+                }
+                if (activeFilter === "hospitals") {
+                  return (
+                    <div
+                      key={(item as Hospital).id}
+                      className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center text-center"
+                    >
+                      <img
+                        src={(item as Hospital).profileImage}
+                        alt="Provider"
+                        className="w-12 h-12 rounded-full mb-4"
+                      />
+                      <h3 className="text-xl font-semibold mb-2">
+                        {(item as Hospital).name}
+                      </h3>
+                      <p className="mb-1">
+                        {(item as Hospital).area}, {(item as Hospital).city},{" "}
+                        {(item as Hospital).district}
+                      </p>
+                      <p>{(item as Hospital).phone}</p>
+                    </div>
+                  );
+                }
+                if (activeFilter === "departments" && "name" in item) {
+                  return (
+                    <div
+                      key={(item as Department).id}
+                      className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center text-center"
+                    >
+                      <FontAwesomeIcon
+                        icon={faBuilding} // Example icon
+                        className="text-blue-500 text-3xl mb-4"
+                      />
+                      <h3 className="text-xl font-semibold mb-2">
+                        {(item as Department).name}
+                      </h3>
+                      <p className="mb-1">
+                        {(item as Department).serviceProvider?.name}
+                      </p>
+                      <p className="mb-1">
+                        {(item as Department).serviceProvider?.area},{" "}
+                        {(item as Department).serviceProvider?.city},{" "}
+                        {(item as Department).serviceProvider?.district}
+                      </p>
+                    </div>
+                  );
+                }
+                if (activeFilter === "doctors" && "specialization" in item) {
+                  return (
+                    <div
+                      key={(item as Doctor).id}
+                      className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center text-center"
+                    >
+                      <img
+                        src={avatar}
+                        alt="Doctor"
+                        className="w-12 h-12 rounded-full mb-4"
+                      />
+                      <h3 className="text-xl font-semibold mb-2">
+                        {(item as Doctor).name}
+                      </h3>
+                      <p className="mb-1">{(item as Doctor).specialization}</p>
+
+                      <p className="mb-1">
+                        {(item as Doctor).department?.name}
+                      </p>
+
+                      <p className="mb-1">{(item as Doctor).phone}</p>
+                      <p className="mb-1">{(item as Doctor).availableFrom}</p>
+                      <p className="mb-1">{(item as Doctor).availableTo}</p>
+                    </div>
+                  );
+                }
+                return null;
               }
-              if (activeFilter === "doctors" && "specialization" in item) {
-                return (
-                  <div
-                    key={(item as Doctor).id}
-                    className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center text-center"
-                  >
-                    <img
-                      src={avatar}
-                      alt="Doctor"
-                      className="w-12 h-12 rounded-full mb-4"
-                    />
-                    <h3 className="text-xl font-semibold mb-2">
-                      {(item as Doctor).name}
-                    </h3>
-                    <p className="mb-1">{(item as Doctor).specialization}</p>
-                    <p className="mb-1">{(item as Doctor).department.name}</p>
-                    <p className="mb-1">{(item as Doctor).phone}</p>
-                    <p className="mb-1">{(item as Doctor).availableFrom}</p>
-                    <p className="mb-1">{(item as Doctor).availableTo}</p>
-                  </div>
-                );
-              }
-              if (activeFilter === "providers") {
-                return (
-                  <div
-                    key={(item as ServiceProvider).id}
-                    className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center text-center"
-                  >
-                    <img
-                      src={(item as ServiceProvider).profileImage}
-                      alt="Provider"
-                      className="w-12 h-12 rounded-full mb-4"
-                    />
-                    <h3 className="text-xl font-semibold mb-2">
-                      {(item as ServiceProvider).name}
-                    </h3>
-                    <p className="mb-1">
-                      {(item as ServiceProvider).area},{" "}
-                      {(item as ServiceProvider).city},{" "}
-                      {(item as ServiceProvider).district}
-                    </p>
-                    <p>{(item as ServiceProvider).phone}</p>
-                  </div>
-                );
-              }
-              return null;
-            })
+            )
           ) : (
             <p>No data available</p>
           )}

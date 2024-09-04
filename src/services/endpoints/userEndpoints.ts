@@ -17,7 +17,10 @@ const userRoutes={
     changePassword:'/user/changePassword',
     getDepartments:'/user/getDepartments',
     getDoctors:'/user/getDoctors',
-    getServiceProviders:'/user/getServiceProviders',
+    getHospitals:'/user/getHospitals',
+    getClinicks:'/user/getClinicks',
+    getHomeNurses:'/user/getHomeNurses',
+    getAmbulances:'/user/getAmbulances',
 }
 
 export default userRoutes ;

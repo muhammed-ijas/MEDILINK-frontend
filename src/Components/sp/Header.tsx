@@ -5,15 +5,20 @@ import { spLogout } from "../../redux/slices/spSlice";
 import { FaCaretDown, FaUserCircle } from "react-icons/fa";
 import { SlCalender } from "react-icons/sl";
 import { FaPowerOff } from "react-icons/fa6";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
+import {toast,Toaster}  from "react-hot-toast"
 import { RootState } from "../../redux/store";
 import { useBoolean } from "@chakra-ui/react";
 import logo from '/logo/userSideBeforeHome/logo.png';
+import LogoutModal from '../../Components/common/LogoutModal'; // Import the LogoutModal component
+
 
 function Header() {
   let { spInfo } = useSelector((state: RootState) => state.sp);
   const [isDropdownOpen, setIsDropdownOpen] = useBoolean();
   const [isHamburger, setIsHamburger] = useState(false);
+  const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false); // State for modal visibility
+
   let navigate = useNavigate();
   let dispatch = useDispatch();
   const location = useLocation();
@@ -29,17 +34,36 @@ function Header() {
     textDecoration: "none",
   };
 
-  const handleLogout = async () => {
+  const handleLogout = () => {
+    setIsLogoutModalVisible(true); // Show the modal
+  };
+
+  const confirmLogout = async () => {
     setIsDropdownOpen.off();
     setIsHamburger(false);
     localStorage.removeItem("token");
     dispatch(spLogout());
     navigate("/sp/home");
     toast.success("Logged out successfully", { position: "top-center" });
+    setIsLogoutModalVisible(false); // Hide the modal after logout
   };
+
+  const cancelLogout = () => {
+    setIsLogoutModalVisible(false); // Hide the modal when canceled
+  };
+
+  // const handleLogout = async () => {
+  //   setIsDropdownOpen.off();
+  //   setIsHamburger(false);
+  //   localStorage.removeItem("token");
+  //   dispatch(spLogout());
+  //   navigate("/sp/home");
+  //   toast.success("Logged out successfully", { position: "top-center" });
+  // };
 
   return (
     <nav className="sticky top-0 z-50 w-full bg-white shadow-md border border-gray-200  lg:px-8 py-4 relative">
+      <Toaster position="top-center" />
       <div className="flex items-center justify-between px-4 lg:px-8 w-full">
         {/* Logo */}
         <a href="/sp/home" className="flex items-center">
@@ -204,6 +228,11 @@ function Header() {
           </div>
         )}
       </div>
+      <LogoutModal
+        isVisible={isLogoutModalVisible}
+        onConfirm={confirmLogout}
+        onCancel={cancelLogout}
+      />
     </nav>
   );
 }

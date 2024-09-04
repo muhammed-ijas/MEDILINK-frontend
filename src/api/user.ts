@@ -15,6 +15,10 @@ interface loginData {
     password?: string;
 }
 
+interface ChangePasswordResponse {
+  status: number;
+}
+
 export const signup = async (userData: userFormData) => {
   console.log(userData, "the datra");
 
@@ -161,26 +165,110 @@ export const editProfile = async (
   }
 };
 
-export const changePassword = async (Id: string, password: string, oldPassword: string) => {
+export const changePassword = async (
+  Id: string,
+  password: string,
+  oldPassword: string
+): Promise<ChangePasswordResponse> => {
   try {
-    const response = await Api.post(userRoutes.changePassword, {
+    console.log(" before going to backend:", Id, password, oldPassword);
+    const response = await Api.post<ChangePasswordResponse>(userRoutes.changePassword, {
       Id: Id,
       password: password,
-      oldPassword:oldPassword
+      oldPassword: oldPassword,
     });
-    return response;
+    return response; 
+
   } catch (error) {
-    const err: Error = error as Error;
-    return errorHandle(err);
+    const err: any = error as Error;
+
+    if (err.response && err.response.data && err.response.data.message) {
+      throw new Error(err.response.data.message);
+    } else {
+      throw new Error("An error occurred");
+    }
   }
 };
 
 
+// export const getDepartments = async (page = 1, limit = 10) => {
+//   try {
+//     const response = await Api.get(`${userRoutes.getDepartments}?page=${page}&limit=${limit}`);
+//     // console.log("from getdepartments",response.data)
+//     return response.data; 
+//   } catch (error) {
+//     const err: Error = error as Error;
+//     return errorHandle(err);
+//   }
+// };
 
-export const getDepartments = async (page = 1, limit = 10) => {
+// export const getDoctors = async (page = 1, limit = 10) => {
+//   try {
+//     const response = await Api.get(`${userRoutes.getDoctors}?page=${page}&limit=${limit}`);
+//     // console.log("from getDoctors",response.data)
+
+//     return response.data; 
+//   } catch (error) {
+//     const err: Error = error as Error;
+//     return errorHandle(err);
+//   }
+// };
+
+// export const getHospitals = async (page = 1, limit = 10) => {
+//   try {
+//     const response = await Api.get(`${userRoutes.getHospitals}?page=${page}&limit=${limit}`);
+//     // console.log("from getHospitals",response.data)
+
+//     return response.data; 
+//   } catch (error) {
+//     const err: Error = error as Error;
+//     return errorHandle(err);
+//   }
+// };
+
+
+// export const getClinicks = async (page = 1, limit = 10) => {
+//   try {
+//     const response = await Api.get(`${userRoutes.getClinicks}?page=${page}&limit=${limit}`);
+//     // console.log("from getClinicks",response.data)
+
+//     return response.data; 
+//   } catch (error) {
+//     const err: Error = error as Error;
+//     return errorHandle(err);
+//   }
+// };
+
+// export const getHomeNurses = async (page = 1, limit = 10) => {
+//   try {
+//     const response = await Api.get(`${userRoutes.getHomeNurses}?page=${page}&limit=${limit}`);
+//     // console.log("from getHomeNurses",response.data)
+
+//     return response.data; 
+//   } catch (error) {
+//     const err: Error = error as Error;
+//     return errorHandle(err);
+//   }
+// };
+
+// export const getAmbulances = async (page = 1, limit = 10) => {
+//   try {
+//     const response = await Api.get(`${userRoutes.getAmbulances}?page=${page}&limit=${limit}`);
+//     // console.log("from getAmbulances",response.data)
+
+//     return response.data; 
+//   } catch (error) {
+//     const err: Error = error as Error;
+//     return errorHandle(err);
+//   }
+// };
+
+
+export const getDepartments = async (page = 1, limit = 10, search = '') => {
   try {
-    const response = await Api.get(`${userRoutes.getDepartments}?page=${page}&limit=${limit}`);
-    // console.log("from getdepartments",response.data)
+    const response = await Api.get(
+      `${userRoutes.getDepartments}?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`
+    );
     return response.data; 
   } catch (error) {
     const err: Error = error as Error;
@@ -188,11 +276,11 @@ export const getDepartments = async (page = 1, limit = 10) => {
   }
 };
 
-export const getDoctors = async (page = 1, limit = 10) => {
+export const getDoctors = async (page = 1, limit = 10, search = '') => {
   try {
-    const response = await Api.get(`${userRoutes.getDoctors}?page=${page}&limit=${limit}`);
-    // console.log("from getDoctors",response.data)
-
+    const response = await Api.get(
+      `${userRoutes.getDoctors}?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`
+    );
     return response.data; 
   } catch (error) {
     const err: Error = error as Error;
@@ -200,11 +288,11 @@ export const getDoctors = async (page = 1, limit = 10) => {
   }
 };
 
-export const getServiceProviders = async (page = 1, limit = 10) => {
+export const getHospitals = async (page = 1, limit = 10, search = '') => {
   try {
-    const response = await Api.get(`${userRoutes.getServiceProviders}?page=${page}&limit=${limit}`);
-    // console.log("from getServiceProviders",response.data)
-
+    const response = await Api.get(
+      `${userRoutes.getHospitals}?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`
+    );
     return response.data; 
   } catch (error) {
     const err: Error = error as Error;
@@ -212,3 +300,38 @@ export const getServiceProviders = async (page = 1, limit = 10) => {
   }
 };
 
+export const getClinicks = async (page = 1, limit = 10, search = '') => {
+  try {
+    const response = await Api.get(
+      `${userRoutes.getClinicks}?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`
+    );
+    return response.data; 
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+export const getHomeNurses = async (page = 1, limit = 10, search = '') => {
+  try {
+    const response = await Api.get(
+      `${userRoutes.getHomeNurses}?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`
+    );
+    return response.data; 
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+export const getAmbulances = async (page = 1, limit = 10, search = '') => {
+  try {
+    const response = await Api.get(
+      `${userRoutes.getAmbulances}?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`
+    );
+    return response.data; 
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};

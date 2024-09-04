@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom'; // For navigation
 import { RootState } from "../../redux/store";
 import { addDepartment } from '../../api/SP'; // Adjust import path
-import { toast } from 'react-toastify'; // For notifications
+import {toast ,Toaster} from 'react-hot-toast'
 
 interface DepartmentOption {
   value: string;
@@ -18,7 +18,6 @@ interface DoctorInfo {
   availableTo: string;
   contact: string;
 }
-
 
 const departmentOptions: DepartmentOption[] = [
   { value: 'emergency', label: 'Emergency Department (ED)', description: 'Immediate care for acute illnesses and injuries' },
@@ -53,47 +52,87 @@ const SPAddDepartment: React.FC = () => {
   const [doctors, setDoctors] = useState<DoctorInfo[]>([
     { name: '', specialization: '', availableFrom: '', availableTo: '', contact: '' },
   ]);
+  const [errors, setErrors] = useState<{ department?: string; doctors: string[] }>({ doctors: [''] });
 
-  const navigate = useNavigate()
+
+  const navigate = useNavigate();
   const { spInfo } = useSelector((state: RootState) => state.sp);
 
   const handleDepartmentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setDepartment(e.target.value);
+    setErrors((prev) => ({ ...prev, department: '' }));
   };
 
   const handleDoctorChange = (index: number, e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     const updatedDoctors = [...doctors];
     updatedDoctors[index][name as keyof DoctorInfo] = value;
+
+    const updatedErrors = [...errors.doctors];
+    updatedErrors[index] = '';
+
     setDoctors(updatedDoctors);
+    setErrors((prev) => ({ ...prev, doctors: updatedErrors }));
   };
 
   const handleAddDoctor = () => {
     setDoctors([...doctors, { name: '', specialization: '', availableFrom: '', availableTo: '', contact: '' }]);
+    setErrors((prev) => ({ ...prev, doctors: [...prev.doctors, ''] }));
+  };
+
+  const validateForm = () => {
+    let valid = true;
+    const newErrors: { department?: string; doctors: string[] } = { doctors: [] };
+
+    if (!department) {
+      newErrors.department = 'Department is required';
+      valid = false;
+    }
+
+    doctors.forEach((doctor, index) => {
+      if (!doctor.name.trim() || !doctor.specialization.trim() || !doctor.availableFrom || !doctor.availableTo || !doctor.contact.trim()) {
+        newErrors.doctors[index] = 'All fields are required for each doctor';
+        valid = false;
+      }
+    });
+
+    setErrors(newErrors);
+    return valid;
   };
 
   const handleSave = async () => {
+    if (!validateForm()) return;
+
     try {
-      if (!department || doctors.length === 0) {
-        // Add some validation if needed
-        console.error('Department or doctors information is missing');
-        return;
-      }
-  
       const response = await addDepartment(spInfo._id, department, doctors);
       if (response) {
-        toast.success('Successfully added');
-        navigate('/sp/services');
+        toast.success("Department updated successfully!", {
+          duration: 1000,
+        });
+        setTimeout(() => {
+          navigate('/sp/viewDetaildServices');
+        }, 1000);
       }
     } catch (error) {
       console.error('Error saving department:', error);
     }
   };
-  
+
+  const handleClose = () => {
+    navigate('/sp/viewDetaildServices'); // Navigate back or close the modal
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-10">
-      <section className="max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
+      <Toaster   position="top-center"/>
+      <section className="relative max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md">
+        <button
+          onClick={handleClose}
+          className="absolute top-4 right-4 text-gray-600 hover:text-gray-900"
+          aria-label="Close"
+        >
+          &times;
+        </button>
         <h1 className="text-3xl font-bold text-blue-950 mb-6">Add Department</h1>
         <div className="mb-6">
           <label htmlFor="department" className="block text-lg font-semibold text-gray-700 mb-2">
@@ -113,6 +152,8 @@ const SPAddDepartment: React.FC = () => {
               </option>
             ))}
           </select>
+          {errors.department && <p className="text-red-500 text-sm mt-1">{errors.department}</p>}
+
         </div>
         <div className="mb-6">
           <h2 className="text-xl font-semibold mb-4">Add Doctors</h2>
@@ -173,7 +214,7 @@ const SPAddDepartment: React.FC = () => {
                 </div>
                 <div className="flex flex-col">
                   <label htmlFor={`contact-${index}`} className="text-lg font-semibold text-gray-700">
-                    Contact Number
+                    Contact
                   </label>
                   <input
                     type="text"
@@ -184,30 +225,28 @@ const SPAddDepartment: React.FC = () => {
                     className="border border-gray-300 rounded-md p-2"
                   />
                 </div>
-              </div>
-              {index > 0 && (
-                <button
-                  onClick={() => setDoctors(doctors.filter((_, i) => i !== index))}
-                  className="text-red-500 hover:text-red-700"
-                >
-                  Remove Doctor
-                </button>
+                {errors.doctors[index] && (
+                <p className="text-red-500 text-sm mt-1">{errors.doctors[index]}</p>
               )}
+              </div>
+              <button
+                type="button"
+                onClick={handleAddDoctor}
+                className="mt-4 bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
+              >
+                Add Another Doctor
+              </button>
             </div>
           ))}
+        </div>
+        <div className="flex justify-between">
           <button
-            onClick={handleAddDoctor}
-            className="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700"
+            onClick={handleSave}
+            className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
           >
-            Add Another Doctor
+            Save
           </button>
         </div>
-        <button
-          onClick={handleSave}
-          className="bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700"
-        >
-          Save Department
-        </button>
       </section>
     </div>
   );

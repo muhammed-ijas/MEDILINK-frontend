@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { changePassword } from "../../api/SP";
-import { toast } from "react-toastify";
+import { changePassword } from "../../api/user";
+import { Toaster,toast } from "react-hot-toast";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 interface ChangePasswordProps {
@@ -18,49 +18,55 @@ const ChangePassword = ({ Id }: ChangePasswordProps) => {
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
   const [oldPasswordError, setOldPasswordError] = useState("");
 
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setPasswordError("");
     setConfirmPasswordError("");
     setOldPasswordError("");
-
+  
     let hasError = false;
-
+  
     if (password.length < 6) {
       setPasswordError("Password must be at least 6 characters long");
       hasError = true;
     }
-
+  
     if (oldPassword.length < 6) {
-      setOldPasswordError("password must be atleast 6 characters long");
+      setOldPasswordError("Password must be at least 6 characters long");
       hasError = true;
     }
-
+  
     if (password !== confirmPassword) {
       setConfirmPasswordError("Passwords do not match");
       hasError = true;
     }
-
+  
     if (hasError) {
       return;
     }
-
+  
     try {
       const response = await changePassword(Id, password, oldPassword);
-      console.log("response:", response);
-      if (response) {
-        toast.success(response?.data, { position: "top-center" });
+      console.log("response: from component :", response);
+      if (response.status==200) {
+        toast.success("Password changed successfully", { position: "top-center" });
         setPassword("");
         setConfirmPassword("");
         setOldPassword("");
       }
-    } catch (error) {
-      toast.error("Failed to change password", { position: "top-center" });
+      if(response.status==201){
+        toast.error(response.data)
+      }
+    } catch (error: any) {
+      toast.error(error.message || "Failed to change password", { position: "top-center" });
     }
   };
+  
 
   return (
     <div className="bg-white h-[500px] w-full p-6">
+      <Toaster position="top-center" />
       <div className="flex flex-col items-center">
         <form className="w-full max-w-md mt-10" onSubmit={handleSubmit}>
           <div className="grid grid-cols-1 gap-4">

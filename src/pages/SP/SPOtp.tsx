@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setCredentials } from "../../redux/slices/spSlice";
 import { otpVerify, resentOTP } from "../../api/SP";
-import { toast } from "react-toastify";
+import { Toaster, toast } from "react-hot-toast";
 import errorHandle from "../../api/error"; 
 import OtpPage from '/logo/userSideBeforeHome/otpPageImage.png'
 import logo from '/logo/userSideBeforeHome/logo.png'
@@ -82,6 +82,7 @@ function Otp() {
 
   return (
     <div className="flex flex-col md:flex-row w-full min-h-screen">
+      <Toaster position="top-center" />
       <a href="/" className="absolute top-4 left-4">
         <img src={logo} alt="Logo" className="w-20 h-auto" />
       </a>
