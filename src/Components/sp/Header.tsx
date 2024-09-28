@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, NavLink, useLocation } from "react-router-dom";
 import { spLogout } from "../../redux/slices/spSlice";
 import { FaCaretDown, FaUserCircle } from "react-icons/fa";
-import { SlCalender } from "react-icons/sl";
+import { SlCalender ,SlEnvolope} from "react-icons/sl";
 import { FaPowerOff } from "react-icons/fa6";
 // import { toast } from "react-toastify";
 import {toast,Toaster}  from "react-hot-toast"
@@ -139,12 +139,20 @@ function Header() {
                 Profile
               </NavLink>
               <NavLink
+                to="/sp/messages"
+                className="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100"
+              >
+              <SlEnvolope /> 
+                Messages
+              </NavLink>
+              <NavLink
                 to="/sp/bookings"
                 className="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100"
               >
                 <SlCalender />
                 My bookings
               </NavLink>
+
               <button
                 className="flex gap-2 items-center w-full px-4 py-2 text-left text-gray-800 hover:bg-gray-100"
                 onClick={handleLogout}

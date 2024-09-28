@@ -33,8 +33,6 @@ const UserHome = () => {
 
   return (
     <div>
-      
-
       {/* Services Section */}
       {/* Hospital Service */}
       <div className="p-10 justify-center text-center mt-8">
@@ -43,7 +41,7 @@ const UserHome = () => {
       <section className="p-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Hospital Card */}
-          <div className="service-card  p-6 rounded-lg shadow-md flex flex-col  hover:shadow-2xl items-center transform transition-transform hover:scale-105 bg-white text-black  ">
+          <div className="service-card cursor-pointer  p-6 rounded-lg shadow-md flex flex-col    hover:shadow-2xl items-center transform transition-transform hover:scale-105 bg-white text-black  ">
             <img
               src={hospitalImage}
               alt="Hospital Services"
@@ -56,13 +54,13 @@ const UserHome = () => {
               facilities are equipped with state-of-the-art technology and
               staffed by experienced professionals.
             </p>
-            <a href="/user/services" className="text-blue-500 hover:underline">
+            {/* <a href="/user/services" className="text-blue-500 hover:underline">
               Learn More
-            </a>
+            </a> */}
           </div>
 
           {/* Ambulance Card */}
-          <div className="service-card  p-6 rounded-lg shadow-md flex flex-col  hover:shadow-2xl items-center transform transition-transform hover:scale-105 bg-white text-black ">
+          <div className="service-card cursor-pointer  p-6 rounded-lg shadow-md flex flex-col  hover:shadow-2xl items-center transform transition-transform hover:scale-105 bg-white text-black ">
             <img
               src={ambulanceImage}
               alt="Ambulance Services"
@@ -75,13 +73,13 @@ const UserHome = () => {
               and staffed by skilled paramedics, we provide reliable emergency
               medical transport.
             </p>
-            <a href="/user/services" className="text-blue-500 hover:underline">
+            {/* <a href="/user/services" className="text-blue-500 hover:underline">
               Learn More
-            </a>
+            </a> */}
           </div>
 
           {/* Home Nursing Card */}
-          <div className="service-card  p-6 rounded-lg shadow-md  hover:shadow-2xl flex flex-col items-center transform transition-transform hover:scale-105  bg-white text-black ">
+          <div className="service-card  cursor-pointer p-6 rounded-lg shadow-md  hover:shadow-2xl flex flex-col items-center transform transition-transform hover:scale-105  bg-white text-black ">
             <img
               src={homenurseImage}
               alt="Home Nursing Services"
@@ -94,13 +92,13 @@ const UserHome = () => {
               including medication administration, wound care, and assistance
               with daily activities.
             </p>
-            <a href="/user/services" className="text-blue-500 hover:underline">
+            {/* <a href="/user/services" className="text-blue-500 hover:underline">
               Learn More
-            </a>
+            </a> */}
           </div>
 
           {/* Clinic Card */}
-          <div className="service-card  p-6 rounded-lg shadow-md hover:shadow-2xl flex flex-col items-center transform transition-transform hover:scale-105 bg-white text-black ">
+          <div className="service-card cursor-pointer p-6 rounded-lg shadow-md hover:shadow-2xl flex flex-col items-center transform transition-transform hover:scale-105 bg-white text-black ">
             <img
               src={clinickImage}
               alt="Clinic Services"
@@ -113,9 +111,9 @@ const UserHome = () => {
               acute and chronic conditions, our clinics are staffed by
               experienced healthcare professionals.
             </p>
-            <a href="/user/services" className="text-blue-500 hover:underline">
+            {/* <a href="/user/appointment" className="text-blue-500 hover:underline">
               Learn More
-            </a>
+            </a> */}
           </div>
         </div>
       </section>

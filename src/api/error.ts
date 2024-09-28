@@ -1,5 +1,5 @@
 import { AxiosError } from "axios";
-import { toast } from "react-toastify";
+import  toast  from "react-hot-toast";
 import axios from "axios";
 
 interface IErrorResponse {
@@ -12,15 +12,15 @@ const errorHandle = (error: Error | AxiosError) => {
         const axiosError = error as AxiosError;
         if (axiosError.response) {
             const errorResponse = axiosError.response.data as IErrorResponse;
-            if (axiosError.response.status === 403 && errorResponse.accountType === "user") {
-                toast.error(errorResponse.message);
-                if(window.location.pathname !== "/") {
-                    setTimeout(() => {
-                        window.location.href = "/"
-                    },2000);
-                }
+
+            if (axiosError.response.status === 403 ) {
+                console.log("came in error handle ")
+                // toast.error(errorResponse.message);
+                toast.error("You have been blocked by the admin.");
+                window.location.href = "/user/blocked"
+                
             }else if(axiosError.response.status === 400) {
-                console.log("400,",errorResponse)
+                // console.log("400 ,",errorResponse)
                 toast.error(errorResponse.message);
             } else if (errorResponse.message) {
                 toast.error(errorResponse.message);

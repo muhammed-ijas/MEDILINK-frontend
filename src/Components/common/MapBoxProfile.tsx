@@ -19,6 +19,9 @@ const bounceAnimation = `
 `;
 
 const MyMap: React.FC<{ spInfo: { latitude: number; longitude: number } }> = ({ spInfo }) => {
+
+  console.log("map box getting spInfo longitude and latitude :",spInfo);
+
   const [viewport, setViewport] = useState<any>({
     latitude: spInfo.latitude,
     longitude: spInfo.longitude,

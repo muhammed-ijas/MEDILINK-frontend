@@ -38,3 +38,34 @@ export const getVerifiedServices = async () => {
     throw error;
   }
 };
+
+
+export const getUsers = async () => {
+  try {
+    const response = await Api.get(AdminRoutes.getUsers);
+    // console.log("response from api :",response.data)
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching  users:", error);
+    throw error;
+  }
+};
+
+
+export const blockUser = async (userId: string) => {
+  try {
+    const response = await Api.post(AdminRoutes.blockUser, { userId });
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to block user");
+  }
+};
+
+export const unblockUser = async (userId: string) => {
+  try {
+    const response = await Api.post(AdminRoutes.unblockUser, { userId });
+    return response.data;
+  } catch (error) {
+    throw new Error("Failed to unblock user");
+  }
+};

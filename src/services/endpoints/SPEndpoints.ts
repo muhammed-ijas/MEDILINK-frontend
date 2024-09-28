@@ -8,10 +8,15 @@ const SPRoutes = {
     changePassword: "/sp/changePassword",
     changeProfileImage:"/sp/upload-profile-image",
     addDepartment: "/sp/addDepartment",
+    updateDepartment:"/sp/editDepartment",
     changeFirstDocumentImage: "/sp/changeFirstDocumentImage",
     changeSecondDocumentImage: "/sp/changeSecondDocumentImage",
     getAllServiceDetails:"/sp/getAllServiceDetails",
-    updateDepartment:"/sp/editDepartment",
-    deleteDepartment:"/sp/deleteDepartment"
+    deleteDepartment:"/sp/deleteDepartment",
+    getFullAppointmentList:"/sp/getFullAppointmentList",
+    appointmentApprove:"/sp/appointmentApprove",
+    appointmentCancel:"/sp/appointmentCancel",
+    getRatingsAndReviews:"/sp/getRatingsAndReviews",
+    completeAppointment:"/sp/completeAppointment",
   };
   export default SPRoutes;

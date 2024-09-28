@@ -10,11 +10,14 @@ import {
 import EditProfileModal from "../../Components/sp/EditProfileModal";
 import axios from "axios";
 import { changeProfileImage } from "../../api/SP";
-import { getProfile, editProfile } from "../../api/SP";
+import { getProfile, editProfile , getRatingsAndReviews } from "../../api/SP";
 import { setCredentials } from "../../redux/slices/spSlice";
 import MyMap from "../../Components/common/MapBoxProfile"; 
 import EditDepartmentModal from "../../Components/sp/DocumentModal";
 import {toast ,Toaster} from 'react-hot-toast'
+import RatingsModal from "../../Components/sp/RatingsModal"; 
+
+
 
 interface Profile {
   _id: string;
@@ -36,12 +39,26 @@ interface Profile {
   firstDocumentImage: string;
   secondDocumentImage : string;
 }
+interface Review {
+  doctorName: string;
+  patientName: string;
+  rating: number;
+  review: string;
+  createdAt: string;
+}
+
 
 const SPProfile: React.FC = () => {
   const { spInfo } = useSelector((state: RootState) => state.sp);
+  console.log("helloooooo  : here ",spInfo);
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [handleDocumentsModal, setHandleDocumentsModal] = useState(false);
+
+  const [isRatingsModalOpen, setIsRatingsModalOpen] = useState(false); // State to manage Ratings modal
+  const [reviews, setReviews] = useState<Review[]>([]); // State to store reviews
+
+
   const [isLoading, setIsLoading] = useState(false);
   const [profile, setProfile] = useState<Profile>({
     _id: "",
@@ -63,6 +80,24 @@ const SPProfile: React.FC = () => {
     firstDocumentImage:"",
     secondDocumentImage:""
   });
+
+
+
+  // Function to fetch ratings and reviews
+  const handleViewRatings = async () => {
+    try {
+      const response = await getRatingsAndReviews(spInfo._id); // Assuming API exists
+      console.log(response)
+      setReviews(response);
+      setIsRatingsModalOpen(true);
+    } catch (error) {
+      toast.error("Failed to fetch ratings and reviews.");
+    }
+  };
+
+  const handleRatingsModalClose = () => setIsRatingsModalOpen(false);
+
+
 
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
@@ -124,7 +159,7 @@ const SPProfile: React.FC = () => {
     };
 
     fetchProfile();
-  }, [dispatch, spInfo._id]);
+  }, []);
 
   const handleEditClick = () => setIsModalOpen(true);
   const handleModalClose = () => setIsModalOpen(false);
@@ -142,6 +177,8 @@ const SPProfile: React.FC = () => {
       setHandleDocumentsModal(true);
     }
   };
+
+  
 
   const handleProfileSave = async (updatedProfile: Profile) => {
     try {
@@ -190,6 +227,12 @@ const SPProfile: React.FC = () => {
           >
             Edit Documents
           </button>
+          <button
+            onClick={handleViewRatings}
+            className="bg-green-500 text-white px-5 py-2 rounded-lg hover:bg-green-600  duration-300   hover:scale-105 shadow-md"
+          >
+            View Ratings
+          </button>
         </div>
 
         {isModalOpen && (
@@ -199,6 +242,13 @@ const SPProfile: React.FC = () => {
             onSave={handleProfileSave}
           />
         )}
+        {isRatingsModalOpen && (
+        <RatingsModal
+          isOpen={isRatingsModalOpen}
+          onClose={handleRatingsModalClose}
+          reviews={reviews}
+        />
+      )}
         {handleDocumentsModal && (
           <EditDepartmentModal
             serviceType={spInfo.serviceType}
@@ -301,7 +351,7 @@ const SPProfile: React.FC = () => {
         </div>
       </div>
 
-      <div className="mt-8">
+      <div className="mt-8">  
         <h2 className="text-xl font-semibold mb-4">Location</h2>
         <div className="relative w-full h-80">
         <MyMap spInfo={spInfo} />
@@ -311,4 +361,4 @@ const SPProfile: React.FC = () => {
   );
 };
 
-export default SPProfile;
+export default SPProfile; 

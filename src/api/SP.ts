@@ -216,7 +216,8 @@ export const changeSecondDocumentImage = async (Id: string, profileImageUrl: str
 export const addDepartment = async (
   spId: string,
   department: string,
-  doctors: { name: string; specialization: string; availableFrom: string; availableTo: string; contact: string }[]
+  doctors: { name: string; specialization: string; availableFrom: string; availableTo: string; dateFrom:string ;  dateEnd:string ;   contact: string }[],
+  avgTime: string
 ) => {
   try {
     console.log("addepartment function got req.body",spId,department,doctors);
@@ -224,6 +225,7 @@ export const addDepartment = async (
       spId,
       department,
       doctors,
+      avgTime
     });
 
     return response.data;
@@ -274,5 +276,71 @@ export const deleteDepartment = async (spId:string,departmentId:string) => {
     return response;
   } catch (error: any) {
     throw error.response ? error.response.data : error;
+  }
+};
+
+
+
+export const getFullAppointmentList = async (id = "") => {
+  try {
+    const response = await Api.get(
+      `${SPRoutes.getFullAppointmentList}/${id}`
+    );
+    console.log("response.data  :  ", response.data);
+    return response.data;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+
+
+export const approveAppointment = async (appointmentId: string) => {
+  try {
+    console.log("approveAppointment : ",appointmentId)
+    const response = await Api.put(`${SPRoutes.appointmentApprove}/${appointmentId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+export const completeAppointment = async (appointmentId: string) => {
+  try {
+    console.log("compllete : ",appointmentId)
+    const response = await Api.put(`${SPRoutes.completeAppointment}/${appointmentId}`);
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
+
+export const cancelAppointment = async (appointmentId: string, reason: string) => {
+  try {
+    console.log("cancelAppointment : ",appointmentId,reason)
+    const response = await Api.put(`${SPRoutes.appointmentCancel}/${appointmentId}`, { reason });
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};  
+
+
+export const getRatingsAndReviews = async (SPId: string) => {
+
+  try {
+
+    console.log("getRatingsAndReviews : ",SPId)
+
+    const response = await Api.get(`${SPRoutes.getRatingsAndReviews}/${SPId}`);
+
+    console.log("response from backend  : ",response)
+
+    return response.data;
+  } catch (error) {
+    throw error;
   }
 };

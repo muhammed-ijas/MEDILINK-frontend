@@ -27,6 +27,8 @@ interface DoctorInfo {
   availableFrom: string;
   availableTo: string;
   contact: string;
+  dateFrom?: string; 
+  dateEnd?: string;  
 }
 
 interface DepartmentOption {
@@ -47,133 +49,32 @@ interface EditDepartmentModalProps {
   spId: string;
   refreshDepartments: () => void;
 }
-
 const departmentOptions: DepartmentOption[] = [
-  {
-    value: "emergency",
-    label: "Emergency Department (ED)",
-    description: "Immediate care for acute illnesses and injuries",
-  },
-  {
-    value: "cardiology",
-    label: "Cardiology",
-    description: "Diagnosis and treatment of heart and vascular conditions",
-  },
-  {
-    value: "neurology",
-    label: "Neurology",
-    description: "Care for brain, spinal cord, and nervous system disorders",
-  },
-  {
-    value: "pediatrics",
-    label: "Pediatrics",
-    description: "Medical care for infants, children, and adolescents",
-  },
-  {
-    value: "obstetrics",
-    label: "Obstetrics and Gynecology",
-    description: "Women’s reproductive health and childbirth",
-  },
-  {
-    value: "oncology",
-    label: "Oncology",
-    description: "Diagnosis and treatment of cancer",
-  },
-  {
-    value: "orthopedics",
-    label: "Orthopedics",
-    description: "Treatment of musculoskeletal system issues",
-  },
-  {
-    value: "radiology",
-    label: "Radiology",
-    description: "Imaging services for diagnosis and treatment",
-  },
-  {
-    value: "pathology",
-    label: "Pathology",
-    description: "Laboratory analysis of body tissues and fluids",
-  },
-  {
-    value: "surgery",
-    label: "General Surgery",
-    description: "Surgical procedures for a wide range of conditions",
-  },
-  {
-    value: "urology",
-    label: "Urology",
-    description: "Treatment of urinary and male reproductive systems",
-  },
-  {
-    value: "dermatology",
-    label: "Dermatology",
-    description: "Care for skin, hair, and nail conditions",
-  },
-  {
-    value: "gastroenterology",
-    label: "Gastroenterology",
-    description: "Treatment of digestive system disorders",
-  },
-  {
-    value: "nephrology",
-    label: "Nephrology",
-    description: "Care for kidney-related conditions",
-  },
-  {
-    value: "pulmonology",
-    label: "Pulmonology",
-    description: "Treatment of lung and respiratory tract disorders",
-  },
-  {
-    value: "psychiatry",
-    label: "Psychiatry",
-    description: "Mental health care and treatment",
-  },
-  {
-    value: "endocrinology",
-    label: "Endocrinology",
-    description: "Treatment of hormonal and metabolic disorders",
-  },
-  {
-    value: "rheumatology",
-    label: "Rheumatology",
-    description: "Care for autoimmune and inflammatory diseases",
-  },
-  {
-    value: "anesthesiology",
-    label: "Anesthesiology",
-    description: "Pain management and anesthesia for surgeries",
-  },
-  {
-    value: "icu",
-    label: "Intensive Care Unit (ICU)",
-    description: "Critical care for severely ill or injured patients",
-  },
-  {
-    value: "infectious-diseases",
-    label: "Infectious Diseases",
-    description: "Treatment of infections and contagious diseases",
-  },
-  {
-    value: "ophthalmology",
-    label: "Ophthalmology",
-    description: "Eye care and vision services",
-  },
-  {
-    value: "ent",
-    label: "ENT (Otorhinolaryngology)",
-    description: "Care for ear, nose, and throat conditions",
-  },
-  {
-    value: "hematology",
-    label: "Hematology",
-    description: "Treatment of blood disorders",
-  },
-  {
-    value: "physical-medicine",
-    label: "Physical Medicine and Rehab",
-    description: "Rehabilitation and physical therapy services",
-  },
+  { value: "emergency", label: "Emergency Department (ED)", description: "Immediate care for acute illnesses and injuries" },
+  { value: "cardiology", label: "Cardiology", description: "Diagnosis and treatment of heart and vascular conditions" },
+  { value: "neurology", label: "Neurology", description: "Care for brain, spinal cord, and nervous system disorders" },
+  { value: "pediatrics", label: "Pediatrics", description: "Medical care for infants, children, and adolescents" },
+  { value: "obstetrics", label: "Obstetrics and Gynecology", description: "Women’s reproductive health and childbirth" },
+  { value: "oncology", label: "Oncology", description: "Diagnosis and treatment of cancer" },
+  { value: "orthopedics", label: "Orthopedics", description: "Treatment of musculoskeletal system issues" },
+  { value: "radiology", label: "Radiology", description: "Imaging services for diagnosis and treatment" },
+  { value: "pathology", label: "Pathology", description: "Laboratory analysis of body tissues and fluids" },
+  { value: "surgery", label: "General Surgery", description: "Surgical procedures for a wide range of conditions" },
+  { value: "urology", label: "Urology", description: "Treatment of urinary and male reproductive systems" },
+  { value: "dermatology", label: "Dermatology", description: "Care for skin, hair, and nail conditions" },
+  { value: "gastroenterology", label: "Gastroenterology", description: "Treatment of digestive system disorders" },
+  { value: "nephrology", label: "Nephrology", description: "Care for kidney-related conditions" },
+  { value: "pulmonology", label: "Pulmonology", description: "Treatment of lung and respiratory tract disorders" },
+  { value: "psychiatry", label: "Psychiatry", description: "Mental health care and treatment" },
+  { value: "endocrinology", label: "Endocrinology", description: "Treatment of hormonal and metabolic disorders" },
+  { value: "rheumatology", label: "Rheumatology", description: "Care for autoimmune and inflammatory diseases" },
+  { value: "anesthesiology", label: "Anesthesiology", description: "Pain management and anesthesia for surgeries" },
+  { value: "icu", label: "Intensive Care Unit (ICU)", description: "Critical care for severely ill or injured patients" },
+  { value: "infectious-diseases", label: "Infectious Diseases", description: "Treatment of infections and contagious diseases" },
+  { value: "ophthalmology", label: "Ophthalmology", description: "Eye care and vision services" },
+  { value: "ent", label: "ENT (Otorhinolaryngology)", description: "Care for ear, nose, and throat conditions" },
+  { value: "hematology", label: "Hematology", description: "Treatment of blood disorders" },
+  { value: "physical-medicine", label: "Physical Medicine and Rehab", description: "Rehabilitation and physical therapy services" }
 ];
 
 const EditDepartmentModal: React.FC<EditDepartmentModalProps> = ({
@@ -192,6 +93,8 @@ const EditDepartmentModal: React.FC<EditDepartmentModalProps> = ({
       ...doctor,
       availableFrom: doctor.availableTime[0].format("HH:mm"),
       availableTo: doctor.availableTime[1].format("HH:mm"),
+      dateFrom: doctor.dateFrom,
+      dateEnd: doctor.dateEnd,
     }));
 
     const payload = {
@@ -276,68 +179,88 @@ const EditDepartmentModal: React.FC<EditDepartmentModalProps> = ({
         <Title level={4}>Doctors</Title>
 
         <Form.List name="doctors">
-          {(fields, { add, remove }) => (
-            <>
-              {fields.map(({ key, name, ...restField }) => (
-                <Space
-                  key={key}
-                  style={{ display: "flex", marginBottom: 8 }}
-                  align="baseline"
-                >
-                  <Form.Item
-                    {...restField}
-                    name={[name, "name"]}
-                    rules={[{ required: true, message: "Missing doctor name" }]}
-                  >
-                    <Input placeholder="Doctor's Name" />
-                  </Form.Item>
-                  <Form.Item
-                    {...restField}
-                    name={[name, "specialization"]}
-                    rules={[
-                      { required: true, message: "Missing specialization" },
-                    ]}
-                  >
-                    <Input placeholder="Specialization" />
-                  </Form.Item>
-                  <Form.Item
-                    {...restField}
-                    name={[name, "availableTime"]}
-                    rules={[
-                      { required: true, message: "Missing availability time" },
-                    ]}
-                  >
-                    <TimePicker.RangePicker format="HH:mm" />
-                  </Form.Item>
-                  <Form.Item
-                    {...restField}
-                    name={[name, "contact"]}
-                    rules={[
-                      { required: true, message: "Missing contact number" },
-                      {
-                        pattern: /^\d{10}$/,
-                        message: "Enter a valid 10-digit number",
-                      },
-                    ]}
-                  >
-                    <Input placeholder="Contact Number" />
-                  </Form.Item>
-                  <MinusCircleOutlined onClick={() => remove(name)} />
-                </Space>
-              ))}
-              <Form.Item>
-                <Button
-                  type="dashed"
-                  onClick={() => add()}
-                  block
-                  icon={<PlusOutlined />}
-                >
-                  Add Doctor
-                </Button>
-              </Form.Item>
-            </>
-          )}
-        </Form.List>
+  {(fields, { add, remove }) => (
+    <>
+      {fields.map(({ key, name, ...restField }) => (
+        <Space
+          key={key}
+          style={{ display: "flex", marginBottom: 8 }}
+          align="baseline"
+        >
+          <Form.Item
+            {...restField}
+            name={[name, "name"]}
+            rules={[{ required: true, message: "Missing doctor name" }]}
+          >
+            <Input placeholder="Doctor's Name" />
+          </Form.Item>
+          
+          <Form.Item
+            {...restField}
+            name={[name, "specialization"]}
+            rules={[{ required: true, message: "Missing specialization" }]}
+          >
+            <Input placeholder="Specialization" />
+          </Form.Item>
+          <Form.Item
+            {...restField}
+            name={[name, "availableTime"]}
+            rules={[{ required: true, message: "Missing availability time" }]}
+          >
+            <TimePicker.RangePicker format="HH:mm" />
+          </Form.Item>
+          <Form.Item
+            {...restField}
+            name={[name, "contact"]}
+            rules={[
+              { required: true, message: "Missing contact number" },
+              { pattern: /^\d{10}$/, message: "Enter a valid 10-digit number" }
+            ]}
+          >
+            <Input placeholder="Contact Number" />
+          </Form.Item>
+          <Form.Item
+            {...restField}
+            name={[name, "dateFrom"]}
+            rules={[{ required: true, message: "Missing start date" }]}
+          >
+            <Input type="date" placeholder="Start Date" />
+          </Form.Item>
+          <Form.Item
+            {...restField}
+            name={[name, "dateEnd"]}
+            rules={[
+              { required: true, message: "Missing end date" },
+              ({ getFieldValue }) => ({
+                validator(_, value) {
+                  const dateFrom = getFieldValue(['doctors', name, 'dateFrom']);
+                  if (dateFrom && value && new Date(value) < new Date(dateFrom)) {
+                    return Promise.reject(new Error('End date must be after start date'));
+                  }
+                  return Promise.resolve();
+                },
+              }),
+            ]}
+          >
+            <Input type="date" placeholder="End Date" />
+          </Form.Item>
+          <MinusCircleOutlined onClick={() => remove(name)} />
+        </Space>
+      ))}
+      <Form.Item>
+        <Button
+          type="dashed"
+          onClick={() => add()}
+          block
+          icon={<PlusOutlined />}
+        >
+          Add Doctor
+        </Button>
+      </Form.Item>
+    </>
+  )}
+</Form.List>
+
       </Form>
     </Modal>
   );

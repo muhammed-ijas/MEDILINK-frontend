@@ -1,15 +1,15 @@
-import { useSelector, useDispatch } from "react-redux";
-import { useState, useEffect } from "react";
-import { useNavigate, NavLink, useLocation } from "react-router-dom";
-import { userLogout } from "../../redux/slices/authSlice";
-import { FaCaretDown, FaUserCircle } from "react-icons/fa";
-import { SlCalender } from "react-icons/sl";
-import { FaPowerOff } from "react-icons/fa6";
-import { toast } from "react-toastify";
-import { RootState } from "../../redux/store";
-import { useBoolean } from "@chakra-ui/react";
-import logo from '/logo/userSideBeforeHome/logo.png';
-import LogoutModal from "../common/LogoutModal";
+  import { useSelector, useDispatch } from "react-redux";
+  import { useState, useEffect } from "react";
+  import { useNavigate, NavLink, useLocation } from "react-router-dom";
+  import { userLogout } from "../../redux/slices/authSlice";
+  import { FaCaretDown, FaUserCircle } from "react-icons/fa";
+  import { SlCalender,SlEnvolope } from "react-icons/sl";
+  import { FaPowerOff } from "react-icons/fa6";
+  import { toast } from "react-toastify";
+  import { RootState } from "../../redux/store";
+  import { useBoolean } from "@chakra-ui/react";
+  import logo from '/logo/userSideBeforeHome/logo.png';
+  import LogoutModal from "../common/LogoutModal";
 
 function Header() {
   let { userInfo } = useSelector((state: RootState) => state.auth);
@@ -145,7 +145,14 @@ function Header() {
                 Profile
               </NavLink>
               <NavLink
-                to="/user/myBookings"
+                to="/user/messages"
+                className="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100"
+              >
+              <SlEnvolope /> 
+                Messages
+              </NavLink>
+              <NavLink
+                to="/user/bookings"
                 className="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100"
               >
                 <SlCalender />

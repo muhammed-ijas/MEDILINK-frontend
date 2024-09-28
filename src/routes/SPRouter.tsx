@@ -15,6 +15,9 @@ const ContactPage = lazy(()=> import("../pages/SP/SPContact"))
 const DetailedServicePage = lazy(()=> import("../pages/SP/DetailedServicesPage"))
 const HomeNurseDetailsServices = lazy(()=> import("../pages/SP/DetailedHomeNurseService"))
 const AmbulanceDetailsServices = lazy(()=> import("../pages/SP/DetailedAmbulanceServices"))
+const AllbookingsShownPage = lazy(()=> import("../pages/SP/AllbookingsShownPage"));
+
+const MessagesPage = lazy(()=> import("../pages/SP/Messages"))
 
 
 
@@ -33,10 +36,15 @@ function SPRoutes() {
             <Route path="viewDetaildServices" element={<DetailedServicePage />} />
             <Route path="viewHomeNurseServices" element={<HomeNurseDetailsServices />} />
             <Route path="viewAmbulanceServices" element={<AmbulanceDetailsServices />} />
+
+            <Route path="bookings" element={<AllbookingsShownPage />} />
           </Route>
           <Route path="signup" element={<SignupPage />} />
           <Route path="otp" element={<OtpPage />} />
           <Route path="login" element={<LoginPage />} />
+
+          <Route path="messages" element={<MessagesPage />} />
+
         </Routes>
       </Suspense>
     );

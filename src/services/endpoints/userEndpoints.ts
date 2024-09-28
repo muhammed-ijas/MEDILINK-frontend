@@ -21,6 +21,29 @@ const userRoutes={
     getClinicks:'/user/getClinicks',
     getHomeNurses:'/user/getHomeNurses',
     getAmbulances:'/user/getAmbulances',
+    getHospitalClinicDetails: '/user/getHospitalClinicDetails',
+    getDepartmentDetails: '/user/getDepartmentDetails',
+
+    getDoctorDetails: '/user/getDoctorDetails',
+    getDoctorDetailsFromSearchPage: '/user/getDoctorDetailsFromSearchPage',
+
+    getHomeNurseDetails: '/user/getHomeNurseDetails',
+    getAmbulanceDetails: '/user/getAmbulanceDetails',
+
+
+    createPaymentsession: '/user/createPaymentsession',
+    updateStatus:'/user/updateBookingstatus',
+    getFullAppointmentList:'/user/getFullAppointmentList',
+
+    appointmentCancel:"/user/appointmentCancel",
+
+    addReview:"/user/addReview",
+
+    allUsersRoute:"/user/allUsersRoute",
+    getMessageRoute:"/user/getMessageRoute",
+    sendMessageRoute:"/user/sendMessageRoute",
+
+    
 }
 
 export default userRoutes ;

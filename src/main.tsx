@@ -3,7 +3,6 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import store from "./redux/store";
 import { Provider } from "react-redux";
-import { ToastContainer } from "react-toastify";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.css";
@@ -15,7 +14,6 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <GoogleOAuthProvider clientId={GOOGLE_ID}>
       <React.StrictMode>
           <App />
-        <ToastContainer />
       </React.StrictMode>
     </GoogleOAuthProvider>
   </Provider>

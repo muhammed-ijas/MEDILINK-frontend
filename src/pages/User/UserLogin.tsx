@@ -11,7 +11,9 @@ import { setCredentials } from "../../redux/slices/authSlice";
 import { RootState } from "../../redux/store";
 import { login } from "../../api/user";
 import { setAdminCredentials } from "../../redux/slices/adminSlice";
+import { userLogout } from "../../redux/slices/authSlice";
 
+import {toast , Toaster} from 'react-hot-toast'
 
 
 interface Errors {
@@ -76,12 +78,11 @@ function UserLogin (){
 
        
         if (response) {
-          // console.log("login data: " , response.data.message.isAdmin)
           if (response.data.message.isAdmin) {
             localStorage.setItem('token', response.data.token);
             dispatch(setAdminCredentials(response.data.message));
             navigate('/admin/dashboard');
-          } else {
+          }else {
             localStorage.setItem('token', response.data.token);
             dispatch(setCredentials(response.data.message));
             navigate('/user/home');
@@ -89,6 +90,7 @@ function UserLogin (){
         }
       }
   };
+
 
    const Glogin = useGoogleLogin({
     onSuccess: async (response) => {
@@ -126,6 +128,7 @@ function UserLogin (){
 
   return (
     <div className="flex justify-center items-center h-screen">
+      <Toaster position="top-center" />
       <a href="/" className="absolute top-4 left-4">
         <img src={logo} alt="Logo" className="w-20 h-auto" />
       </a>

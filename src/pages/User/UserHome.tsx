@@ -15,7 +15,7 @@ const UserHome = () => {
   };
 
   const handleConnect = () => {
-    navigate("/user/connect");
+    navigate("/user/contact");
   };
 
   useEffect(() => {
@@ -47,17 +47,16 @@ const UserHome = () => {
     <div>
      {/* Full-Screen Image with Medilink Name */}
 <section className="relative w-full h-screen bg-cover bg-center">
-  {/* Diagonal Slice with Motion Effect */}
   <motion.div
   className="absolute inset-0 bg-black"
   style={{
     clipPath: "polygon(0 0, 100% 0, 60% 10%, 70% 100%, 0 100%)",
   }}
   initial={{
-    clipPath: "polygon(0 0, 100% 0, 60% 15%, 70% 95%, 0 100%)", // Initial state with extra point
+    clipPath: "polygon(0 0, 100% 0, 60% 15%, 70% 95%, 0 100%)",
   }}
   animate={{
-    clipPath: "polygon(0 0, 100% 0, 60% 30%, 70% 80%, 0 100%)", // End state with extra point
+    clipPath: "polygon(0 0, 100% 0, 60% 30%, 70% 80%, 0 100%)", 
   }}
   transition={{
     duration: 6, // Duration for smoother animation
@@ -271,7 +270,7 @@ const UserHome = () => {
         </div>
       </section>
 
-      <style tsx>{`
+      <style >{`
         .service-card {
           transition: transform 0.3s ease-in-out;
         }
@@ -410,10 +409,9 @@ const UserHome = () => {
 </section>
 
 
-      {/* Appointment Button */}
       <div className="fixed bottom-4 right-4">
         <a
-          href="/user/services"
+          href="/user/appointment"
           className="bg-blue-600 text-white py-2 px-4 rounded-full shadow-lg hover:bg-blue-700 transition"
         >
           Book Appointment

@@ -11,10 +11,13 @@ import {  toast } from "react-hot-toast";
 // import toast from "react-toastify"
 
 const SPServices = () => {
+
   const navigate = useNavigate();
+
   const { spInfo } = useSelector((state: RootState) => state.sp);
  
   const handleViewDetaildServices = () => {
+    console.log("clicked",spInfo)
     if (spInfo.isVerified === false) {
       toast.error("You need to be verified to go to this page.");
     } else if (spInfo.serviceType === "hospital" || spInfo.serviceType === "clinic") {

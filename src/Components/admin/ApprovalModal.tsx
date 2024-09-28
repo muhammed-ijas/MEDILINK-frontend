@@ -38,6 +38,7 @@ const ApprovalModal: React.FC<ApprovalModalProps> = ({
   const [isFullViewOpen, setIsFullViewOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
+
   const handleDocumentClick = (imageUrl: string) => {
     setSelectedImage(imageUrl);
     setIsFullViewOpen(true);
@@ -75,6 +76,13 @@ const ApprovalModal: React.FC<ApprovalModalProps> = ({
         }
       }
     }
+  };
+
+
+  
+  const handleReject = async () => {
+    
+    console.log("clicked reject")
   };
 
   if (!isOpen || !provider) return null;
@@ -172,8 +180,14 @@ const ApprovalModal: React.FC<ApprovalModalProps> = ({
             Approve
           </button>
           <button
+            onClick={handleReject}
+            className="w-full py-2 px-4 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors duration-300 mr-4"
+          >
+            Reject
+          </button>
+          <button
             onClick={onClose}
-            className="w-full py-2 px-4 bg-red-600 text-white rounded-full hover:bg-red-700 transition-colors duration-300"
+            className="w-full py-2 px-4 bg-blue-600 text-white rounded-full hover:bg-blue-700 transition-colors duration-300"
           >
             Close
           </button>
