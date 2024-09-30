@@ -10,6 +10,7 @@ interface userFormData {
   password?: string;
   fromGoogle?: boolean;
 }
+
 interface loginData {
   email?: string;
   password?: string;
@@ -20,8 +21,6 @@ interface ChangePasswordResponse {
 }
 
 export const signup = async (userData: userFormData) => {
-  console.log(userData, "the datra");
-
   try {
     const response = await Api.post(userRoutes.signup, userData);
     return response;
@@ -30,6 +29,7 @@ export const signup = async (userData: userFormData) => {
     return errorHandle(err);
   }
 };
+
 
 export const otpVerify = async (
   otp: { otp: number },
@@ -40,14 +40,13 @@ export const otpVerify = async (
       otp,
       email,
     });
-    console.log(response, "got response");
-
     return response;
   } catch (error) {
     const err: Error = error as Error;
     return errorHandle(err);
   }
 };
+
 
 export const resentOTP = async (
   email: string,
@@ -69,18 +68,17 @@ export const resentOTP = async (
   }
 };
 
+
 export const login = async (userData: loginData) => {
   try {
     const response = await Api.post(userRoutes.userLogin, userData);
-    console.log("response   :",response)
     return response;
   } catch (error) {
-    // console.log("response   error :",error)
-
     const err: Error = error as Error;
     return errorHandle(err);
   }
 };
+
 
 export const fOtpVerify = async (
   otp: { otp: number },
@@ -98,6 +96,7 @@ export const fOtpVerify = async (
   }
 };
 
+
 export const resendOTP = async (email: string) => {
   try {
     const response = await Api.post(userRoutes.resendOtp, { email: email });
@@ -107,6 +106,7 @@ export const resendOTP = async (email: string) => {
     return errorHandle(err);
   }
 };
+
 
 export const resetPassword = async (
   password: { password: string },
@@ -124,6 +124,7 @@ export const resetPassword = async (
   }
 };
 
+
 export const forgotPassword = async (email: { email: string }) => {
   try {
     const response = await Api.post(userRoutes.userForgotPass, email);
@@ -134,6 +135,7 @@ export const forgotPassword = async (email: { email: string }) => {
   }
 };
 
+
 export const getProfile = async (Id: string) => {
   try {
     const response = await Api.post(userRoutes.getProfile, { Id: Id });
@@ -143,6 +145,7 @@ export const getProfile = async (Id: string) => {
     return errorHandle(err);
   }
 };
+
 
 export const editProfile = async (
   Id: string,
@@ -160,13 +163,13 @@ export const editProfile = async (
   }
 };
 
+
 export const changePassword = async (
   Id: string,
   password: string,
   oldPassword: string
 ): Promise<ChangePasswordResponse> => {
   try {
-    console.log(" before going to backend:", Id, password, oldPassword);
     const response = await Api.post<ChangePasswordResponse>(
       userRoutes.changePassword,
       {
@@ -178,7 +181,6 @@ export const changePassword = async (
     return response;
   } catch (error) {
     const err: any = error as Error;
-
     if (err.response && err.response.data && err.response.data.message) {
       throw new Error(err.response.data.message);
     } else {
@@ -187,6 +189,7 @@ export const changePassword = async (
   }
 };
 
+
 export const getDepartments = async (page = 1, limit = 10, search = "") => {
   try {
     const response = await Api.get(
@@ -194,12 +197,14 @@ export const getDepartments = async (page = 1, limit = 10, search = "") => {
         userRoutes.getDepartments
       }?page=${page}&limit=${limit}&search=${encodeURIComponent(search)}`
     );
+
     return response.data;
   } catch (error) {
     const err: Error = error as Error;
     return errorHandle(err);
   }
 };
+
 
 export const getDoctors = async (page = 1, limit = 10, search = "") => {
   try {
@@ -214,6 +219,7 @@ export const getDoctors = async (page = 1, limit = 10, search = "") => {
     return errorHandle(err);
   }
 };
+
 
 export const getHospitals = async (page = 1, limit = 10, search = "") => {
   try {
@@ -230,6 +236,7 @@ export const getHospitals = async (page = 1, limit = 10, search = "") => {
   }
 };
 
+
 export const getClinicks = async (page = 1, limit = 10, search = "") => {
   try {
     const response = await Api.get(
@@ -243,6 +250,7 @@ export const getClinicks = async (page = 1, limit = 10, search = "") => {
     return errorHandle(err);
   }
 };
+
 
 export const getHomeNurses = async (page = 1, limit = 10, search = "") => {
   try {
@@ -258,6 +266,7 @@ export const getHomeNurses = async (page = 1, limit = 10, search = "") => {
   }
 };
 
+
 export const getAmbulances = async (page = 1, limit = 10, search = "") => {
   try {
     const response = await Api.get(
@@ -272,25 +281,25 @@ export const getAmbulances = async (page = 1, limit = 10, search = "") => {
   }
 };
 
+
 export const getHospitalClinicDetails = async (id = "") => {
   try {
     const response = await Api.get(
       `${userRoutes.getHospitalClinicDetails}/${id}`
     );
-    console.log("response.data  :  ", response.data);
     return response.data;
   } catch (error) {
     const err: Error = error as Error;
     return errorHandle(err);
   }
 };
+
 
 export const getDepartmentDetails = async (id = "") => {
   try {
     const response = await Api.get(
       `${userRoutes.getDepartmentDetails}/${id}`
     );
-    console.log("response.data  :  ", response.data);
     return response.data;
   } catch (error) {
     const err: Error = error as Error;
@@ -298,12 +307,12 @@ export const getDepartmentDetails = async (id = "") => {
   }
 };
 
+
 export const getDoctorDetails = async (id = "") => {
   try {
     const response = await Api.get(
       `${userRoutes.getDoctorDetails}/${id}`
     );
-    console.log("response.data  :  ", response.data);
     return response.data;
   } catch (error) {
     const err: Error = error as Error;
@@ -317,7 +326,6 @@ export const getDoctorDetailsFromSearchPage = async (id = "") => {
     const response = await Api.get(
       `${userRoutes.getDoctorDetailsFromSearchPage}/${id}`
     );
-    console.log("response.data  :  ", response.data);
     return response.data;
   } catch (error) {
     const err: Error = error as Error;
@@ -331,7 +339,6 @@ export const getHomeNurseDetails = async (id = "") => {
     const response = await Api.get(
       `${userRoutes.getHomeNurseDetails}/${id}`
     );
-    console.log("response.data  :  ", response.data);
     return response.data;
   } catch (error) {
     const err: Error = error as Error;
@@ -345,7 +352,6 @@ export const getAmbulanceDetails = async (id = "") => {
     const response = await Api.get(
       `${userRoutes.getAmbulanceDetails}/${id}`
     );
-    console.log("response.data  :  ", response.data);
     return response.data;
   } catch (error) {
     const err: Error = error as Error;
@@ -357,8 +363,6 @@ export const getAmbulanceDetails = async (id = "") => {
 export const createPaymentSession = async (body: any) => {
   try {
     const response = await Api.post(userRoutes.createPaymentsession, body);
-    console.log("Payment session response:", response);
-
     return response.data;
   } catch (error) {
     const err: Error = error as Error;
@@ -366,34 +370,22 @@ export const createPaymentSession = async (body: any) => {
   }
 };
 
-// In your API functions file
-// export const updateStatus = async ({ bookingId, status }) => {
-//   try {
-//     const response = await Api.post(userRoutes.updateStatus, { bookingId, status });
-//     console.log("Update status response:", response);
-//     return response.data;
-//   } catch (error) {
-//     const err: Error = error as Error;
-//     return errorHandle(err);
-//   }
-// };
 
 interface UpdateStatusParams {
   bookingId: string;
   status: string;
 }
 
+
 export const updateStatus = async ({ bookingId, status }: UpdateStatusParams): Promise<any> => {
   try {
     const response = await Api.post(userRoutes.updateStatus, { bookingId, status });
-    // console.log("Update status response:", response);
     return response.data;
   } catch (error) {
     const err: Error = error as Error;
     return errorHandle(err);
   }
 };
-
 
 
 export const getFullAppointmentList = async (id = "") => {
@@ -401,7 +393,6 @@ export const getFullAppointmentList = async (id = "") => {
     const response = await Api.get(
       `${userRoutes.getFullAppointmentList}/${id}`
     );
-    console.log("response.data  :  ", response.data);
     return response.data;
   } catch (error) {
     const err: Error = error as Error;
@@ -410,10 +401,8 @@ export const getFullAppointmentList = async (id = "") => {
 };
 
 
-
 export const cancelAppointment = async (appointmentId: string, reason: string) => {
   try {
-    console.log("cancelAppointment : ",appointmentId,reason)
     const response = await Api.put(`${userRoutes.appointmentCancel}/${appointmentId}`, { reason });
     return response.data;
   } catch (error) {
@@ -424,11 +413,19 @@ export const cancelAppointment = async (appointmentId: string, reason: string) =
 
 // Add review API function
 export const addReview = async (appointmentId: string, reviewData: { rating: number; review: string }) => {
-
-  console.log("appointment id :",appointmentId)
-  console.log("reviewData  :",reviewData)
-  // console.log("rating  :",rating)
   const response = await Api.post(`${userRoutes.addReview}/${appointmentId}`, reviewData);
   return response.data;
 };
 
+
+export const getEmergencyNumbers= async () => {
+  try {
+    const response = await Api.get(userRoutes.getEmergencyNumbers);
+
+    return response.data;
+
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};

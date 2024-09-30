@@ -39,7 +39,6 @@ interface EditDepartmentData {
 
 export const SPSignup = async (SPData: SPFormData) => {
   try {
-
     const response = await Api.post(SPRoutes.SPSignup, SPData);
     return response;
   } catch (error) {
@@ -47,6 +46,7 @@ export const SPSignup = async (SPData: SPFormData) => {
     return errorHandle(err);
   }
 };
+
 
 export const otpVerify = async (
   otp: { otp: number },
@@ -57,7 +57,6 @@ export const otpVerify = async (
       otp,
       email,
     });
-    console.log(response, "got response");
 
     return response;
   } catch (error) {
@@ -65,6 +64,7 @@ export const otpVerify = async (
     return errorHandle(err);
   }
 };
+
 
 export const resentOTP = async (
   email: string,
@@ -100,6 +100,7 @@ export const resentOTP = async (
   }
 };
 
+
 export const login = async (spData: loginData) =>{
   try {
     const response = await Api.post(SPRoutes.SPLogin,spData);
@@ -110,18 +111,16 @@ export const login = async (spData: loginData) =>{
   }
 }
 
+
 export const getProfile = async (Id: string) => {
   try {
-    console.log(Id)
     const response = await Api.post(SPRoutes.getProfile, { Id: Id });
-    console.log("response: ",response)
     return response;
   } catch (error) {
     const err: Error = error as Error;
     return errorHandle(err);
   }
 };
-
 
 
 export const editProfile = async (
@@ -154,6 +153,7 @@ export const editProfile = async (
   }
 };
 
+
 export const changePassword = async (Id: string, password: string, oldPassword: string) => {
   try {
     const response = await Api.post(SPRoutes.changePassword, {
@@ -167,7 +167,6 @@ export const changePassword = async (Id: string, password: string, oldPassword: 
     return errorHandle(err);
   }
 };
-
 
 
 export const changeProfileImage = async (Id: string, profileImageUrl: string) => {
@@ -212,7 +211,6 @@ export const changeSecondDocumentImage = async (Id: string, profileImageUrl: str
 };
 
 
-
 export const addDepartment = async (
   spId: string,
   department: string,
@@ -220,14 +218,12 @@ export const addDepartment = async (
   avgTime: string
 ) => {
   try {
-    console.log("addepartment function got req.body",spId,department,doctors);
     const response = await Api.post(SPRoutes.addDepartment, {
       spId,
       department,
       doctors,
       avgTime
     });
-
     return response.data;
   } catch (error) {
     const err: Error = error as Error;
@@ -239,7 +235,6 @@ export const addDepartment = async (
 export const getAllServiceDetails = async (spId: string) => {
   try {
     const response = await Api.get(`${SPRoutes.getAllServiceDetails}/${spId}`);
-
     return response.data;
   } catch (error) {
     const err: Error = error as Error;
@@ -251,12 +246,10 @@ export const getAllServiceDetails = async (spId: string) => {
 
 export const editDepartment = async (spId: string, data: EditDepartmentData) => {
   try {
-    console.log("data :",data)
     const response = await Api.post(SPRoutes.updateDepartment ,{
       spId,
       data
     });
-    console.log("response :",response)
     return response.data;
   } catch (error: any) {
     console.error('Error updating department:', error);
@@ -268,11 +261,7 @@ export const editDepartment = async (spId: string, data: EditDepartmentData) => 
 
 export const deleteDepartment = async (spId:string,departmentId:string) => {
   try {
-    const response = await Api.post(SPRoutes.deleteDepartment ,{
-      spId,
-      departmentId
-    });
-    console.log("response from deleteDepartment :",response)
+    const response = await Api.post(SPRoutes.deleteDepartment ,{spId,departmentId});
     return response;
   } catch (error: any) {
     throw error.response ? error.response.data : error;
@@ -286,7 +275,6 @@ export const getFullAppointmentList = async (id = "") => {
     const response = await Api.get(
       `${SPRoutes.getFullAppointmentList}/${id}`
     );
-    console.log("response.data  :  ", response.data);
     return response.data;
   } catch (error) {
     const err: Error = error as Error;
@@ -298,7 +286,6 @@ export const getFullAppointmentList = async (id = "") => {
 
 export const approveAppointment = async (appointmentId: string) => {
   try {
-    console.log("approveAppointment : ",appointmentId)
     const response = await Api.put(`${SPRoutes.appointmentApprove}/${appointmentId}`);
     return response.data;
   } catch (error) {
@@ -309,7 +296,6 @@ export const approveAppointment = async (appointmentId: string) => {
 
 export const completeAppointment = async (appointmentId: string) => {
   try {
-    console.log("compllete : ",appointmentId)
     const response = await Api.put(`${SPRoutes.completeAppointment}/${appointmentId}`);
     return response.data;
   } catch (error) {
@@ -320,7 +306,6 @@ export const completeAppointment = async (appointmentId: string) => {
 
 export const cancelAppointment = async (appointmentId: string, reason: string) => {
   try {
-    console.log("cancelAppointment : ",appointmentId,reason)
     const response = await Api.put(`${SPRoutes.appointmentCancel}/${appointmentId}`, { reason });
     return response.data;
   } catch (error) {
@@ -330,17 +315,50 @@ export const cancelAppointment = async (appointmentId: string, reason: string) =
 
 
 export const getRatingsAndReviews = async (SPId: string) => {
-
   try {
-
-    console.log("getRatingsAndReviews : ",SPId)
-
     const response = await Api.get(`${SPRoutes.getRatingsAndReviews}/${SPId}`);
-
-    console.log("response from backend  : ",response)
-
     return response.data;
   } catch (error) {
     throw error;
+  }
+};
+
+
+
+export const getEmergencyNumber = async (id: string) => {
+  try {
+    const response = await Api.get(
+      `${SPRoutes.getEmergencyNumber}/${id}`
+    );
+    console.log("response from backend :",response.data)
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+
+
+export const updateEmergencyNumber = async (id: string,emergencyNumber:string) => {
+  try {
+    console.log("from frontend api function update :",id,emergencyNumber)
+    const response = await Api.post(SPRoutes.updateEmergencyNumber,{id,emergencyNumber});
+    return response.data;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+
+
+export const deleteEmergencyNumber = async (id: string) => {
+  try {
+    const response = await Api.post(SPRoutes.deleteEmergencyNumber,{id});
+    return response.data;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
   }
 };

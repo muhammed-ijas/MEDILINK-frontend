@@ -3,21 +3,22 @@ import { useState, useEffect } from "react";
 import { useNavigate, NavLink, useLocation } from "react-router-dom";
 import { spLogout } from "../../redux/slices/spSlice";
 import { FaCaretDown, FaUserCircle } from "react-icons/fa";
-import { SlCalender ,SlEnvolope} from "react-icons/sl";
+import { SlCalender, SlEnvolope } from "react-icons/sl";
 import { FaPowerOff } from "react-icons/fa6";
 // import { toast } from "react-toastify";
-import {toast,Toaster}  from "react-hot-toast"
+import { toast } from "react-hot-toast";
 import { RootState } from "../../redux/store";
 import { useBoolean } from "@chakra-ui/react";
-import logo from '/logo/userSideBeforeHome/logo.png';
-import LogoutModal from '../../Components/common/LogoutModal'; // Import the LogoutModal component
-
+import logo from "/logo/userSideBeforeHome/logo.png";
+import LogoutModal from "../../Components/common/LogoutModal";
+import EmergencyModal from "./EmergencyModal";
 
 function Header() {
   let { spInfo } = useSelector((state: RootState) => state.sp);
   const [isDropdownOpen, setIsDropdownOpen] = useBoolean();
   const [isHamburger, setIsHamburger] = useState(false);
-  const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false); // State for modal visibility
+  const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false);
+  const [isEmergencyModalOpen, setIsEmergencyModalOpen] = useState(false);
 
   let navigate = useNavigate();
   let dispatch = useDispatch();
@@ -27,6 +28,9 @@ function Header() {
     setIsHamburger(false);
     setIsDropdownOpen.off();
   }, [location]);
+
+  const toggleEmergencyModal = () =>
+    setIsEmergencyModalOpen(!isEmergencyModalOpen);
 
   const activeStyle = {
     color: "#000000", // Black color
@@ -52,24 +56,24 @@ function Header() {
     setIsLogoutModalVisible(false); // Hide the modal when canceled
   };
 
-  // const handleLogout = async () => {
-  //   setIsDropdownOpen.off();
-  //   setIsHamburger(false);
-  //   localStorage.removeItem("token");
-  //   dispatch(spLogout());
-  //   navigate("/sp/home");
-  //   toast.success("Logged out successfully", { position: "top-center" });
-  // };
-
   return (
     <nav className="sticky top-0 z-50 w-full bg-white shadow-md border border-gray-200  lg:px-8 py-4 relative">
-      <Toaster position="top-center" />
+      {/* <Toaster position="top-center" /> */}
       <div className="flex items-center justify-between px-4 lg:px-8 w-full">
         {/* Logo */}
         <a href="/sp/home" className="flex items-center">
           <img src={logo} alt="Logo" className="w-24 h-auto" />
         </a>
-  
+
+        {spInfo && (
+          <button
+            className="ml-4 bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600"
+            onClick={toggleEmergencyModal}
+          >
+            Emergency Services
+          </button>
+        )}
+
         {/* Navigation Links (Centered) */}
         <div className="hidden lg:flex flex-grow justify-center space-x-6">
           <NavLink
@@ -101,7 +105,7 @@ function Header() {
             Contact
           </NavLink>
         </div>
-  
+
         {/* User Profile Dropdown (Right) */}
         <div className="relative flex-shrink-0">
           <button
@@ -124,7 +128,7 @@ function Header() {
               <span>Login</span>
             )}
           </button>
-  
+
           {/* Dropdown Menu */}
           {isDropdownOpen && (
             <div
@@ -142,7 +146,7 @@ function Header() {
                 to="/sp/messages"
                 className="flex items-center gap-2 px-4 py-2 text-gray-800 hover:bg-gray-100"
               >
-              <SlEnvolope /> 
+                <SlEnvolope />
                 Messages
               </NavLink>
               <NavLink
@@ -163,7 +167,7 @@ function Header() {
             </div>
           )}
         </div>
-  
+
         {/* Hamburger Menu for Mobile */}
         <button
           className="lg:hidden flex items-center"
@@ -184,7 +188,7 @@ function Header() {
             />
           </svg>
         </button>
-  
+
         {/* Hamburger Dropdown */}
         {isHamburger && (
           <div className="absolute top-16 right-4 w-48 bg-white border border-gray-200 rounded-md shadow-lg z-10">
@@ -241,6 +245,17 @@ function Header() {
         onConfirm={confirmLogout}
         onCancel={cancelLogout}
       />
+     {
+  spInfo ? (
+    <EmergencyModal
+      isOpen={isEmergencyModalOpen}
+      onClose={toggleEmergencyModal}
+      spId={spInfo._id}
+    />
+  ) : null // or <></> for an empty fragment
+}
+
+     
     </nav>
   );
 }

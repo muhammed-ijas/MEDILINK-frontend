@@ -10,12 +10,20 @@
   import { useBoolean } from "@chakra-ui/react";
   import logo from '/logo/userSideBeforeHome/logo.png';
   import LogoutModal from "../common/LogoutModal";
+  import EmergencyModal from './EmergencyModal'; 
+
 
 function Header() {
   let { userInfo } = useSelector((state: RootState) => state.auth);
   const [isDropdownOpen, setIsDropdownOpen] = useBoolean();
   const [isHamburger, setIsHamburger] = useState(false);
   const [isLogoutModalVisible, setIsLogoutModalVisible] = useState(false); // State for modal visibility
+
+  const [isEmergencyModalOpen, setIsEmergencyModalOpen] = useState(false);
+
+  const toggleEmergencyModal = () => setIsEmergencyModalOpen(!isEmergencyModalOpen);
+
+
 
   let navigate = useNavigate();
   let dispatch = useDispatch();
@@ -51,15 +59,7 @@ function Header() {
     setIsLogoutModalVisible(false); // Hide the modal when canceled
   };
 
-  // const handleLogout = async () => {
-  //   setIsDropdownOpen.off();
-  //   setIsHamburger(false);
-  //   localStorage.removeItem("token");
-  //   dispatch(userLogout());
-  //   navigate("/user/home");
-  //   toast.success("Logged out successfully", { position: "top-center" });
-  // };
-
+ 
   return (
     <nav className="sticky top-0 z-50 w-full bg-white shadow-md border border-gray-200  lg:px-8 py-4 relative">
       <div className="flex items-center justify-between px-4 lg:px-8 w-full">
@@ -67,6 +67,15 @@ function Header() {
         <a href="/user/home" className="flex items-center">
           <img src={logo} alt="Logo" className="w-24 h-auto" />
         </a>
+
+        {userInfo && (
+            <button
+              className="ml-4 bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 from-neutral-50"
+              onClick={toggleEmergencyModal}
+            >
+              Emergency Services
+            </button>
+          )}
   
         {/* Navigation Links (Centered) */}
         <div className="hidden lg:flex flex-grow justify-center space-x-6">
@@ -107,6 +116,8 @@ function Header() {
           </NavLink>
        
         </div>
+
+        
   
         {/* User Profile Dropdown (Right) */}
         <div className="relative flex-shrink-0">
@@ -246,6 +257,8 @@ function Header() {
         onConfirm={confirmLogout}
         onCancel={cancelLogout}
       />
+      <EmergencyModal isOpen={isEmergencyModalOpen} onClose={toggleEmergencyModal} />
+
     </nav>
   );
 }

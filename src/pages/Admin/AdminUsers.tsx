@@ -40,37 +40,6 @@ const AdminUsers = () => {
     fetchUsers();
   }, []);
 
-  // // Handle Block User
-  // const handleBlockUser = async (id: string) => {
-  //   try {
-  //     await blockUser(id);
-  //     setUsers((prevUsers) =>
-  //       prevUsers.map((user) =>
-  //         user._id === id ? { ...user, isBlocked: true } : user
-  //       )
-  //     );
-  //     setShowModal(false);
-  //     toast.success("successfully changed the status")
-  //   } catch (error) {
-  //     console.error("Error blocking user:", error);
-  //     toast.error("failed to changed the block status")
-  //   }
-  // };
-
-  // // Handle Unblock User
-  // const handleUnblockUser = async (id: string) => {
-  //   try {
-  //     await unblockUser(id); // Call unblockUser API
-  //     setUsers((prevUsers) =>
-  //       prevUsers.map((user) =>
-  //         user._id === id ? { ...user, isBlocked: false } : user
-  //       )
-  //     );
-  //     setShowModal(false); // Close modal after successful unblock
-  //   } catch (error) {
-  //     console.error("Error unblocking user:", error);
-  //   }
-  // };
 
   // Handle Block User
   const handleBlockUser = async (id: string) => {

@@ -5,7 +5,6 @@ import { RootState } from "../redux/store";
 
 const UserProtected = () => {
     const { userInfo } = useSelector((state: RootState) => state.auth);
-
     return userInfo ? <Outlet /> : <Navigate to="/user/home" replace />;
 };
 

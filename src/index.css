@@ -9,3 +9,34 @@ body {
 .text-shadow {
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
+/* Add this CSS to your global styles or the component's CSS module */
+@keyframes modal-enter {
+    from {
+      transform: scale(0.5);
+      opacity: 0;
+    }
+    to {
+      transform: scale(1);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes modal-exit {
+    from {
+      transform: scale(1);
+      opacity: 1;
+    }
+    to {
+      transform: scale(0.8);
+      opacity: 0;
+    }
+  }
+  
+  .animate-modal-enter {
+    animation: modal-enter 0.3s forwards;
+  }
+  
+  .animate-modal-exit {
+    animation: modal-exit 0.3s forwards;
+  }
+  

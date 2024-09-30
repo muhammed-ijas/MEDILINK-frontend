@@ -18,5 +18,8 @@ const SPRoutes = {
     appointmentCancel:"/sp/appointmentCancel",
     getRatingsAndReviews:"/sp/getRatingsAndReviews",
     completeAppointment:"/sp/completeAppointment",
+    getEmergencyNumber:"/sp/getEmergencyNumber",
+    updateEmergencyNumber:"/sp/updateEmergencyNumber",
+    deleteEmergencyNumber:"/sp/deleteEmergencyNumber",
   };
   export default SPRoutes;

@@ -30,7 +30,6 @@ const userRoutes={
     getHomeNurseDetails: '/user/getHomeNurseDetails',
     getAmbulanceDetails: '/user/getAmbulanceDetails',
 
-
     createPaymentsession: '/user/createPaymentsession',
     updateStatus:'/user/updateBookingstatus',
     getFullAppointmentList:'/user/getFullAppointmentList',
@@ -43,7 +42,8 @@ const userRoutes={
     getMessageRoute:"/user/getMessageRoute",
     sendMessageRoute:"/user/sendMessageRoute",
 
-    
+    getEmergencyNumbers:"/user/getEmergencyNumbers",
+
 }
 
 export default userRoutes ;
