@@ -95,15 +95,65 @@ const Messages = () => {
       console.error("Error starting audio recording:", err);
     }
   };
+  // const startRecording = async () => {
+  //   try {
+  //     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  //     const recorder = new MediaRecorder(stream);
+  //     setMediaRecorder(recorder);
+  
+  //     // Clear the previous audio chunks before starting a new recording
+  //     setAudioChunks([]);
+  
+  //     recorder.ondataavailable = (event) => {
+  //       setAudioChunks((prevChunks) => [...prevChunks, event.data]);
+  //     };
+  
+  //     // Ensure the timer starts immediately when recording starts
+  //     recorder.onstart = () => {
+  //       setIsRecording(true);
+  //       timerRef.current = setInterval(
+  //         () => setRecordingTime((time) => time + 1),
+  //         1000
+  //       );
+  //     };
+  
+  //     // Properly handle stopping and resetting the timer
+  //     recorder.onstop = async () => {
+  //       clearInterval(timerRef.current!);
+  //       setRecordingTime(0); // Reset the timer
+  
+  //       const audioBlob = new Blob(audioChunks, { type: "audio/mpeg" });
+  //       const audioUrl = URL.createObjectURL(audioBlob);
+  //       setAudioUrl(audioUrl);
+  
+  //       // Now, upload the audio file to Cloudinary
+  //       await uploadAudio(audioBlob);
+  //     };
+  
+  //     recorder.start();
+  //   } catch (err) {
+  //     console.error("Error starting audio recording:", err);
+  //   }
+  // };
 
-  const stopRecording = () => {
-    if (mediaRecorder) {
-      mediaRecorder.stop();
-    }
-    setIsRecording(false);
-    clearInterval(timerRef.current!); // Stop the timer
-    setRecordingTime(0); // Reset the timer
-  };
+  // const stopRecording = () => {
+  //   if (mediaRecorder) {
+  //     mediaRecorder.stop();
+  //   }
+  //   setIsRecording(false);
+  //   clearInterval(timerRef.current!); 
+  //   setRecordingTime(0); // Reset the timer
+  // };
+
+
+const stopRecording = () => {
+  if (mediaRecorder) {
+    mediaRecorder.stop();
+  }
+  setIsRecording(false);
+  clearInterval(timerRef.current!); 
+  setRecordingTime(0); // Reset the timer
+};
 
   useEffect(() => {
     if (!mediaRecorder) return;
@@ -121,23 +171,23 @@ const Messages = () => {
   const uploadAudio = async (audioBlob: Blob) => {
     if (!activeProvider || !activeProvider._id) {
       console.error("No active user selected.");
-      return; // Return early if there's no active user
+      return;
     }
 
     const formData = new FormData();
     formData.append("file", audioBlob);
-    formData.append("upload_preset", "images_preset");
+    formData.append("upload_preset", "videos_preset");
     formData.append("cloud_name", "dhq8p5oyj");
 
     try {
-      console.log("heey before cloudinary upload resonse :");
+      console.log("heey before cloudinary upload response : ");
 
       const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/dhq8p5oyj/image/upload",
+        "https://api.cloudinary.com/v1_1/dhq8p5oyj/video/upload",
         formData
       );
 
-      console.log("heey after cloudinary upload resonse :", response);
+      console.log("heey after cloudinary upload response : ", response);
 
       const audioUrl = response.data.secure_url;
 
@@ -473,15 +523,28 @@ const Messages = () => {
                       msg.from === "Me" ? "bg-green-100" : "bg-gray-100"
                     }`}
                   >
-                    {/* Check if the message is an image URL */}
+                    {/* Check if the message is an image or audio URL */}
                     {msg.message.startsWith("http") &&
                     msg.message.includes("cloudinary") ? (
-                      <img
-                        src={msg.message}
-                        alt="Sent file"
-                        className="max-w-full h-auto rounded-lg"
-                      />
+                      msg.message.match(/\.(jpg|jpeg|png|gif)$/) ? (
+                        // If it's an image
+                        <img
+                          src={msg.message}
+                          alt="Sent file"
+                          className="max-w-full h-auto rounded-lg"
+                        />
+                      ) : msg.message.match(/\.(mp3|wav|ogg|webm)$/) ? (
+                        // If it's an audio file (including webm)
+                        <audio controls>
+                          <source src={msg.message} type="audio/webm" />
+                          Your browser does not support the audio element.
+                        </audio>
+                      ) : (
+                        // Other media (like videos or unsupported formats)
+                        <p>Unsupported media format</p>
+                      )
                     ) : (
+                      // If it's a text message
                       <p>{msg.message}</p>
                     )}
                     <small className="text-xs text-gray-500">{msg.time}</small>

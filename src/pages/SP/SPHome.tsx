@@ -15,7 +15,7 @@ const SPHome = () => {
   };
 
   const handleConnect = () => {
-    navigate("/sp/connect");
+    navigate("/sp/about");
   };
 
   useEffect(() => {
@@ -112,7 +112,7 @@ const SPHome = () => {
                   }}
                   transition={{ duration: 0.3 }} // Smooth hover transition
                 >
-                  Connect With Us
+                  About Us
                 </motion.button>
               </div>
             </motion.div>

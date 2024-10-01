@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 import { FaMicrophone, FaPaperclip } from "react-icons/fa";
 import { BsFillSendFill } from "react-icons/bs";
 import axios from "axios";
-import chatImage from "../../../public/logo/HomePage/chatImage.png"
+import chatImage from "../../../public/logo/HomePage/chatImage.png";
 
 import { io, Socket } from "socket.io-client";
 
@@ -45,11 +45,9 @@ const Messages = () => {
   const [error, setError] = useState("");
   const [socketConnected, setSocketConnected] = useState(false);
 
-  
   //for search user
   const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
-
 
   const { spInfo } = useSelector((state: RootState) => state.sp);
 
@@ -63,6 +61,7 @@ const Messages = () => {
   const [audioUrl, setAudioUrl] = useState<string | null>(null);
   const [recordingTime, setRecordingTime] = useState(0);
   const timerRef = useRef<number | null>(null);
+
 
   const startRecording = async () => {
     try {
@@ -86,6 +85,48 @@ const Messages = () => {
       console.error("Error starting audio recording:", err);
     }
   };
+
+
+  // const startRecording = async () => {
+  //   try {
+  //     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+  //     const recorder = new MediaRecorder(stream);
+  //     setMediaRecorder(recorder);
+  
+  //     // Clear the previous audio chunks before starting a new recording
+  //     setAudioChunks([]);
+  
+  //     recorder.ondataavailable = (event) => {
+  //       setAudioChunks((prevChunks) => [...prevChunks, event.data]);
+  //     };
+  
+  //     // Ensure the timer starts immediately when recording starts
+  //     recorder.onstart = () => {
+  //       setIsRecording(true);
+  //       timerRef.current = setInterval(
+  //         () => setRecordingTime((time) => time + 1),
+  //         1000
+  //       );
+  //     };
+  
+  //     // Properly handle stopping and resetting the timer
+  //     recorder.onstop = async () => {
+  //       clearInterval(timerRef.current!);
+  //       setRecordingTime(0); // Reset the timer
+  
+  //       const audioBlob = new Blob(audioChunks, { type: "audio/mpeg" });
+  //       const audioUrl = URL.createObjectURL(audioBlob);
+  //       setAudioUrl(audioUrl);
+  
+  //       // Now, upload the audio file to Cloudinary
+  //       await uploadAudio(audioBlob);
+  //     };
+  
+  //     recorder.start();
+  //   } catch (err) {
+  //     console.error("Error starting audio recording:", err);
+  //   }
+  // };
 
   const stopRecording = () => {
     if (mediaRecorder) {
@@ -117,14 +158,14 @@ const Messages = () => {
 
     const formData = new FormData();
     formData.append("file", audioBlob);
-    formData.append("upload_preset", "images_preset");
+    formData.append("upload_preset", "videos_preset");
     formData.append("cloud_name", "dhq8p5oyj");
 
     try {
       console.log("heey before cloudinary upload resonse :");
 
       const response = await axios.post(
-        "https://api.cloudinary.com/v1_1/dhq8p5oyj/image/upload",
+        "https://api.cloudinary.com/v1_1/dhq8p5oyj/video/upload",
         formData
       );
 
@@ -231,7 +272,6 @@ const Messages = () => {
         const response = await SPgetUsersList(spInfo._id);
         setUsers(response);
         setFilteredUsers(response); // Initially set filtered providers as all providers
-
       } catch (err) {
         setError("No Users available");
       } finally {
@@ -316,7 +356,6 @@ const Messages = () => {
     }
   }, [messages]);
 
-  
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.toLowerCase();
     setSearchTerm(value);
@@ -327,7 +366,6 @@ const Messages = () => {
     );
     setFilteredUsers(filtered);
   };
-
 
   return (
     <div className="flex h-screen overflow-hidden bg-gradient-to-r from-blue-200 to-purple-300">
@@ -340,41 +378,40 @@ const Messages = () => {
           </NavLink>
         </div>
         {/* Search Bar */}
-         {/* Search Bar */}
-         <div className="p-4">
-        <input
-          type="text"
-          value={searchTerm}
-          onChange={handleSearchChange}
-          placeholder="Search"
-          className="w-full p-2 border border-gray-300 rounded"
-        />
-      </div>
+        {/* Search Bar */}
+        <div className="p-4">
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            placeholder="Search"
+            className="w-full p-2 border border-gray-300 rounded"
+          />
+        </div>
 
-      {/* Providers List */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-2">
-        {loading ? (
-          <p>Loading...</p>
-        ) : error ? (
-          <p>{error}</p>
-        ) : filteredUsers.length > 0 ? (
-          filteredUsers.map((user) => (
-            <div
-              key={user._id}
-              onClick={() => setActiveUser(user)}
-              className={`flex items-center p-3 cursor-pointer hover:bg-gray-200 border rounded-lg ${
-                activeUser?._id === user._id ? "bg-gray-200" : ""
-              }`}
-            >
-              <FaUserCircle className="text-gray-400 h-8 w-8 mr-2" />
-              <span>{user.name}</span>
-            </div>
-          ))
-        ) : (
-          <p>No Users found</p>
-        )}
-      </div>
-
+        {/* Providers List */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-2">
+          {loading ? (
+            <p>Loading...</p>
+          ) : error ? (
+            <p>{error}</p>
+          ) : filteredUsers.length > 0 ? (
+            filteredUsers.map((user) => (
+              <div
+                key={user._id}
+                onClick={() => setActiveUser(user)}
+                className={`flex items-center p-3 cursor-pointer hover:bg-gray-200 border rounded-lg ${
+                  activeUser?._id === user._id ? "bg-gray-200" : ""
+                }`}
+              >
+                <FaUserCircle className="text-gray-400 h-8 w-8 mr-2" />
+                <span>{user.name}</span>
+              </div>
+            ))
+          ) : (
+            <p>No Users found</p>
+          )}
+        </div>
       </div>
       {/* Chat Section */}
       <div className="flex-1 flex flex-col bg-white">
@@ -439,14 +476,14 @@ const Messages = () => {
                           alt="Sent file"
                           className="max-w-full h-auto rounded-lg"
                         />
-                      ) : msg.message.match(/\.(mp3|wav|ogg)$/) ? (
-                        // If it's an audio file
+                      ) : msg.message.match(/\.(mp3|wav|ogg|webm)$/) ? (
+                        // If it's an audio file (including webm)
                         <audio controls>
-                          <source src={msg.message} type="audio/mpeg" />
+                          <source src={msg.message} type="audio/webm" />
                           Your browser does not support the audio element.
                         </audio>
                       ) : (
-                        // Other media (like videos or files)
+                        // Other media (like videos or unsupported formats)
                         <p>Unsupported media format</p>
                       )
                     ) : (
@@ -462,8 +499,7 @@ const Messages = () => {
             )
           ) : (
             <div className="flex justify-center align-middle">
-                          <img src={chatImage} alt="" className="h-96" />
-
+              <img src={chatImage} alt="" className="h-96" />
             </div>
           )}
           {/* Scroll target div */}

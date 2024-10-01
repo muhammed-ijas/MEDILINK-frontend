@@ -15,7 +15,7 @@ const UserHome = () => {
   };
 
   const handleConnect = () => {
-    navigate("/user/contact");
+    navigate("/user/about");
   };
 
   useEffect(() => {
@@ -45,102 +45,100 @@ const UserHome = () => {
 
   return (
     <div>
-     {/* Full-Screen Image with Medilink Name */}
-<section className="relative w-full h-screen bg-cover bg-center">
-  <motion.div
-  className="absolute inset-0 bg-black"
-  style={{
-    clipPath: "polygon(0 0, 100% 0, 60% 10%, 70% 100%, 0 100%)",
-  }}
-  initial={{
-    clipPath: "polygon(0 0, 100% 0, 60% 15%, 70% 95%, 0 100%)",
-  }}
-  animate={{
-    clipPath: "polygon(0 0, 100% 0, 60% 30%, 70% 80%, 0 100%)", 
-  }}
-  transition={{
-    duration: 6, // Duration for smoother animation
-    ease: "easeInOut",
-    repeat: Infinity,
-    repeatType: "mirror", // Smooth animation in both directions
-  }}
-/>
+      {/* Full-Screen Image with Medilink Name */}
+      <section className="relative w-full h-screen bg-cover bg-center">
+        <motion.div
+          className="absolute inset-0 bg-black"
+          style={{
+            clipPath: "polygon(0 0, 100% 0, 60% 10%, 70% 100%, 0 100%)",
+          }}
+          initial={{
+            clipPath: "polygon(0 0, 100% 0, 60% 15%, 70% 95%, 0 100%)",
+          }}
+          animate={{
+            clipPath: "polygon(0 0, 100% 0, 60% 30%, 70% 80%, 0 100%)",
+          }}
+          transition={{
+            duration: 6, // Duration for smoother animation
+            ease: "easeInOut",
+            repeat: Infinity,
+            repeatType: "mirror", // Smooth animation in both directions
+          }}
+        />
 
-  <div className="flex flex-col md:flex-row h-full relative">
-    {/* Left content */}
-    <div className="relative md:w-1/2 h-full flex flex-col justify-center items-center text-center p-6 md:p-10">
-      <motion.div
-        className="relative z-10 flex flex-col justify-center h-full px-4 md:px-8"
-        initial={{ opacity: 0, y: 50 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.5, ease: "easeInOut" }} // Smoother opacity and position transition
-      >
-        <motion.h1
-          className="text-white text-4xl md:text-5xl lg:text-7xl font-bold mb-4 text-shadow"
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.5, ease: "easeOut" }} // Smooth text appearance
-        >
-          MEDILINK
-        </motion.h1>
-        <motion.p
-          className="text-sm md:text-lg text-gray-300 mb-6 md:mb-8"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 1.5, delay: 0.5, ease: "easeInOut" }} // Smooth text appearance with delay
-        >
-          At MediLink, we understand the challenges of finding reliable
-          healthcare services. Our platform is designed to make your
-          healthcare journey smoother by connecting you with a wide
-          network of service providers. Whether you’re looking for medical
-          care, booking appointments, or seeking specialized services,
-          MediLink is here to help.
-        </motion.p>
+        <div className="flex flex-col md:flex-row h-full relative">
+          {/* Left content */}
+          <div className="relative md:w-1/2 h-full flex flex-col justify-center items-center text-center p-6 md:p-10">
+            <motion.div
+              className="relative z-10 flex flex-col justify-center h-full px-4 md:px-8"
+              initial={{ opacity: 0, y: 50 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 1.5, ease: "easeInOut" }} // Smoother opacity and position transition
+            >
+              <motion.h1
+                className="text-white text-4xl md:text-5xl lg:text-7xl font-bold mb-4 text-shadow"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1.5, ease: "easeOut" }} // Smooth text appearance
+              >
+                MEDILINK
+              </motion.h1>
+              <motion.p
+                className="text-sm md:text-lg text-gray-300 mb-6 md:mb-8"
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 1.5, delay: 0.5, ease: "easeInOut" }} // Smooth text appearance with delay
+              >
+                At MediLink, we understand the challenges of finding reliable
+                healthcare services. Our platform is designed to make your
+                healthcare journey smoother by connecting you with a wide
+                network of service providers. Whether you’re looking for medical
+                care, booking appointments, or seeking specialized services,
+                MediLink is here to help.
+              </motion.p>
 
-        <div className="flex flex-col gap-4">
-          <motion.button
-            onClick={handleServices}
-            className="w-full md:w-auto border border-gray-400 text-white font-semibold py-2 px-4 rounded-lg mb-4 hover:bg-gray-100 hover:text-gray-800 transition-colors duration-300"
-            whileHover={{
-              scale: 1.05,
-              backgroundColor: "#4b5563",
-              color: "#f9fafb",
-            }}
-            transition={{ duration: 0.3 }} // Smooth hover transition
-          >
-            Find Healthcare Services
-          </motion.button>
-          <motion.button
-            onClick={handleConnect}
-            className="w-full md:w-auto border border-gray-400 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-100 hover:text-gray-800 transition-colors duration-300"
-            whileHover={{
-              scale: 1.05,
-              backgroundColor: "#4b5563",
-              color: "#f9fafb",
-            }}
-            transition={{ duration: 0.3 }} // Smooth hover transition
-          >
-            Connect With Us
-          </motion.button>
+              <div className="flex flex-col gap-4">
+                <motion.button
+                  onClick={handleServices}
+                  className="w-full md:w-auto border border-gray-400 text-white font-semibold py-2 px-4 rounded-lg mb-4 hover:bg-gray-100 hover:text-gray-800 transition-colors duration-300"
+                  whileHover={{
+                    scale: 1.05,
+                    backgroundColor: "#4b5563",
+                    color: "#f9fafb",
+                  }}
+                  transition={{ duration: 0.3 }} // Smooth hover transition
+                >
+                  Find Healthcare Services
+                </motion.button>
+                <motion.button
+                  onClick={handleConnect}
+                  className="w-full md:w-auto border border-gray-400 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-100 hover:text-gray-800 transition-colors duration-300"
+                  whileHover={{
+                    scale: 1.05,
+                    backgroundColor: "#4b5563",
+                    color: "#f9fafb",
+                  }}
+                  transition={{ duration: 0.3 }} // Smooth hover transition
+                >
+                  About Us
+                </motion.button>
+              </div>
+            </motion.div>
+          </div>
+
+          {/* Right part */}
+          <div className="md:w-1/2 flex justify-center items-center relative z-10">
+            <motion.img
+              className="w-full h-full object-cover transition-transform transform hover:scale-105"
+              src={frontpageImage}
+              alt="Healthcare"
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 1.5, delay: 0.5 }} // Smooth image appearance
+            />
+          </div>
         </div>
-      </motion.div>
-    </div>
-
-    {/* Right part */}
-    <div className="md:w-1/2 flex justify-center items-center relative z-10">
-      <motion.img
-        className="w-full h-full object-cover transition-transform transform hover:scale-105"
-        src={frontpageImage}
-        alt="Healthcare"
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.5, delay: 0.5 }} // Smooth image appearance
-      />
-    </div>
-  </div>
-</section>
-
-
+      </section>
 
       {/* about section */}
       <section className="relative p-8 bg-white flex flex-col md:flex-row items-center overflow-hidden">
@@ -189,7 +187,6 @@ const UserHome = () => {
         <h1 className="text-4xl font-bold">Our Services</h1>
       </div>
       <section className="p-8">
-      
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {/* Hospital Card */}
           <div className="service-card  p-6 rounded-lg shadow-md flex flex-col  hover:shadow-2xl items-center transform transition-transform hover:scale-105 bg-white text-black  ">
@@ -266,11 +263,10 @@ const UserHome = () => {
               Learn More
             </a>
           </div>
-
         </div>
       </section>
 
-      <style >{`
+      <style>{`
         .service-card {
           transition: transform 0.3s ease-in-out;
         }
@@ -287,10 +283,10 @@ const UserHome = () => {
         }
       `}</style>
 
-{/* Goals of Us Section */}
-<section className="relative p-8">
-  {/* Background ClipPath */}
-  <div
+      {/* Goals of Us Section */}
+      <section className="relative p-8">
+        {/* Background ClipPath */}
+        <div
           className="absolute inset-0 bg-black opacity-90"
           style={{
             clipPath: "polygon(0 0, 100% 0, 100% 100%, 60% 100%, 0 100%)",
@@ -307,112 +303,108 @@ const UserHome = () => {
           }}
         ></div>
 
-       
-  
-  <div className="flex items-center justify-between max-w-6xl mx-auto text-white relative z-10">
-    {/* Text Section */}
-    <div className="w-full md:w-1/2 p-4">
-      <h2 className="text-3xl font-bold mb-4">Our Goals</h2>
-      <p className="text-lg">
-        At Medilink, our goal is to transform the healthcare experience by
-        seamlessly integrating a variety of services into a single,
-        user-friendly platform. We are dedicated to continuously enhancing
-        our offerings to better serve our users and partners. Our future
-        plans include expanding our network of service providers,
-        incorporating advanced features for more efficient service
-        delivery, and ensuring a high standard of quality and reliability.
-        We aim to be the go-to solution for all healthcare needs,
-        fostering a healthier and more connected community.
-      </p>
-    </div>
+        <div className="flex items-center justify-between max-w-6xl mx-auto text-white relative z-10">
+          {/* Text Section */}
+          <div className="w-full md:w-1/2 p-4">
+            <h2 className="text-3xl font-bold mb-4">Our Goals</h2>
+            <p className="text-lg">
+              At Medilink, our goal is to transform the healthcare experience by
+              seamlessly integrating a variety of services into a single,
+              user-friendly platform. We are dedicated to continuously enhancing
+              our offerings to better serve our users and partners. Our future
+              plans include expanding our network of service providers,
+              incorporating advanced features for more efficient service
+              delivery, and ensuring a high standard of quality and reliability.
+              We aim to be the go-to solution for all healthcare needs,
+              fostering a healthier and more connected community.
+            </p>
+          </div>
 
-    {/* Image Section */}
-    <motion.div
-      className="w-full md:w-1/2 p-4"
-      initial={{ opacity: 0, rotate: -10 }}
-      animate={{ opacity: 1, rotate: 0 }}
-      transition={{ duration: 1 }}
-    >
-      <img
-        src={homenurseImage}
-        alt="Our Goals"
-        className="w-full h-auto object-cover rounded-lg"
-      />
-    </motion.div>
-  </div>
-</section>
-
+          {/* Image Section */}
+          <motion.div
+            className="w-full md:w-1/2 p-4"
+            initial={{ opacity: 0, rotate: -10 }}
+            animate={{ opacity: 1, rotate: 0 }}
+            transition={{ duration: 1 }}
+          >
+            <img
+              src={homenurseImage}
+              alt="Our Goals"
+              className="w-full h-auto object-cover rounded-lg"
+            />
+          </motion.div>
+        </div>
+      </section>
 
       {/* Contact Section */}
-     {/* Contact Section */}
-<section className="p-8 bg-white text-center">
-  <h2 className="text-3xl font-bold mb-4">Contact Us</h2>
-  <p className="text-lg mb-4">
-    Have questions or need support? Get in touch with us.
-  </p>
+      {/* Contact Section */}
+      <section className="p-8 bg-white text-center">
+        <h2 className="text-3xl font-bold mb-4">Contact Us</h2>
+        <p className="text-lg mb-4">
+          Have questions or need support? Get in touch with us.
+        </p>
 
-  {/* Contact Form */}
-  <form 
-    className="max-w-lg mx-auto space-y-4"
-    action="/send-message" // Change to your form handling endpoint
-    method="POST"
-  >
-    <div className="flex flex-col space-y-2">
-      <label htmlFor="name" className="text-left">
-        Name
-        <input 
-          type="text" 
-          id="name" 
-          name="name" 
-          placeholder="Your Name" 
-          className="p-2 border border-gray-300 rounded-md w-full" 
-          required 
-        />
-      </label>
-      
-      <label htmlFor="email" className="text-left">
-        Email
-        <input 
-          type="email" 
-          id="email" 
-          name="email" 
-          placeholder="Your Email" 
-          className="p-2 border border-gray-300 rounded-md w-full" 
-          required 
-        />
-      </label>
-      
-      <label htmlFor="message" className="text-left">
-        Message
-        <textarea 
-          id="message" 
-          name="message" 
-          placeholder="Your Message" 
-          className="p-2 border border-gray-300 rounded-md w-full" 
-          rows="4" 
-          required 
-        ></textarea>
-      </label>
-    </div>
-    
-    <button 
-      type="submit" 
-      className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-    >
-      Send Message
-    </button>
-  </form>
+        {/* Contact Form */}
+        <form
+          className="max-w-lg mx-auto space-y-4"
+          action="/send-message" // Change to your form handling endpoint
+          method="POST"
+        >
+          <div className="flex flex-col space-y-2">
+            <label htmlFor="name" className="text-left">
+              Name
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Your Name"
+                className="p-2 border border-gray-300 rounded-md w-full"
+                required
+              />
+            </label>
 
-  <p className="mt-4 text-blue-500 hover:underline">
-    <a href="/user/contact">Contact Page</a>
-  </p>
-</section>
+            <label htmlFor="email" className="text-left">
+              Email
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Your Email"
+                className="p-2 border border-gray-300 rounded-md w-full"
+                required
+              />
+            </label>
 
+            <label htmlFor="message" className="text-left">
+              Message
+              <textarea
+                id="message"
+                name="message"
+                placeholder="Your Message"
+                className="p-2 border border-gray-300 rounded-md w-full"
+                rows="4"
+                required
+              ></textarea>
+            </label>
+          </div>
 
-      <div className="fixed bottom-4 right-4">
+          <button
+            type="submit"
+            className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+          >
+            Send Message
+          </button>
+        </form>
+
+        <p className="mt-4 text-blue-500 hover:underline">
+          <a href="/user/contact">Contact Page</a>
+        </p>
+      </section>
+
+      <div className="fixed bottom-4 right-4 cursor-pointer">
         <a
           href="/user/appointment"
-          className="bg-blue-600 text-white py-2 px-4 rounded-full shadow-lg hover:bg-blue-700 transition"
+          className="bg-blue-600 text-white py-2 px-4 rounded-full shadow-lg hover:bg-blue-700 transition cursor-pointer"
         >
           Book Appointment
         </a>

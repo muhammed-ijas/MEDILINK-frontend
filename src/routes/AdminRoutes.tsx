@@ -1,6 +1,6 @@
 import  { Suspense, lazy } from "react";
 import { Routes, Route } from "react-router-dom";
-import LoadingSpinner from "../Components/common/LoadingSpinner"
+import LoadingSpinner from "../Components/common/AdminLoadingSpinner.tsx"
 
 
 const AdminLayout = lazy(() => import("../layout/adminLayout/adminLayout.tsx"));

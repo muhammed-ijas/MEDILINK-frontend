@@ -6,7 +6,7 @@ const SPContact = () => {
   return (
     <div>
       {/* Contact Section */}
-      <section className="p-8 bg-white text-center text-blue-950">
+      <section className="p-8 bg-white text-center text-blue-950 min-h-screen">
         <h2 className="text-3xl font-bold mb-4">Contact Us</h2>
         <p className="text-lg mb-4">
           Have questions or need support? Get in touch with us.

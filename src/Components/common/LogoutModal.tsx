@@ -26,7 +26,7 @@ const LogoutModal: React.FC<ConfirmationModalProps> = ({
             onClick={onConfirm}
             className="bg-red-600 text-white px-4 py-2 rounded-md shadow-md hover:shadow-lg transition"
           >
-            Delete
+            Yes
           </button>
           <button
             onClick={onCancel}
