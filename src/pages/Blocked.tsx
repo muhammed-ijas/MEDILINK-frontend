@@ -1,5 +1,5 @@
 import  { useState, useEffect } from 'react';
-import blockedImage from "../../public/logo/HomePage/9696387-removebg-preview.png";
+import blockedImage from "/logo/HomePage/9696387-removebg-preview.png";
 import LoadingSpinner from "../Components/common/LoadingSpinner"; // Assuming the spinner is in the components folder
 
 const BlockedByAdmin = () => {

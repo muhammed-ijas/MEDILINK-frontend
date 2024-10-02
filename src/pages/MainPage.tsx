@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import frontpageImage from "/logo/userSideBeforeHome/frontPageImage.png";
-import logo from '../../public/logo/userSideBeforeHome/logo.png'
+import logo from '/logo/userSideBeforeHome/logo.png'
 
 const MainPage: React.FC = () => {
   const navigate = useNavigate();

@@ -1,8 +1,8 @@
 import { motion } from "framer-motion";
-import hospitalImage from "../../../public/logo/HomePage/hospitalImage.png";
-import ambulanceImage from "../../../public/logo/HomePage/ambulanceImage2.png";
-import homenurseImage from "../../../public/logo/HomePage/homenurseImage.png";
-import clinickImage from "../../../public/logo/HomePage/clinickImage.png";
+import hospitalImage from "/logo/HomePage/hospitalImage.png";
+import ambulanceImage from "/logo/HomePage/ambulanceImage2.png";
+import homenurseImage from "/logo/HomePage/homenurseImage.png";
+import clinickImage from "/logo/HomePage/clinickImage.png";
 import { useEffect } from "react";
 
 const UserHome = () => {

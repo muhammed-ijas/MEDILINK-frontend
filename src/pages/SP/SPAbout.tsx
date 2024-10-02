@@ -1,8 +1,8 @@
 
 import { motion } from "framer-motion";
-import aboutImage from "../../../public/logo//HomePage/image7.png";
+import aboutImage from "/logo//HomePage/image7.png";
 
-import homenurseImage from "../../../public/logo/HomePage/homenurseImage.png";
+import homenurseImage from "/logo/HomePage/homenurseImage.png";
 
 const SPAbout = () => {
   

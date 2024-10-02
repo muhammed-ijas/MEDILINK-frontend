@@ -9,7 +9,7 @@ import { useSelector } from "react-redux";
 import { FaMicrophone, FaPaperclip } from "react-icons/fa";
 import { BsFillSendFill } from "react-icons/bs";
 
-import chatImage from "../../../public/logo/HomePage/chatImage.png"
+import chatImage from "/logo/HomePage/chatImage.png"
 import axios from "axios";
 
 import { io, Socket } from "socket.io-client";

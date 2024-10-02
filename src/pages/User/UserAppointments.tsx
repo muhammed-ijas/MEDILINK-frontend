@@ -1,7 +1,7 @@
 import  { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaSearch } from "react-icons/fa";
-import homenurseImage from "../../../public/logo/HomePage/homenurseImage.png";
+import homenurseImage from "/logo/HomePage/homenurseImage.png";
 import { faBuilding } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { debounce } from "lodash";
@@ -14,7 +14,7 @@ import {
   getAmbulances,
   getHomeNurses,
 } from "../../api/user";
-import avatar from "../../../public/logo/HomePage/ProfileImage.png";
+import avatar from "/logo/HomePage/ProfileImage.png";
 import { useNavigate } from "react-router-dom";
 
 

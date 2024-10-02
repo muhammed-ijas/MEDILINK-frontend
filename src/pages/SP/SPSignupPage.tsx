@@ -6,8 +6,8 @@ import { SPSignup } from "../../api/SP";
 import Modal from "react-modal";
 import { MdLocationOn } from "react-icons/md";
 import MyMap from "../../Components/common/MapBox";
-import logo from "../../../public/logo/userSideBeforeHome/logo.png";
-import signupImage from "../../../public/logo/HomePage/image1.jpg"; // Add your image path
+import logo from "/logo/userSideBeforeHome/logo.png";
+import signupImage from "/logo/HomePage/image1.jpg"; 
 import {toast ,Toaster} from 'react-hot-toast'
 
 

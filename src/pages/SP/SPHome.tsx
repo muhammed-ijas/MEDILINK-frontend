@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import frontpageImage from "../../../public/logo/userSideBeforeHome/frontPageImage.png";
+import frontpageImage from "/logo/userSideBeforeHome/frontPageImage.png";
 import { motion } from "framer-motion";
-import aboutImage from "../../../public/logo//HomePage/image7.png";
-import hospitalImage from "../../../public/logo/HomePage/hospitalImage.png";
-import ambulanceImage from "../../../public/logo/HomePage/ambulanceImage2.png";
-import homenurseImage from "../../../public/logo/HomePage/homenurseImage.png";
-import clinickImage from "../../../public/logo/HomePage/clinickImage.png";
+import aboutImage from "/logo//HomePage/image7.png";
+import hospitalImage from "/logo/HomePage/hospitalImage.png";
+import ambulanceImage from "/HomePage/ambulanceImage2.png";
+import homenurseImage from "/logo/HomePage/homenurseImage.png";
+import clinickImage from "/logo/HomePage/clinickImage.png";
 import { useEffect } from "react";
 
 const SPHome = () => {

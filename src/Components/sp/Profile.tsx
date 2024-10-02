@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { editProfile } from "../../api/SP";
 import { toast } from "react-toastify";
-import profilePageImage from "../../../public/logo/HomePage/ProfileImage.png";
+import profilePageImage from "/logo/HomePage/ProfileImage.png";
 interface ProfileProps {
   profile: {
     _id: string;
