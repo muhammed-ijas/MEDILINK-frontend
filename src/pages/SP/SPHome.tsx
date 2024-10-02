@@ -3,7 +3,7 @@ import frontpageImage from "/logo/userSideBeforeHome/frontPageImage.png";
 import { motion } from "framer-motion";
 import aboutImage from "/logo//HomePage/image7.png";
 import hospitalImage from "/logo/HomePage/hospitalImage.png";
-import ambulanceImage from "/HomePage/ambulanceImage2.png";
+import ambulanceImage from "/logo/HomePage/ambulanceImage2.png";
 import homenurseImage from "/logo/HomePage/homenurseImage.png";
 import clinickImage from "/logo/HomePage/clinickImage.png";
 import { useEffect } from "react";
