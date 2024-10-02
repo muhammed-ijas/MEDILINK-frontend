@@ -224,7 +224,7 @@ const DepartmentDetailedPage: React.FC = () => {
             </div>
 
             {/* Time Slots */}
-            {selectedDate && (
+            {/* {selectedDate && (
               <div className="mt-6">
                 <h3 className="text-lg font-semibold mb-4 text-center">
                   Available Time Slots for{" "}
@@ -280,7 +280,76 @@ const DepartmentDetailedPage: React.FC = () => {
                   )}
                 </div>
               </div>
-            )}
+            )} */}
+            {selectedDate && (
+  <div className="mt-6">
+    <h3 className="text-lg font-semibold mb-4 text-center">
+      Available Time Slots for {new Date(selectedDate).toDateString()}:
+    </h3>
+    <div className="flex flex-wrap justify-center">
+      {selectedDoctor?.availableDates
+        ?.find((d) => d.date === selectedDate)
+        ?.timeSlots.filter((slot) => {
+          const now = new Date();
+          const isToday =
+            new Date(selectedDate).setHours(0, 0, 0, 0) ===
+            now.setHours(0, 0, 0, 0);
+
+            const slotTime = new Date(selectedDate);
+            const [hours, minutes] = slot.slot.split(":"); // Split the time string (e.g., "16:00")
+            slotTime.setHours(parseInt(hours, 10)); // Convert hours to a number
+            slotTime.setMinutes(parseInt(minutes, 10)); // Convert minutes to a number
+            slotTime.setSeconds(0); // Set seconds to 0
+            
+
+          return (
+            slot.status === "not occupied" &&
+            (!isToday || slotTime > now)
+          );
+        }).length === 0 ? (
+        <p className="text-center text-gray-500">
+          No available time slots for{" "}
+          {new Date(selectedDate).toDateString()}.
+        </p>
+      ) : (
+        selectedDoctor?.availableDates
+          ?.find((d) => d.date === selectedDate)
+          ?.timeSlots.filter((slot) => {
+            const now = new Date();
+            const isToday =
+              new Date(selectedDate).setHours(0, 0, 0, 0) ===
+              now.setHours(0, 0, 0, 0);
+
+              const slotTime = new Date(selectedDate);
+              const [hours, minutes] = slot.slot.split(":"); // Split the time string (e.g., "16:00")
+              slotTime.setHours(parseInt(hours, 10)); // Convert hours to a number
+              slotTime.setMinutes(parseInt(minutes, 10)); // Convert minutes to a number
+              slotTime.setSeconds(0); // Set seconds to 0
+              
+
+            return (
+              slot.status === "not occupied" &&
+              (!isToday || slotTime > now)
+            );
+          })
+          .map((timeSlot) => (
+            <button
+              key={timeSlot.slot}
+              className={`py-2 px-4 rounded-md m-2 ${
+                selectedTimeSlot === timeSlot.slot
+                  ? "bg-green-500 text-white"
+                  : "bg-gray-200 text-gray-700"
+              } hover:bg-green-600 hover:text-gray-300`}
+              onClick={() => handleSlotClick(timeSlot.slot)}
+            >
+              {timeSlot.slot}
+            </button>
+          ))
+      )}
+    </div>
+  </div>
+)}
+
 
             {/* Book Appointment Button */}
             {selectedDate && selectedTimeSlot && (
