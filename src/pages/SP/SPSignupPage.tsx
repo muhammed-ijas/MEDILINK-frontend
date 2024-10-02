@@ -7,7 +7,7 @@ import Modal from "react-modal";
 import { MdLocationOn } from "react-icons/md";
 import MyMap from "../../Components/common/MapBox";
 import logo from "/logo/userSideBeforeHome/logo.png";
-import signupImage from "/logo/HomePage/image1.jpg"; 
+import signupImage from "../../../public/logo/HomePage/Image1.jpg"; 
 import {toast ,Toaster} from 'react-hot-toast'
 
 
