@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
 import { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
 import { getFullAppointmentList } from '../../api/user';

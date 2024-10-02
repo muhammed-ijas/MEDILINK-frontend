@@ -11,9 +11,6 @@ import { setCredentials } from "../../redux/slices/authSlice";
 import { RootState } from "../../redux/store";
 import { login } from "../../api/user";
 import { setAdminCredentials } from "../../redux/slices/adminSlice";
-import { userLogout } from "../../redux/slices/authSlice";
-
-import {toast , Toaster} from 'react-hot-toast'
 
 
 interface Errors {
@@ -128,7 +125,6 @@ function UserLogin (){
 
   return (
     <div className="flex justify-center items-center h-screen">
-      <Toaster position="top-center" />
       <a href="/" className="absolute top-4 left-4">
         <img src={logo} alt="Logo" className="w-20 h-auto" />
       </a>

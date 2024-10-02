@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { FaExclamationTriangle } from "react-icons/fa";
 import { getEmergencyNumbers } from "../../api/user";
 import LoadingSpinner from "../common/LoadingSpinner";

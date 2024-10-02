@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { getUsers, blockUser, unblockUser } from "../../api/admin";
 import ConfirmationModal from "../../Components/admin/BlockConfirmationModal";
 import { toast, Toaster } from "react-hot-toast";

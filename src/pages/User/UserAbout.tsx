@@ -9,8 +9,9 @@ const UserHome = () => {
     const cards = document.querySelectorAll(".service-card");
 
     cards.forEach((card, index) => {
-      card.style.transitionDelay = `${index * 0.1}s`;
-      card.classList.add("service-card-enter");
+      const cardElement = card as HTMLElement;
+      cardElement.style.transitionDelay = `${index * 0.1}s`;
+      cardElement.classList.add("service-card-enter");
     });
 
     const revealCards = () => {
@@ -32,11 +33,6 @@ const UserHome = () => {
 
   return (
     <div>
-     {/* Full-Screen Image with Medilink Name */}
-
-
-
-
       {/* about section */}
       <section className="relative p-8 bg-white flex flex-col md:flex-row items-center overflow-hidden">
         {/* Diagonal Slice Background */}
@@ -198,7 +194,7 @@ const UserHome = () => {
           name="message" 
           placeholder="Your Message" 
           className="p-2 border border-gray-300 rounded-md w-full" 
-          rows="4" 
+          rows={4}
           required 
         ></textarea>
       </label>

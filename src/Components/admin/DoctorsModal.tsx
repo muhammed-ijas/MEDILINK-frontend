@@ -7,6 +7,8 @@ interface Doctor {
   contact: string;
   availableFrom: string;
   availableTo: string;
+  phone: string;
+  email: string;
 }
 
 interface DoctorsModalProps {

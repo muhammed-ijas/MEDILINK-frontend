@@ -10,8 +10,9 @@ const UserHome = () => {
     const cards = document.querySelectorAll(".service-card");
 
     cards.forEach((card, index) => {
-      card.style.transitionDelay = `${index * 0.1}s`;
-      card.classList.add("service-card-enter");
+      const cardElement = card as HTMLElement;
+      cardElement.style.transitionDelay = `${index * 0.1}s`;
+      cardElement.classList.add("service-card-enter");
     });
 
     const revealCards = () => {

@@ -17,13 +17,14 @@ interface ProfileProps {
     district: string;
     closingTime: string;
     openingTime: string;
+    serviceType:string;
   };
   state: (data: boolean) => void;
 }
 
-const Profile = ({ profile = { _id : '',name: '', email: '', phone: '', area: '', city: '', district: '', state: '', pincode: 0, latitude: 0, longitude: 0, openingTime: '', closingTime: '' }, state }: ProfileProps) => {
+const Profile = ({ profile = { _id : '',name: '', email: '', phone: '', area: '', city: '', district: '', state: '', pincode: 0, latitude: 0, longitude: 0, openingTime: '', closingTime: '' , serviceType:''}, state }: ProfileProps) => {
   const [name, setName] = useState(profile.name);
-  const [email, setEmail] = useState(profile.email);
+  const [email] = useState(profile.email);
   const [phone, setPhone] = useState(profile.phone);
   const [area, setArea] = useState(profile.area);
   const [city, setCity] = useState(profile.city);
@@ -34,11 +35,12 @@ const Profile = ({ profile = { _id : '',name: '', email: '', phone: '', area: ''
   const [pincode, setPincode] = useState(profile.pincode);
   const [longitude, setLongitude] = useState(profile.longitude);
   const [latitude, setLatitude] = useState(profile.latitude);
+  const [serviceType] = useState(profile.serviceType);
 
   // Handle form submission
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const formData = { name, email, phone, area, city, district, state: profileState, pincode, latitude, longitude, openingTime, closingTime };
+    const formData = { name, email, phone, area, city, district, state: profileState, pincode, latitude, longitude, openingTime, closingTime , serviceType };
     const response = await editProfile(profile._id, formData);
     toast.success(response?.data.message, { position: "top-center" });
     state(true);

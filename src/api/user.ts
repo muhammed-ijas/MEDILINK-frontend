@@ -1,4 +1,3 @@
-import axios from "axios";
 import Api from "../services/axios";
 import userRoutes from "../services/endpoints/userEndpoints";
 import errorHandle from "./error";
@@ -15,9 +14,9 @@ interface loginData {
   email?: string;
   password?: string;
 }
-
 interface ChangePasswordResponse {
   status: number;
+  message: string; // Ensure this matches what your API returns
 }
 
 export const signup = async (userData: userFormData) => {
@@ -164,6 +163,31 @@ export const editProfile = async (
 };
 
 
+// export const changePassword = async (
+//   Id: string,
+//   password: string,
+//   oldPassword: string
+// ): Promise<ChangePasswordResponse> => {
+//   try {
+//     const response = await Api.post<ChangePasswordResponse>(
+//       userRoutes.changePassword,
+//       {
+//         Id: Id,
+//         password: password,
+//         oldPassword: oldPassword,
+//       }
+//     );
+//     return response;
+//   } catch (error) {
+//     const err: any = error as Error;
+//     if (err.response && err.response.data && err.response.data.message) {
+//       throw new Error(err.response.data.message);
+//     } else {
+//       throw new Error("An error occurred");
+//     }
+//   }
+// };
+
 export const changePassword = async (
   Id: string,
   password: string,
@@ -178,7 +202,11 @@ export const changePassword = async (
         oldPassword: oldPassword,
       }
     );
-    return response;
+
+    console.log("reponse from backend : ",response)
+
+    return response.data;
+
   } catch (error) {
     const err: any = error as Error;
     if (err.response && err.response.data && err.response.data.message) {

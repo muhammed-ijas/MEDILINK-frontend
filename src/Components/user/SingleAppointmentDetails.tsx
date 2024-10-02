@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { cancelAppointment,addReview } from "../../api/user";
 import {toast , Toaster} from "react-hot-toast";
 

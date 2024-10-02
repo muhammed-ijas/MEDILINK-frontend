@@ -50,7 +50,7 @@ const SPContact = () => {
                 name="message"
                 placeholder="Your Message"
                 className="p-2 border border-gray-300 rounded-md w-full"
-                rows="4"
+                rows={4}
                 required
               ></textarea>
             </label>

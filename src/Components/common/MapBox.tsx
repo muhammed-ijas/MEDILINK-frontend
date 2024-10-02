@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import Map, { Marker} from "react-map-gl";
+import Map, { Marker,MapMouseEvent} from "react-map-gl";
 import "mapbox-gl/dist/mapbox-gl.css";
 import { FaMapMarkerAlt, FaSearch } from "react-icons/fa";
 
@@ -59,7 +59,7 @@ const MyMap: React.FC<MapProps> = ({ onAddressSelect }) => {
     );
   }, []);
 
-  const handleMapClick = useCallback((event: MapLayerMouseEvent) => {
+  const handleMapClick = useCallback((event: MapMouseEvent) => {
     const { lngLat } = event;
     const longitude = lngLat.lng;
     const latitude = lngLat.lat;

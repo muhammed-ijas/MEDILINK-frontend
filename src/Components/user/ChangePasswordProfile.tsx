@@ -7,6 +7,7 @@ interface ChangePasswordProps {
   Id: string;
 }
 
+
 const ChangePassword = ({ Id }: ChangePasswordProps) => {
   const [oldPassword, setOldPassword] = useState("");
   const [password, setPassword] = useState("");
@@ -56,7 +57,7 @@ const ChangePassword = ({ Id }: ChangePasswordProps) => {
         setOldPassword("");
       }
       if(response.status==201){
-        toast.error(response.data)
+        toast.error(response.message)
       }
     } catch (error: any) {
       toast.error(error.message || "Failed to change password", { position: "top-center" });

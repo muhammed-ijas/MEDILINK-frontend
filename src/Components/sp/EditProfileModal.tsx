@@ -19,8 +19,10 @@ interface Profile {
   serviceType: string;
   openingTime: string;
   closingTime: string;
-  departments:string[];
+  firstDocumentImage: string;
+  secondDocumentImage : string;
 }
+
 
 
 interface EditProfileModalProps {
@@ -39,7 +41,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
 }) => {
   const [editedProfile, setEditedProfile] = useState<Profile>(profile);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setEditedProfile({
       ...editedProfile,
@@ -53,9 +55,9 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
     onClose();
   };
 
-  console.log("editedProfile.departments :.",editedProfile.departments)
 
   const isServiceTypeDisabled = editedProfile.isVerified===true;
+
 
 
   
@@ -180,30 +182,7 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
 
 
           
-          {/* <div>
-            <label className="block font-semibold text-gray-700">
-              Opening Time:
-            </label>
-            <input
-              type="time"
-              name="openingTime"
-              value={editedProfile.openingTime}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-          <div>
-            <label className="block font-semibold text-gray-700">
-              Closing Time:
-            </label>
-            <input
-              type="time"
-              name="closingTime"
-              value={editedProfile.closingTime}
-              onChange={handleChange}
-              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div> */}
+         
           <div className="flex justify-end gap-4 mt-4">
             <button
               type="button"
@@ -227,3 +206,4 @@ const EditProfileModal: React.FC<EditProfileModalProps> = ({
 };
 
 export default EditProfileModal;
+

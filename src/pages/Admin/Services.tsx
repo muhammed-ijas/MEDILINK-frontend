@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { getVerifiedServices } from "../../api/admin";
 // import Swal from "sweetalert2";
 import ServiceProviderModal from "../../Components/admin/ServicesModal";
@@ -15,6 +15,28 @@ interface ServiceProvider {
   isVerified: boolean;
   pincode: number;
   isBlocked: boolean;
+  serviceType: string;
+  departments: Department[]; 
+  firstDocumentImage: string;
+  secondDocumentImage: string;
+  
+}
+
+interface Department {
+  _id: string;
+  name: string;
+  doctors: Doctor[];
+}
+
+interface Doctor {
+  _id: string;
+  name: string;
+  specialization: string;
+  contact: string;
+  availableFrom: string;
+  availableTo: string;
+  phone: string;
+  email: string;
 }
 
 const AdminServices = () => {
@@ -58,6 +80,10 @@ const AdminServices = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setSelectedProvider(null);
+  };
+  
+  const block = () => {
+    
   };
 
   // Pagination Logic
@@ -156,6 +182,8 @@ const AdminServices = () => {
         provider={selectedProvider}
         isOpen={isModalOpen}
         onClose={closeModal}
+        onBlock={block}
+
       />
     </div>
   );

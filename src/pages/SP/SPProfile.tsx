@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { faUser, faEdit } from "@fortawesome/free-solid-svg-icons";
@@ -99,8 +99,8 @@ const SPProfile: React.FC = () => {
 
 
 
-  const handleImageChange = async (event) => {
-    const file = event.target.files[0];
+  const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
     if (file) {
       const formData = new FormData();
       formData.append("file", file);

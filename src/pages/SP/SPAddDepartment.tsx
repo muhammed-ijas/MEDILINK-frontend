@@ -165,7 +165,8 @@ const SPAddDepartment: React.FC = () => {
   const [errors, setErrors] = useState<{
     department?: string;
     doctors: string[];
-  }>({ doctors: [""] });
+    noDoctors?: boolean; 
+  }>({ doctors: [] });
 
   const [avgTime, setAvgTime] = useState<string>("10"); // Default 10 minutes
 
@@ -221,32 +222,7 @@ const SPAddDepartment: React.FC = () => {
     setErrors((prev) => ({ ...prev, doctors: updatedErrors }));
   };
 
-  // const validateForm = () => {
-  //   let valid = true;
-  //   const newErrors: { department?: string; doctors: string[] } = { doctors: [] };
-
-  //   if (!department) {
-  //     newErrors.department = 'Department is required';
-  //     valid = false;
-  //   }
-
-  //   doctors.forEach((doctor, index) => {
-  //     if (!doctor.name.trim() || !doctor.specialization.trim() || !doctor.availableFrom || !doctor.availableTo || !doctor.contact.trim()) {
-  //       newErrors.doctors[index] = 'All fields are required for each doctor';
-  //       valid = false;
-  //     }
-  //   });
-
-  //   const contactRegex = /^[0-9]{10}$/;
-  //   if (!contactRegex.test(doctor.contact.trim())) {
-  //     doctorError = 'Contact must be exactly 10 digits and contain only numbers';
-  //     valid = false;
-  //   }
-
-  //   setErrors(newErrors);
-  //   return valid;
-  // };
-
+  
   const validateForm = () => {
     let valid = true;
     const newErrors: { department?: string; doctors: string[] } = {

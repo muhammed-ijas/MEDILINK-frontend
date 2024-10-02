@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  { useEffect, useState } from 'react';
 import { getUnVerifiedServices } from '../../api/admin';
 import ApprovalModal from '../../Components/admin/ApprovalModal';
 
@@ -8,11 +8,16 @@ interface ServiceProvider {
   email: string;
   phone: string;
   area: string;
+  city: string;
   district: string;
   state: string;
   profileImage: string;
   isVerified: boolean;
- 
+  pincode: number;
+  isBlocked: boolean;
+  serviceType: string;
+  firstDocumentImage: string;
+  secondDocumentImage: string;
 }
 
 const Requests = () => {

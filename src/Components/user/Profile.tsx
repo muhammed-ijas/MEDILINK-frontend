@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import  { useState } from "react";
 import { editProfile } from "../../api/user";
 import { toast } from "react-toastify";
 import profilePageImage from "../../../public/logo/HomePage/ProfileImage.png";
@@ -15,7 +15,7 @@ interface ProfileProps {
 
 const Profile = ({ profile, state }: ProfileProps) => {
   const [name, setName] = useState(profile.name || "");
-  const [email, setEmail] = useState(profile.email || "");
+  const [email] = useState(profile.email || "");
   const [phone, setPhone] = useState(profile.phone || "");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {

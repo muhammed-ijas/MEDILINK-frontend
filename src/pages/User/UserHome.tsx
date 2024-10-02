@@ -22,15 +22,17 @@ const UserHome = () => {
     const cards = document.querySelectorAll(".service-card");
 
     cards.forEach((card, index) => {
-      card.style.transitionDelay = `${index * 0.1}s`;
-      card.classList.add("service-card-enter");
+      const htmlCard = card as HTMLElement;
+      htmlCard.style.transitionDelay = `${index * 0.1}s`;
+      htmlCard.classList.add("service-card-enter");
     });
 
     const revealCards = () => {
       cards.forEach((card) => {
-        const cardTop = card.getBoundingClientRect().top;
+        const htmlCard = card as HTMLElement; // Cast to HTMLElement
+        const cardTop = htmlCard.getBoundingClientRect().top;
         if (cardTop < window.innerHeight) {
-          card.classList.add("service-card-enter-active");
+          htmlCard.classList.add("service-card-enter-active");
         }
       });
     };
@@ -382,7 +384,7 @@ const UserHome = () => {
                 name="message"
                 placeholder="Your Message"
                 className="p-2 border border-gray-300 rounded-md w-full"
-                rows="4"
+                rows={4}
                 required
               ></textarea>
             </label>

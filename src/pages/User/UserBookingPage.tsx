@@ -26,8 +26,8 @@ const UserBookingPage = () => {
   const { doctorId, date, slot } = (location.state || {}) as LocationState;
 
   const [doctorDetails, setDoctorDetails] = useState<Doctor | null>(null);
-  const [bookingDate, setBookingDate] = useState<string>(date);
-  const [timeSlot, setTimeSlot] = useState<string>(slot);
+  const [bookingDate] = useState<string>(date);
+  const [timeSlot] = useState<string>(slot);
 
   // Form fields
   const [patientName, setPatientName] = useState<string>("");

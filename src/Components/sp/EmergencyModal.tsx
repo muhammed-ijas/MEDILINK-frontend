@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { getEmergencyNumber, updateEmergencyNumber, deleteEmergencyNumber } from "../../api/SP";
 import { FaTrashAlt } from "react-icons/fa"; // For delete icon
 import {toast,Toaster} from "react-hot-toast"
-import { truncate } from "lodash";
 
 interface EmergencyModalProps {
   isOpen: boolean;

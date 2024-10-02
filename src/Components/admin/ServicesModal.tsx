@@ -13,6 +13,9 @@ interface Doctor {
   _id: string;
   name: string;
   specialization: string;
+  contact: string;
+  availableFrom: string;
+  availableTo: string;
   phone: string;
   email: string;
 }

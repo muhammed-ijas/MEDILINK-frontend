@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import  { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaSearch } from "react-icons/fa";
 import homenurseImage from "../../../public/logo/HomePage/homenurseImage.png";
@@ -16,7 +16,6 @@ import {
 } from "../../api/user";
 import avatar from "../../../public/logo/HomePage/ProfileImage.png";
 import { useNavigate } from "react-router-dom";
-import LoadingSpinner from "../../Components/common/LoadingSpinner"; // Import LoadingSpinner component
 
 
 const ITEMS_PER_PAGE = 10; // Define the number of items per page
@@ -124,9 +123,9 @@ const UserAppointments: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
 
-  const [loading, setLoading] = useState<boolean>(true); // Loading state
+  const [_loading, setLoading] = useState<boolean>(true); // Loading state
 
-  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null); // User's location
+  const [_userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null); // User's location
   const [nearestData, setNearestData] = useState<any[]>([]); // To store nearest data
 
 

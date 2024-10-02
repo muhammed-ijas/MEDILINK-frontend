@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import  { useState, useEffect, useRef } from "react";
 import { NavLink } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
 import logo from "/logo/userSideBeforeHome/logo.png";
@@ -55,7 +55,7 @@ const Messages = () => {
   const [error, setError] = useState("");
 
   //for socket
-  const [socketConnected, setSocketConnected] = useState(false);
+  const [_socketConnected, setSocketConnected] = useState(false);
 
   const { userInfo } = useSelector((state: RootState) => state.auth);
 
@@ -69,7 +69,7 @@ const Messages = () => {
     null
   );
   const [audioChunks, setAudioChunks] = useState<Blob[]>([]);
-  const [audioUrl, setAudioUrl] = useState<string | null>(null);
+  const [_audioUrl, setAudioUrl] = useState<string | null>(null);
   const [recordingTime, setRecordingTime] = useState(0);
   const timerRef = useRef<number | null>(null);
 
@@ -87,64 +87,16 @@ const Messages = () => {
 
       // Start the recording timer
       setIsRecording(true);
+
       timerRef.current = setInterval(
         () => setRecordingTime((time) => time + 1),
         1000
-      );
+      )as unknown as number; 
     } catch (err) {
       console.error("Error starting audio recording:", err);
     }
   };
-  // const startRecording = async () => {
-  //   try {
-  //     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-  //     const recorder = new MediaRecorder(stream);
-  //     setMediaRecorder(recorder);
   
-  //     // Clear the previous audio chunks before starting a new recording
-  //     setAudioChunks([]);
-  
-  //     recorder.ondataavailable = (event) => {
-  //       setAudioChunks((prevChunks) => [...prevChunks, event.data]);
-  //     };
-  
-  //     // Ensure the timer starts immediately when recording starts
-  //     recorder.onstart = () => {
-  //       setIsRecording(true);
-  //       timerRef.current = setInterval(
-  //         () => setRecordingTime((time) => time + 1),
-  //         1000
-  //       );
-  //     };
-  
-  //     // Properly handle stopping and resetting the timer
-  //     recorder.onstop = async () => {
-  //       clearInterval(timerRef.current!);
-  //       setRecordingTime(0); // Reset the timer
-  
-  //       const audioBlob = new Blob(audioChunks, { type: "audio/mpeg" });
-  //       const audioUrl = URL.createObjectURL(audioBlob);
-  //       setAudioUrl(audioUrl);
-  
-  //       // Now, upload the audio file to Cloudinary
-  //       await uploadAudio(audioBlob);
-  //     };
-  
-  //     recorder.start();
-  //   } catch (err) {
-  //     console.error("Error starting audio recording:", err);
-  //   }
-  // };
-
-  // const stopRecording = () => {
-  //   if (mediaRecorder) {
-  //     mediaRecorder.stop();
-  //   }
-  //   setIsRecording(false);
-  //   clearInterval(timerRef.current!); 
-  //   setRecordingTime(0); // Reset the timer
-  // };
-
 
 const stopRecording = () => {
   if (mediaRecorder) {
