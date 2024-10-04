@@ -14,7 +14,7 @@ import axios from "axios";
 
 import { io, Socket } from "socket.io-client";
 
-const ENDPOINT = "http://localhost:3000";
+const ENDPOINT = "https://api.quiix.shop";
 
 // Explicitly define the socket type
 let socket: Socket;
