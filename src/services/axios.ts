@@ -1,7 +1,7 @@
 import axios from "axios";
 import errorHandle from "../api/error";
 
-const BASE_URL = "https://api.quiix.shop/api"
+const BASE_URL = "https://localhost:3000"
 
 const Api = axios.create({
     baseURL: BASE_URL,
