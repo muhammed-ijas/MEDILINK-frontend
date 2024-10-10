@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import aboutImage from "/logo//HomePage/image7.png";
+import aboutImage from "/logo/HomePage/image7.png";
 import homenurseImage from "/logo/HomePage/homenurseImage.png";
 import { useEffect } from "react";
 

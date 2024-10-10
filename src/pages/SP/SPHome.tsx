@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import frontpageImage from "/logo/userSideBeforeHome/frontPageImage.png";
 import { motion } from "framer-motion";
-import aboutImage from "/logo//HomePage/image7.png";
+import aboutImage from "/logo/HomePage/image7.png";
 import hospitalImage from "/logo/HomePage/hospitalImage.png";
 import ambulanceImage from "/logo/HomePage/ambulanceImage2.png";
 import homenurseImage from "/logo/HomePage/homenurseImage.png";
@@ -340,7 +340,7 @@ const SPHome = () => {
         {/* Contact Form */}
         <form
           className="max-w-lg mx-auto space-y-4"
-          action="/send-message" // Change to your form handling endpoint
+          action="/send-message" 
           method="POST"
         >
           <div className="flex flex-col space-y-2">

@@ -3,6 +3,8 @@ import { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
 import { getFullAppointmentList } from "../../api/SP";
 import Modal from "../../Components/sp/SingleBookingDetail"; // Import the Modal component
+import LoadingSpinner from '../../Components/common/LoadingSpinner';
+
 
 interface Appointment {
   _id: string;
@@ -37,17 +39,22 @@ const AllBookingDetailsPag = () => {
   const [currentPage, setCurrentPage] = useState(1); // Track current page
   const [appointmentsPerPage] = useState(5); // Number of appointments per page
   const [showModal, setShowModal] = useState(false); 
+  const [loading, setLoading] = useState(true);
+
   const [selectedAppointment, setSelectedAppointment] =
-    useState<Appointment | null>(null); // Track selected appointment
+    useState<Appointment | null>(null);
 
   useEffect(() => {
+    setLoading(true)
     const fetchAppointmentDetails = async (id: string) => {
       try {
         const data = await getFullAppointmentList(id);
         setAppointmentDetails(data);
+        
       } catch (error) {
         console.error("Failed to fetch appointment details:", error);
       }
+      setLoading(false)
     };
     fetchAppointmentDetails(spInfo._id);
   }, [spInfo._id]);
@@ -83,44 +90,72 @@ const AllBookingDetailsPag = () => {
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
+  
+
+  if (loading) {
+    return <div><LoadingSpinner/></div>;
+  }
+
   return (
-    <div className="container mx-auto mt-8 p-4 min-h-screen">
-      <h2 className="text-2xl font-semibold mb-4 text-center">
+    <div className="container mx-auto mt-8 p-6 min-h-screen">
+      <h2 className="text-3xl font-bold text-center text-gray-700 mb-6">
         User Appointments
       </h2>
-
-      <div className="overflow-x-auto mt-10">
-        <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
-          <thead className="bg-gray-200">
-            <tr>
-              <th className="py-2 px-4 text-left">Department Name</th>
-              <th className="py-2 px-4 text-left">Doctor Name</th>
-              <th className="py-2 px-4 text-left">Patient Name</th>
-              <th className="py-2 px-4 text-left">Appointment Date</th>
-              <th className="py-2 px-4 text-left">Timeslot</th>
-              <th className="py-2 px-4 text-left">Booking Date</th>
-              <th className="py-2 px-4 text-left">Status</th>
-              <th className="py-2 px-4 text-left">Action</th>
+  
+      <div className="overflow-x-auto shadow-md rounded-lg border border-gray-200">
+        <table className="min-w-full bg-white">
+          <thead>
+            <tr className="bg-indigo-600 text-white text-left">
+              <th className="py-3 px-6">Department Name</th>
+              <th className="py-3 px-6">Doctor Name</th>
+              <th className="py-3 px-6">Patient Name</th>
+              <th className="py-3 px-6">Appointment Date</th>
+              <th className="py-3 px-6">Timeslot</th>
+              <th className="py-3 px-6">Booking Date</th>
+              <th className="py-3 px-6">Status</th>
+              <th className="py-3 px-6">Action</th>
             </tr>
           </thead>
           <tbody>
             {currentAppointments.map((appointment) => (
-              <tr key={appointment._id} className="border-t">
-                <td className="py-2 px-4">{appointment.department?.name}</td>
-                <td className="py-2 px-4">{appointment.doctor?.name}</td>
-                <td className="py-2 px-4">{appointment.patientName}</td>
-                <td className="py-2 px-4">
+              <tr key={appointment._id} className="hover:bg-gray-50">
+                <td className="py-4 px-6 border-b">{appointment.department?.name}</td>
+                
+                {appointment?.doctor?.name
+                      ? <td   className="py-4 px-6">
+                      
+                        {appointment.doctor.name}
+                        
+                    </td>
+                      : 
+                      <td   className="py-4 px-6 text-red-600">
+                      Doctor deleted by admin
+                    </td>
+                  }
+                
+                <td className="py-4 px-6 border-b">{appointment.patientName}</td>
+                <td className="py-4 px-6 border-b">
                   {new Date(appointment.bookingDate).toLocaleDateString()}
                 </td>
-                <td className="py-2 px-4">{appointment.timeSlot}</td>
-                <td className="py-2 px-4">
+                <td className="py-4 px-6 border-b">{appointment.timeSlot}</td>
+                <td className="py-4 px-6 border-b">
                   {new Date(appointment.createdAt).toLocaleDateString()}
                 </td>
-                <td className="py-2 px-4">{appointment.bookingStatus}</td>
-                <td className="py-2 px-4">
+                <td className="py-4 px-6 border-b">
+                  <span
+                    className={`inline-block px-3 py-1 rounded-full text-sm font-medium ${
+                      appointment.bookingStatus === 'completed'
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-yellow-100 text-yellow-800'
+                    }`}
+                  >
+                    {appointment.bookingStatus}
+                  </span>
+                </td>
+                <td className="py-4 px-6 border-b">
                   <button
                     onClick={() => viewDetails(appointment)}
-                    className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 px-4 rounded transition"
                   >
                     View
                   </button>
@@ -130,26 +165,22 @@ const AllBookingDetailsPag = () => {
           </tbody>
         </table>
       </div>
-
+  
       {/* Pagination */}
-      <div className="flex justify-center mt-6">
+      <div className="flex justify-center mt-8">
         <nav>
           <ul className="inline-flex items-center space-x-2">
             {Array.from(
-              {
-                length: Math.ceil(
-                  appointmentDetails.length / appointmentsPerPage
-                ),
-              },
+              { length: Math.ceil(appointmentDetails.length / appointmentsPerPage) },
               (_, index) => (
                 <li key={index}>
                   <button
                     onClick={() => paginate(index + 1)}
                     className={`${
                       currentPage === index + 1
-                        ? "bg-blue-500 text-white"
-                        : "bg-white text-blue-500 border border-blue-500"
-                    } font-bold py-2 px-4 rounded`}
+                        ? "bg-indigo-600 text-white"
+                        : "bg-white text-indigo-600 border border-indigo-600"
+                    } font-bold py-2 px-4 rounded hover:bg-indigo-100 transition`}
                   >
                     {index + 1}
                   </button>
@@ -159,7 +190,7 @@ const AllBookingDetailsPag = () => {
           </ul>
         </nav>
       </div>
-
+  
       {/* Appointment Details Modal */}
       {selectedAppointment && (
         <Modal
@@ -172,6 +203,7 @@ const AllBookingDetailsPag = () => {
       )}
     </div>
   );
+  
 };
 
 export default AllBookingDetailsPag;

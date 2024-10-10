@@ -11,16 +11,6 @@ interface DepartmentOption {
   description: string;
 }
 
-interface DoctorInfo {
-  name: string;
-  specialization: string;
-  availableFrom: string;
-  availableTo: string;
-  contact: string;
-  dateFrom: string;
-  dateEnd: string;
-}
-
 const departmentOptions: DepartmentOption[] = [
   {
     value: "emergency",
@@ -146,188 +136,71 @@ const departmentOptions: DepartmentOption[] = [
     value: "physical-medicine",
     label: "Physical Medicine and Rehab",
     description: "Rehabilitation and physical therapy services",
-  },
-];
+  },];
 
 const SPAddDepartment: React.FC = () => {
   const [department, setDepartment] = useState<string>("");
-  const [doctors, setDoctors] = useState<DoctorInfo[]>([
-    {
-      name: "",
-      specialization: "",
-      availableFrom: "",
-      availableTo: "",
-      contact: "",
-      dateFrom: "",
-      dateEnd: "",
-    },
-  ]);
-  const [errors, setErrors] = useState<{
-    department?: string;
-    doctors: string[];
-    noDoctors?: boolean; 
-  }>({ doctors: [] });
-
   const [avgTime, setAvgTime] = useState<string>("10"); // Default 10 minutes
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
   const { spInfo } = useSelector((state: RootState) => state.sp);
 
   const handleDepartmentChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setDepartment(e.target.value);
-    setErrors((prev) => ({ ...prev, department: "" }));
   };
 
   const handleAvgTimeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setAvgTime(e.target.value);
-    setErrors((prev) => ({ ...prev, avgTime: "" })); // Clear any previous error
-  };
-
-  const handleDoctorChange = (
-    index: number,
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    const { name, value } = e.target;
-    const updatedDoctors = [...doctors];
-    updatedDoctors[index][name as keyof DoctorInfo] = value;
-
-    const updatedErrors = [...errors.doctors];
-    updatedErrors[index] = "";
-
-    setDoctors(updatedDoctors);
-    setErrors((prev) => ({ ...prev, doctors: updatedErrors }));
-  };
-
-  const handleAddDoctor = () => {
-    setDoctors([
-      ...doctors,
-      {
-        name: "",
-        specialization: "",
-        availableFrom: "",
-        availableTo: "",
-        contact: "",
-        dateFrom: "",
-        dateEnd: "",
-      },
-    ]);
-    setErrors((prev) => ({ ...prev, doctors: [...prev.doctors, ""] }));
-  };
-
-  const handleRemoveDoctor = (index: number) => {
-    const updatedDoctors = doctors.filter((_, i) => i !== index);
-    const updatedErrors = errors.doctors.filter((_, i) => i !== index);
-
-    setDoctors(updatedDoctors);
-    setErrors((prev) => ({ ...prev, doctors: updatedErrors }));
-  };
-
-  
-  const validateForm = () => {
-    let valid = true;
-    const newErrors: { department?: string; doctors: string[] } = {
-      doctors: [],
-    };
-
-    // Check if department is selected
-    if (!department) {
-      newErrors.department = "Department is required";
-      valid = false;
-    }
-
-    doctors.forEach((doctor, index) => {
-      let doctorError = "";
-
-      // Check if all fields are filled
-      if (
-        !doctor.name.trim() ||
-        !doctor.specialization.trim() ||
-        !doctor.availableFrom ||
-        !doctor.availableTo ||
-        !doctor.contact.trim() ||
-        !doctor.dateFrom ||
-        !doctor.dateEnd
-      ) {
-        doctorError = "All fields are required for each doctor";
-        valid = false;
-      }
-
-      // Validate the contact field (only numbers, exactly 10 digits)
-      const contactRegex = /^[0-9]{10}$/;
-      if (!contactRegex.test(doctor.contact.trim())) {
-        doctorError =
-          "Contact must be exactly 10 digits and contain only numbers";
-        valid = false;
-      }
-
-      // Validate dateFrom and dateEnd
-      const dateFrom = new Date(doctor.dateFrom);
-      const dateEnd = new Date(doctor.dateEnd);
-
-      if (dateEnd < dateFrom) {
-        doctorError = "End date must be after the start date";
-        valid = false;
-      }
-
-      if (doctorError) {
-        newErrors.doctors[index] = doctorError;
-      }
-    });
-
-    setErrors(newErrors);
-    return valid;
   };
 
   const handleSave = async () => {
-    let hasErrors = false;
-    const newErrors = {
-      department: "",
-      doctors: [],
-      avgTime: "",
-      noDoctors: false,
-    };
-
-    // Check if department is selected
     if (!department) {
-      newErrors.department = "Please select a department.";
-      hasErrors = true;
-    }
-
-    // Check if at least one doctor is added
-    if (doctors.length === 0) {
-      newErrors.noDoctors = true;
-      hasErrors = true;
-    }
-
-    // If there are any errors, set them and stop the save
-    if (hasErrors) {
-      setErrors(newErrors);
+      toast.error("Please select a department before saving.", {
+        duration: 1500,
+      });
       return;
     }
-    if (!validateForm()) return;
-
+  
     try {
-      const response = await addDepartment(
-        spInfo._id,
-        department,
-        doctors,
-        avgTime
-      );
-      if (response) {
-        toast.success("Department updated successfully!", {
+      setIsLoading(true);
+  
+      // Assuming addDepartment returns a proper response object or throws an error
+      const response = await addDepartment(spInfo._id, department, avgTime);
+  
+      // Check if response exists before checking the status
+      if (response && response.status === 201) {
+        toast.error("Department already added!", {
+          duration: 1000,
+        });
+      } else if (response) {
+        // Assuming success if response exists and status is not 201
+        toast.success("Department added successfully!", {
           duration: 1000,
         });
         setTimeout(() => {
           navigate("/sp/viewDetaildServices");
         }, 1000);
+      } else {
+        // In case response is void or undefined
+        toast.error("Failed to add department. Please try again.", {
+          duration: 1500,
+        });
       }
+  
     } catch (error) {
       console.error("Error saving department:", error);
+      toast.error("Failed to add department. Please try again.", {
+        duration: 1500,
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
+  
 
   const handleClose = () => {
-    navigate("/sp/viewDetaildServices"); // Navigate back or close the modal
+    navigate("/sp/viewDetaildServices"); 
   };
 
   return (
@@ -344,6 +217,7 @@ const SPAddDepartment: React.FC = () => {
         <h1 className="text-3xl font-bold text-blue-950 mb-6">
           Add Department
         </h1>
+
         <div className="mb-6">
           <label
             htmlFor="department"
@@ -367,10 +241,8 @@ const SPAddDepartment: React.FC = () => {
               </option>
             ))}
           </select>
-          {errors.department && (
-            <p className="text-red-500 text-sm mt-1">{errors.department}</p>
-          )}
         </div>
+
         <div className="mb-6">
           <label
             htmlFor="avgTime"
@@ -385,8 +257,7 @@ const SPAddDepartment: React.FC = () => {
             onChange={handleAvgTimeChange}
             className="border border-gray-300 rounded-md p-2 w-full"
           >
-            <option value="10">10 minutes (default)</option>{" "}
-            {/* Default option */}
+            <option value="10">10 minutes (default)</option>
             <option value="15">15 minutes</option>
             <option value="20">20 minutes</option>
             <option value="30">30 minutes</option>
@@ -394,163 +265,14 @@ const SPAddDepartment: React.FC = () => {
             <option value="60">1 hour</option>
           </select>
         </div>
-        <h2 className="text-xl font-semibold mb-4">Add Doctors</h2>
-        {doctors.map((doctor, index) => (
-          <div
-            key={index}
-            className="border border-gray-300 p-4 rounded-lg mb-4"
-          >
-            <div className="grid grid-cols-1 gap-4">
-              <div className="flex flex-col">
-                <label
-                  htmlFor={`name-${index}`}
-                  className="text-lg font-semibold text-gray-700"
-                >
-                  Doctor's Name
-                </label>
-                <input
-                  type="text"
-                  id={`name-${index}`}
-                  name="name"
-                  value={doctor.name}
-                  onChange={(e) => handleDoctorChange(index, e)}
-                  className="border border-gray-300 rounded-md p-2"
-                />
-              </div>
-              <div className="flex flex-col">
-                <label
-                  htmlFor={`specialization-${index}`}
-                  className="text-lg font-semibold text-gray-700"
-                >
-                  Specialization
-                </label>
-                <input
-                  type="text"
-                  id={`specialization-${index}`}
-                  name="specialization"
-                  value={doctor.specialization}
-                  onChange={(e) => handleDoctorChange(index, e)}
-                  className="border border-gray-300 rounded-md p-2"
-                />
-              </div>
-              <div className="flex flex-col">
-                <label
-                  htmlFor={`availableFrom-${index}`}
-                  className="text-lg font-semibold text-gray-700"
-                >
-                  Available From (Time)
-                </label>
-                <input
-                  type="time"
-                  id={`availableFrom-${index}`}
-                  name="availableFrom"
-                  value={doctor.availableFrom}
-                  onChange={(e) => handleDoctorChange(index, e)}
-                  className="border border-gray-300 rounded-md p-2"
-                />
-              </div>
-              <div className="flex flex-col">
-                <label
-                  htmlFor={`availableTo-${index}`}
-                  className="text-lg font-semibold text-gray-700"
-                >
-                  Available To (Time)
-                </label>
-                <input
-                  type="time"
-                  id={`availableTo-${index}`}
-                  name="availableTo"
-                  value={doctor.availableTo}
-                  onChange={(e) => handleDoctorChange(index, e)}
-                  className="border border-gray-300 rounded-md p-2"
-                />
-              </div>
-              <div className="flex flex-col">
-                <label
-                  htmlFor={`dateFrom-${index}`}
-                  className="text-lg font-semibold text-gray-700"
-                >
-                  Available From (Date)
-                </label>
-                <input
-                  type="date"
-                  id={`dateFrom-${index}`}
-                  name="dateFrom"
-                  value={doctor.dateFrom}
-                  onChange={(e) => handleDoctorChange(index, e)}
-                  className="border border-gray-300 rounded-md p-2"
-                />
-              </div>
-              <div className="flex flex-col">
-                <label
-                  htmlFor={`dateEnd-${index}`}
-                  className="text-lg font-semibold text-gray-700"
-                >
-                  Available To (Date)
-                </label>
-                <input
-                  type="date"
-                  id={`dateEnd-${index}`}
-                  name="dateEnd"
-                  value={doctor.dateEnd}
-                  onChange={(e) => handleDoctorChange(index, e)}
-                  className="border border-gray-300 rounded-md p-2"
-                />
-              </div>
-              <div className="flex flex-col">
-                <label
-                  htmlFor={`contact-${index}`}
-                  className="text-lg font-semibold text-gray-700"
-                >
-                  Contact
-                </label>
-                <input
-                  type="text"
-                  id={`contact-${index}`}
-                  name="contact"
-                  value={doctor.contact}
-                  onChange={(e) => handleDoctorChange(index, e)}
-                  className="border border-gray-300 rounded-md p-2"
-                />
-              </div>
-              {errors.doctors[index] && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.doctors[index]}
-                </p>
-              )}
-            </div>
-            {/* Show the Remove button only if there are more than one doctor */}
-            {doctors.length > 1 && (
-              <button
-                type="button"
-                onClick={() => handleRemoveDoctor(index)}
-                className="mt-4 bg-red-500 text-white p-2 rounded-md hover:bg-red-600"
-              >
-                Remove Doctor
-              </button>
-            )}
-          </div>
-        ))}
 
-        {errors.noDoctors && (
-          <p className="text-red-500 text-sm mt-1">
-            You must add at least one doctor before saving the department.
-          </p>
-        )}
-        {/* Add Doctor Button */}
-        <button
-          type="button"
-          onClick={handleAddDoctor}
-          className="mt-4 bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
-        >
-          Add Doctor
-        </button>
         <div className="flex justify-between mt-4">
           <button
             onClick={handleSave}
             className="bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600"
+            disabled={isLoading}
           >
-            Save
+            {isLoading ? "Saving..." : "Save"}
           </button>
         </div>
       </section>

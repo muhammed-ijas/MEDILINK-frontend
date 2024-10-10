@@ -21,5 +21,17 @@ const SPRoutes = {
     getEmergencyNumber:"/sp/getEmergencyNumber",
     updateEmergencyNumber:"/sp/updateEmergencyNumber",
     deleteEmergencyNumber:"/sp/deleteEmergencyNumber",
+    changeDoctorProfileImage:"/sp/changeDoctorProfileImage",
+    getDoctorDetails:"/sp/getDoctorDetails",
+    getAppointmentDetails:"/sp/getAppointmentDetails",
+    addPrescriptionToAppointment:"/sp/addPrescriptionToAppointment",
+    getPrescription:"/sp/getPrescription",
+    getRecentAppointments:"/sp/getRecentAppointments",
+    addDoctorToDepartment:"/sp/addDoctorToDepartment",
+    updateDoctorDetails:"/sp/updateDoctorDetails",
+    getAllDoctorDetailsInsideADepartment:"/sp/getAllDoctorDetailsInsideADepartment",
+    getDoctorSlotsDetails:"/sp/getDoctorSlotsDetails",
+    isDoctorHaveSlots:"/sp/isDoctorHaveSlots",
+    deleteDoctor:"/sp/deleteDoctor",
   };
   export default SPRoutes;

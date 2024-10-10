@@ -1,6 +1,6 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { getAllServiceDetails, deleteDepartment } from "../../api/SP";
+import { getAllServiceDetails } from "../../api/SP";
 import Spinner from "../../Components/common/LoadingSpinner";
 import placeholderImage from "../../../public/logo/HomePage/beat-heart-hospital.svg";
 import { RootState } from "../../redux/store";
@@ -8,8 +8,7 @@ import { useSelector } from "react-redux";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
 import EditDepartmentModal from "../../Components/sp/EditdepartmentModal";
-import ConfirmationModal from "../../Components/common/Confirmationmodal";
-import { toast, Toaster } from 'react-hot-toast';
+// import ConfirmationModal from "../../Components/common/Confirmationmodal";
 
 interface Doctor {
   _id: string;
@@ -18,6 +17,7 @@ interface Doctor {
   availableFrom: string;
   availableTo: string;
   contact: string;
+  doctorProfileImage: string;
 }
 
 interface Department {
@@ -34,10 +34,7 @@ const DetailedServicesPage = () => {
     useState<Department | null>(null);
   const [loading, setLoading] = useState(true);
   const [editModalVisible, setEditModalVisible] = useState(false);
-  const [confirmModalVisible, setConfirmModalVisible] = useState(false);
-  const [departmentToDelete, setDepartmentToDelete] = useState<string | null>(
-    null
-  );
+
 
   const navigate = useNavigate();
 
@@ -46,6 +43,16 @@ const DetailedServicesPage = () => {
       message.error("You need to be verified to add a new department.");
     } else {
       navigate("/sp/addDepartment");
+    }
+  };
+  
+  const handleViewClick = () => {
+    if (spInfo.isVerified === false) {
+      message.error("You need to be verified to view this department.");
+    } else if (selectedDepartment) {
+      navigate("/sp/viewSingleDepartmentDetails", {
+        state: { department: selectedDepartment },
+      });
     }
   };
 
@@ -71,58 +78,57 @@ const DetailedServicesPage = () => {
     fetchDepartments();
   }, [spInfo._id]);
 
-  const handleEditClick = () => {
-    if (spInfo.isVerified === false) {
-      message.error("You need to be verified to edit a department.");
-    } else {
-      setEditModalVisible(true);
-    }
-  };
+  // const handleEditClick = () => {
+  //   if (spInfo.isVerified === false) {
+  //     message.error("You need to be verified to edit a department.");
+  //   } else {
+  //     setEditModalVisible(true);
+  //   }
+  // };
 
   const handleModalClose = () => {
     setEditModalVisible(false);
     setSelectedDepartment(null); // Ensure the selectedDepartment is cleared
   };
 
-  const handleDeleteClick = async (departmentId: string) => {
-    if (!spInfo.isVerified) {
-      message.error("You need to be verified to delete a department.");
-      return;
-    }
-    setDepartmentToDelete(departmentId);
-    setConfirmModalVisible(true);
-  };
+  // const handleDeleteClick = async (departmentId: string) => {
+  //   if (!spInfo.isVerified) {
+  //     message.error("You need to be verified to delete a department.");
+  //     return;
+  //   }
+  //   setDepartmentToDelete(departmentId);
+  //   setConfirmModalVisible(true);
+  // };
 
-  const handleConfirmDelete = async () => {
-    if (!departmentToDelete) return;
-    try {
-      const response = await deleteDepartment(spInfo._id, departmentToDelete);
-      if (response.status === 200) {
-        toast.success("Successfully deleted");
-        setTimeout(() => {
-          // Update the departments state here hey 
-          setDepartments((prevDepartments) =>
-            prevDepartments.filter(
-              (department) => department._id !== departmentToDelete
-            )
-          );
-          fetchDepartments();
-          setSelectedDepartment(null);
-        }, 2000); 
-      }
-    } catch (error) {
-      toast.error("Failed to delete the department.");
-    } finally {
-      setConfirmModalVisible(false);
-      setDepartmentToDelete(null);
-    }
-  };
+  // const handleConfirmDelete = async () => {
+  //   if (!departmentToDelete) return;
+  //   try {
+  //     const response = await deleteDepartment(spInfo._id, departmentToDelete);
+  //     if (response.status === 200) {
+  //       toast.success("Successfully deleted");
+  //       setTimeout(() => {
+  //         // Update the departments state here hey
+  //         setDepartments((prevDepartments) =>
+  //           prevDepartments.filter(
+  //             (department) => department._id !== departmentToDelete
+  //           )
+  //         );
+  //         fetchDepartments();
+  //         setSelectedDepartment(null);
+  //       }, 2000);
+  //     }
+  //   } catch (error) {
+  //     toast.error("Failed to delete the department.");
+  //   } finally {
+  //     setConfirmModalVisible(false);
+  //     setDepartmentToDelete(null);
+  //   }
+  // };
 
   if (loading) return <Spinner />;
 
   return (
     <div className="min-h-screen bg-gray-100 p-8">
-      <Toaster position="top-center" />
       <div className="relative mb-8">
         <div className="flex flex-col items-center">
           <h1 className="text-3xl font-bold text-center mb-4">
@@ -149,7 +155,7 @@ const DetailedServicesPage = () => {
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 1440 320"
               className="absolute top-0 left-0 w-full h-32 z-0"
-              style={{ transform: "translateY(-10px)" }} 
+              style={{ transform: "translateY(-10px)" }}
             >
               <path
                 fill="#000b76"
@@ -213,50 +219,81 @@ const DetailedServicesPage = () => {
               <h2 className="text-2xl font-bold mb-4 text-center">
                 {selectedDepartment.name}
               </h2>
+              <p className="text-gray-600 text-center z-10">
+              {selectedDepartment.doctors.length}{" "}
+              {selectedDepartment.doctors.length === 1 ? "doctor" : "doctors"}
+            </p>
 
-              <p className="text-gray-600 mb-4 text-center">
-                {selectedDepartment.description || "No description available."}
-              </p>
+            
 
-              <h3 className="text-xl font-semibold mb-3 text-center">
+              {/* <h3 className="text-xl font-semibold mb-3 text-center">
                 Doctors:
               </h3>
               <div className="w-full flex flex-col items-center">
                 {selectedDepartment.doctors.length > 0 ? (
-                  <ul className="space-y-4 w-full max-h-60 overflow-y-auto px-4">
+                  <ul className="space-y-6 w-full max-h-80 overflow-y-auto px-6">
                     {selectedDepartment.doctors.map((doctor) => (
                       <li
                         key={doctor._id}
-                        className="p-4 bg-gray-100 rounded-lg shadow-md flex flex-col items-start"
+                        className="p-6 bg-white rounded-3xl shadow-lg flex flex-col items-center border border-gray-200 hover:shadow-2xl transition-shadow duration-300 ease-in-out"
                       >
-                        <p className="text-gray-900 font-semibold mb-1">
-                          {doctor.name}
-                        </p>
-                        <p className="text-gray-600 mb-1">
-                          <span className="font-semibold">Specialization:</span>{" "}
-                          {doctor.specialization}
-                        </p>
-                        <p className="text-gray-600 mb-1">
-                          <span className="font-semibold">Available From:</span>{" "}
-                          {doctor.availableFrom}
-                        </p>
-                        <p className="text-gray-600 mb-1">
-                          <span className="font-semibold">Available To:</span>{" "}
-                          {doctor.availableTo}
-                        </p>
-                        <p className="text-gray-600">
-                          <span className="font-semibold">Contact:</span>{" "}
-                          {doctor.contact}
-                        </p>
+                        <div className="flex flex-col items-center mb-6">
+                          <div className="relative w-24 h-24">
+                            <img
+                              src={
+                                doctor?.doctorProfileImage ||
+                                "/path/to/default-image.jpg"
+                              }
+                              alt={doctor.name}
+                              className="w-full h-full rounded-full object-cover shadow-md"
+                            />
+                            <div className="absolute inset-0 rounded-full bg-black bg-opacity-40 hover:bg-opacity-0 transition-all duration-300 ease-in-out flex items-center justify-center opacity-0 hover:opacity-100">
+                              <p className="text-white text-xs">
+                                Doctor's Image
+                              </p>
+                            </div>
+                          </div>
+                          <h3 className="text-xl text-gray-900 font-semibold mt-4">
+                            {doctor.name}
+                          </h3>
+                          <p className="text-gray-500 text-sm">
+                            {doctor.specialization}
+                          </p>
+                        </div>
+
+                        <div className="w-full border-t border-gray-200 pt-4 text-center">
+                          <p className="text-gray-700 mb-2">
+                            <span className="font-semibold">
+                              Specialization:{" "}
+                            </span>
+                            {doctor.specialization}
+                          </p>
+                          <p className="text-gray-700 mb-2">
+                            <span className="font-semibold">
+                              Available From:{" "}
+                            </span>
+                            {doctor.availableFrom}
+                          </p>
+                          <p className="text-gray-700 mb-2">
+                            <span className="font-semibold">
+                              Available To:{" "}
+                            </span>
+                            {doctor.availableTo}
+                          </p>
+                          <p className="text-gray-700">
+                            <span className="font-semibold">Contact: </span>
+                            {doctor.contact}
+                          </p>
+                        </div>
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="text-gray-600 text-center">
+                  <p className="text-gray-500 text-center">
                     No doctors available.
                   </p>
                 )}
-              </div>
+              </div> */}
 
               <div className="flex space-x-4 mt-6">
                 <button
@@ -265,18 +302,24 @@ const DetailedServicesPage = () => {
                 >
                   Close
                 </button>
-                <button
+                {/* <button
                   className="bg-[#000b76] text-white font-semibold py-1 px-4 rounded-md hover:bg-[#1e266a] transition-transform transform"
                   onClick={handleEditClick}
                 >
                   Edit
-                </button>
+                </button> */}
                 <button
+                  className="bg-[#000b76] text-white font-semibold py-1 px-4 rounded-md hover:bg-[#1e266a] transition-transform transform"
+                  onClick={handleViewClick}
+                >
+                  View
+                </button>
+                {/* <button
                   onClick={() => handleDeleteClick(selectedDepartment._id)}
                   className="bg-red-500 text-white font-semibold py-1 px-4 rounded-md hover:bg-red-600 transition-transform transform  mr-2"
                 >
                   Delete
-                </button>
+                </button> */}
               </div>
             </motion.div>
           </motion.div>
@@ -293,12 +336,11 @@ const DetailedServicesPage = () => {
           refreshDepartments={fetchDepartments}
         />
       )}
-
-      <ConfirmationModal
+      {/* <ConfirmationModal
         isVisible={confirmModalVisible}
         onConfirm={handleConfirmDelete}
         onCancel={() => setConfirmModalVisible(false)}
-      />
+      /> */}
     </div>
   );
 };

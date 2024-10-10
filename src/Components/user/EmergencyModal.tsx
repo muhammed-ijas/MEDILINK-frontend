@@ -1,7 +1,7 @@
 import  { useState, useEffect } from "react";
 import { FaExclamationTriangle } from "react-icons/fa";
 import { getEmergencyNumbers } from "../../api/user";
-import LoadingSpinner from "../common/LoadingSpinner";
+import LoadingSpinner from "../common/RoundSpinner";
 
 interface EmergencyModalProps {
   isOpen: boolean;

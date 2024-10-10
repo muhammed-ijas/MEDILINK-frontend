@@ -16,9 +16,16 @@ const DetailedServicePage = lazy(()=> import("../pages/SP/DetailedServicesPage")
 const HomeNurseDetailsServices = lazy(()=> import("../pages/SP/DetailedHomeNurseService"))
 const AmbulanceDetailsServices = lazy(()=> import("../pages/SP/DetailedAmbulanceServices"))
 const AllbookingsShownPage = lazy(()=> import("../pages/SP/AllbookingsShownPage"));
+const SingleDepartmentDetailsPage = lazy(()=> import("../pages/SP/SingleDepartmentDetailsPage"));
+const ViewSingleDoctorDetaildpage = lazy(()=> import("../pages/SP/ViewSingleDoctorDetaildpage"));
+
+const EditDoctorPage = lazy(()=> import("../pages/SP/EditDoctorPage"));
+
+const AddDoctorToDepartmentPage = lazy(()=> import("../pages/SP/SPAddDoctor"));
+
+const RecentAppointmentListPage = lazy(()=> import("../pages/SP/RecentAppointmentList"));
 
 const MessagesPage = lazy(()=> import("../pages/SP/Messages"))
-
 
 
 
@@ -33,10 +40,28 @@ function SPRoutes() {
             <Route path="addDepartment" element={<AddDepartmentPage />} />
             <Route path="about" element={<AboutPage />} />
             <Route path="contact" element={<ContactPage />} />
+
+            {/* for hospitals and clinicks */}
             <Route path="viewDetaildServices" element={<DetailedServicePage />} />
+            {/* for home nurses */}
             <Route path="viewHomeNurseServices" element={<HomeNurseDetailsServices />} />
+            {/* for ambulances */}
             <Route path="viewAmbulanceServices" element={<AmbulanceDetailsServices />} />
 
+            {/* after clicking a specific department */}
+            <Route path="viewSingleDepartmentDetails" element={<SingleDepartmentDetailsPage/>} />
+
+            {/* after clicking a specific doctor from department */}
+            <Route path="viewSingleDoctorDetaildpage" element={<ViewSingleDoctorDetaildpage/>} />
+
+            {/* to show users recent appointments */}
+            <Route path="viewRecentAppointmentOfUser" element={<RecentAppointmentListPage/>} />
+
+            <Route path="addDoctorToDepartment" element={<AddDoctorToDepartmentPage/>} />
+
+            <Route path="editSingleDoctorDetaildpage" element={<EditDoctorPage/>} />
+
+            {/* show entire appointments which got that provider */}
             <Route path="bookings" element={<AllbookingsShownPage />} />
           </Route>
           <Route path="signup" element={<SignupPage />} />

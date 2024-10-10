@@ -115,7 +115,7 @@ const UserBookingPage = () => {
       amount: 10, 
       currency: 'INR',
       successUrl: 'http://medilink.vercel.app//user/success',
-      cancelUrl: 'http://medilink.vercel.app/user/cancel',
+      cancelUrl: 'http://medilink.vercel.app//user/cancel',
       userInfo,
       doctorId,
       bookingDate,

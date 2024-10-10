@@ -211,25 +211,52 @@ export const changeSecondDocumentImage = async (Id: string, profileImageUrl: str
 };
 
 
-export const addDepartment = async (
+export const addDoctorToDepartment = async (
   spId: string,
   department: string,
-  doctors: { name: string; specialization: string; availableFrom: string; availableTo: string; dateFrom:string ;  dateEnd:string ;   contact: string }[],
-  avgTime: string
+  doctors: { name: string; specialization: string; availableFrom: string; availableTo: string; 
+             dateFrom:string ;  dateEnd:string ;   contact: string ; doctorProfileImage:string ;
+             yearsOfExperience:string ; validCertificate:string   }[],
 ) => {
+
+  console.log("get detais addDoctorToDepartment:",doctors,department,spId);
+  
   try {
-    const response = await Api.post(SPRoutes.addDepartment, {
+    const response = await Api.post(SPRoutes.addDoctorToDepartment, {
       spId,
       department,
       doctors,
-      avgTime
     });
+    console.log(" response addDoctorToDepartment:",response);
+
     return response.data;
   } catch (error) {
     const err: Error = error as Error;
     return errorHandle(err);
   }
 };
+
+
+
+export const addDepartment = async (
+  spId: string,
+  department: string,
+  avgTime: string
+) => {  
+  try {
+    const response = await Api.post(SPRoutes.addDepartment, {
+      spId,
+      department,
+      avgTime
+    });
+    console.log(response)
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
 
 
 export const getAllServiceDetails = async (spId: string) => {
@@ -360,5 +387,166 @@ export const deleteEmergencyNumber = async (id: string) => {
   } catch (error) {
     const err: Error = error as Error;
     return errorHandle(err);
+  }
+};
+
+
+
+export const changeDoctorProfileImage = async (Id: string, profileImageUrl: string) => {
+  try {
+    const response = await Api.post(SPRoutes.changeDoctorProfileImage, {
+      Id: Id,
+      imageUrl: profileImageUrl,
+    });
+    return response;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+
+export const getDoctorDetails = async (doctorId: string) => {
+  try {
+    console.log("going to backend with docid ",doctorId)
+    const response = await Api.get(
+      `${SPRoutes.getDoctorDetails}/${doctorId}`
+    );
+    console.log(":got response from backend :",response.data)
+    return response.data;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+export const getAppointmentDetails = async (doctorId: string) => {
+ 
+  try {
+    const response = await Api.get(
+      `${SPRoutes.getAppointmentDetails}/${doctorId}`
+    );
+    return response.data;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+
+// Define the Medication and Prescription types
+export interface Medication {
+  medication: string;
+  dosage: string;
+  frequency: string;
+  route: string;
+  duration: string;
+  instructions?: string;
+  refills?: number;
+}
+
+export interface Prescription {
+  medications: Medication[];
+}
+
+export const addPrescriptionToAppointment = async (appointmentId: string, prescription: Prescription) => {
+  try {
+    const response = await Api.post(SPRoutes.addPrescriptionToAppointment, {
+      appointmentId: appointmentId,
+      prescription: prescription,
+    });
+    // console.log("Response:", response);
+    return response.data;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+
+export const getPrescription = async (appointmentId: string) => {
+  try {
+    const response = await Api.post(SPRoutes.getPrescription, {
+    appointmentId: appointmentId});
+    return response.data;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+
+
+
+export const getRecentAppointments = async (appointmentId: string) => {
+  try {
+    const response = await Api.get(
+      `${SPRoutes.getRecentAppointments}/${appointmentId}`
+    );
+    return response.data;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+export const updateDoctorDetails = async (doctorId: string, editableFields: object) => {
+  try {
+    const response = await Api.post(SPRoutes.updateDoctorDetails, {
+      doctorId, // Pass the doctorId to the request body
+      ...editableFields // Spread the editableFields object to include all editable details
+    });
+    return response.data;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err); 
+  }
+};
+
+export const getAllDoctorDetailsInsideADepartment = async (departmentId:string) => {
+  try {
+    const response = await Api.post(SPRoutes.getAllDoctorDetailsInsideADepartment, {
+      departmentId,
+    });
+    return response.data;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err); 
+  }
+};
+
+export const getDoctorSlotsDetails = async (doctorId:string) => {
+  try {
+    const response = await Api.post(SPRoutes.getDoctorSlotsDetails, {
+      doctorId,
+    });
+    return response.data;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err); 
+  }
+};
+
+export const isDoctorHaveSlots = async (doctorId:string) => {
+  try {
+    const response = await Api.post(SPRoutes.isDoctorHaveSlots, {
+      doctorId,
+    });
+    return response.data;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err); 
+  }
+};
+
+export const deleteDoctor = async (doctorId: string) => {
+  try {
+    const response = await Api.delete(SPRoutes.deleteDoctor, {
+      data: { doctorId }, 
+    });
+    return response.data;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err); 
   }
 };

@@ -74,64 +74,26 @@ const SingleAppointmentDetails: React.FC<ModalProps> = ({
     setCompletionConfirmationModalOpen(true);
   };
 
-  // const submitCompletion = async () => {
-
-    
-  //   try {
-  //     await completeAppointment(appointment._id);
-  //     setAppointment((prev) => ({
-  //       ...prev,
-  //       bookingStatus: "completed",
-  //     }));
-  //     updateAppointmentStatus(appointment._id, "completed");
-  //     toast.success("Appointment completed successfully!");
-  //   } catch (error) {
-  //     toast.error("Failed to complete the appointment.");
-  //   }
-  //   setCompletionConfirmationModalOpen(false);
-  // };
   const submitCompletion = async () => {
     try {
-      // Get the current date and time
       const now = new Date();
-      // console.log("now date :", now);
-  
-      // Convert appointment date and time slot to a Date object
       const appointmentDate = new Date(appointment.bookingDate);
-      // console.log("converted appointmentDate :", appointmentDate);
-  
-      // Log time slot for debugging
-      // console.log("appointment.timeSlot:", appointment.timeSlot);
-  
-      // Extract the start time from the time slot (before the " - ")
+      
       const [startTime] = appointment.timeSlot.split(' - ');
-      // console.log("Start time:", startTime);
-  
-      // Extract the hour and minutes from the start time (assuming it's in "HH:mm" format)
       const [appointmentHour, appointmentMinute] = startTime.split(':').map(Number);
-      // console.log("appointmentHour appointmentMinute :", appointmentHour, appointmentMinute);
   
-      // Check for NaN values
       if (isNaN(appointmentHour) || isNaN(appointmentMinute)) {
-        // console.error('Invalid time slot:', appointment.timeSlot);
         toast.error("Invalid time slot format.");
-        return; // Exit the function
+        return; 
       }
+        appointmentDate.setHours(appointmentHour, appointmentMinute, 0, 0);
   
-      // Set the time of the appointmentDate to match the start time
-      appointmentDate.setHours(appointmentHour, appointmentMinute, 0, 0);
   
-      // Log dates for debugging
-      // console.log('Current Date and Time:', now);
-      // console.log('Appointment Date and Time:', appointmentDate);
-  
-      // Check if the current date and time are before the appointment date and time
       if (now < appointmentDate) {
         toast.error("You can't complete the appointment before the scheduled date and time.");
-        return; // Exit the function
+        return; 
       }
   
-      // Proceed with completion
       await completeAppointment(appointment._id);
       setAppointment((prev) => ({
         ...prev,
@@ -141,7 +103,7 @@ const SingleAppointmentDetails: React.FC<ModalProps> = ({
       toast.success("Appointment completed successfully!");
   
     } catch (error) {
-      console.error('Error completing appointment:', error); // Log error details for debugging
+      console.error('Error completing appointment:', error); 
       toast.error("Failed to complete the appointment.");
     } finally {
       setCompletionConfirmationModalOpen(false);
@@ -171,7 +133,7 @@ const SingleAppointmentDetails: React.FC<ModalProps> = ({
         ...prev,
         bookingStatus: "cancelled",
       }));
-      updateAppointmentStatus(appointment._id, "cancelled"); // Update the parent list
+      updateAppointmentStatus(appointment._id, "cancelled"); 
 
       toast.success("Appointment cancelled successfully!");
     } catch (error) {
@@ -195,7 +157,7 @@ const SingleAppointmentDetails: React.FC<ModalProps> = ({
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <Toaster position="top-center"/>
+      <Toaster position="top-center" />
       <div className="bg-white rounded-lg shadow-lg max-w-3xl w-full mx-4 md:mx-auto max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="border-b px-6 py-4 flex justify-between items-center">
@@ -207,9 +169,9 @@ const SingleAppointmentDetails: React.FC<ModalProps> = ({
             &#x2715;
           </button>
         </div>
-
-        {/* qr code showing */}
-        <div className="justify-center mt-4 items-center flex">
+  
+        {/* QR code showing */}
+        <div className="flex justify-center mt-6 items-center">
           {appointment.qrCode && (
             <div className="text-center mb-6">
               <h2 className="text-xl font-semibold text-gray-700 mb-4">
@@ -218,88 +180,87 @@ const SingleAppointmentDetails: React.FC<ModalProps> = ({
               <img
                 src={appointment.qrCode}
                 alt="QR Code"
-                className="w-32 h-32 border border-gray-300 rounded-lg shadow-md"
+                className="w-48 h-48 border border-gray-300 rounded-lg shadow-md"
               />
             </div>
           )}
         </div>
-
+  
         {/* Modal Content */}
         <div className="p-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-700">
-                Service Details
-              </h3>
-
-              <img
-                src={appointment.serviceProvider?.profileImage}
-                alt={`${appointment.serviceProvider?.name}'s profile`}
-                className="w-16 h-16 rounded-full border border-gray-300 shadow-md"
-              />
-              <p>
-                <strong>Service Provider:</strong>{" "}
-                {appointment.serviceProvider.name}
-              </p>
-              <p>
-                <strong>Department:</strong> {appointment.department?.name}
-              </p>
-              <p>
-                <strong>Doctor Name:</strong> {appointment.doctor?.name}
-              </p>
-            </div>
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-700">
-                Patient Details
-              </h3>
-              <p>
-                <strong>Patient Name:</strong> {appointment.patientName}
-              </p>
-              <p>
-                <strong>Patient Age:</strong> {appointment.patientAge}
-              </p>
-              <p>
-                <strong>Patient Email:</strong> {appointment.patientEmail}
-              </p>
-              <p>
-                <strong>Patient Phone:</strong> {appointment.patientPhone}
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-700">
-                Booking Details
-              </h3>
-              <p>
-                <strong>Appointment Date:</strong>{" "}
-                {bookingDate.toLocaleDateString()}
-              </p>
-              <p>
-                <strong>Time Slot:</strong> {appointment.timeSlot}
-              </p>
-              <p>
-                <strong>Amount:</strong> {appointment.amount} Rupees
-              </p>
-            </div>
-            <div className="space-y-4">
-              <h3 className="text-lg font-semibold text-gray-700">
-                Status Details
-              </h3>
-              <p>
-                <strong>Payment Status:</strong> {appointment.paymentStatus}
-              </p>
-              <p>
-                <strong>Booking Status:</strong> {appointment.bookingStatus}
-              </p>
-              <p>
-                <strong>Booking Created At:</strong>{" "}
-                {createdAt.toLocaleDateString()}
-              </p>
-            </div>
-          </div>
-
+         
+          <table className="w-full border-collapse border border-gray-300">
+            <tbody>
+              {/* Service Details */}
+              <tr className="border-b">
+                <td className="p-4 font-semibold">Service Provider</td>
+                <td className="p-4">{appointment.serviceProvider.name}</td>
+                <td className="p-4" rowSpan={3}>
+                  <img
+                    src={appointment.serviceProvider?.profileImage}
+                    alt={`${appointment.serviceProvider?.name}'s profile`}
+                    className="w-16 h-16 rounded-full border border-gray-300 shadow-md"
+                  />
+                </td>
+              </tr>
+              <tr className="border-b">
+                <td className="p-4 font-semibold">Department</td>
+                <td className="p-4">{appointment.department?.name}</td>
+              </tr>
+              <tr className="border-b">
+                <td className="p-4 font-semibold">Doctor Name</td>
+                <td className="p-4">{appointment.doctor?.name}</td>
+              </tr>
+  
+              {/* Patient Details */}
+              <tr className="border-b">
+                <td className="p-4 font-semibold">Patient Name</td>
+                <td className="p-4">{appointment.patientName}</td>
+              </tr>
+              <tr className="border-b">
+                <td className="p-4 font-semibold">Patient Age</td>
+                <td className="p-4">{appointment.patientAge}</td>
+              </tr>
+              <tr className="border-b">
+                <td className="p-4 font-semibold">Patient Email</td>
+                <td className="p-4">{appointment.patientEmail}</td>
+              </tr>
+              <tr className="border-b">
+                <td className="p-4 font-semibold">Patient Phone</td>
+                <td className="p-4">{appointment.patientPhone}</td>
+              </tr>
+  
+              {/* Booking Details */}
+              <tr className="border-b">
+                <td className="p-4 font-semibold">Appointment Date</td>
+                <td className="p-4">{bookingDate.toLocaleDateString()}</td>
+              </tr>
+              <tr className="border-b">
+                <td className="p-4 font-semibold">Time Slot</td>
+                <td className="p-4">{appointment.timeSlot}</td>
+              </tr>
+              <tr className="border-b">
+                <td className="p-4 font-semibold">Amount</td>
+                <td className="p-4">50 Rupees</td>
+              </tr>
+  
+              {/* Status Details */}
+              <tr className="border-b">
+                <td className="p-4 font-semibold">Payment Status</td>
+                <td className="p-4">{appointment.paymentStatus}</td>
+              </tr>
+              <tr className="border-b">
+                <td className="p-4 font-semibold">Booking Status</td>
+                <td className="p-4">{appointment.bookingStatus}</td>
+              </tr>
+              <tr>
+                <td className="p-4 font-semibold">Booking Created At</td>
+                <td className="p-4">{createdAt.toLocaleDateString()}</td>
+              </tr>
+            </tbody>
+          </table>
+  
+          {/* Action Buttons */}
           {shouldShowButtons && (
             <div className="flex justify-center items-center mt-6">
               {appointment.bookingStatus === "pending" && (
@@ -312,19 +273,18 @@ const SingleAppointmentDetails: React.FC<ModalProps> = ({
               )}
             </div>
           )}
-
           <div className="flex justify-center items-center mt-6">
-            {appointment.bookingStatus === "pending" ||
-              (appointment.bookingStatus === "approved" && (
-                <button
-                  onClick={handleCancel}
-                  className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 mx-2"
-                >
-                  Reject
-                </button>
-              ))}
+            {(appointment.bookingStatus === "pending" ||
+              appointment.bookingStatus === "approved") && (
+              <button
+                onClick={handleCancel}
+                className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 mx-2"
+              >
+                Reject
+              </button>
+            )}
           </div>
-
+  
           <div className="flex justify-center items-center mt-6">
             {appointment.bookingStatus === "approved" && (
               <button
@@ -335,6 +295,7 @@ const SingleAppointmentDetails: React.FC<ModalProps> = ({
               </button>
             )}
           </div>
+  
           {/* Reason modal for cancellation */}
           {reasonModalOpen && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
@@ -363,9 +324,18 @@ const SingleAppointmentDetails: React.FC<ModalProps> = ({
                   </button>
                 </div>
               </div>
+              
             </div>
           )}
-
+            <div className="flex justify-end ">
+          <button
+            onClick={onClose}
+            className="px-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-500 transition-all duration-200"
+          >
+            Close
+          </button>
+        </div>
+  
           {/* Confirmation modal */}
           <ConfirmationModal
             isVisible={confirmationModalOpen}
@@ -382,7 +352,8 @@ const SingleAppointmentDetails: React.FC<ModalProps> = ({
                 : "Are you sure you want to cancel this appointment?"
             }
           />
-          {/* completion  Confirmation modal */}
+  
+          {/* Completion Confirmation modal */}
           <CompleteConfirmationModal
             isVisible={completeConfirmationModalOpen}
             onConfirm={confirmCompleteAction}
@@ -391,9 +362,11 @@ const SingleAppointmentDetails: React.FC<ModalProps> = ({
             message={"Are you sure you want to complete this appointment?"}
           />
         </div>
+      
       </div>
     </div>
   );
+  
 };
 
 export default SingleAppointmentDetails;

@@ -50,7 +50,6 @@ interface Review {
 
 const SPProfile: React.FC = () => {
   const { spInfo } = useSelector((state: RootState) => state.sp);
-  console.log("helloooooo  : here ",spInfo);
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [handleDocumentsModal, setHandleDocumentsModal] = useState(false);
@@ -60,6 +59,7 @@ const SPProfile: React.FC = () => {
 
 
   const [isLoading, setIsLoading] = useState(false);
+
   const [profile, setProfile] = useState<Profile>({
     _id: "",
     name: "",
@@ -87,7 +87,6 @@ const SPProfile: React.FC = () => {
   const handleViewRatings = async () => {
     try {
       const response = await getRatingsAndReviews(spInfo._id); // Assuming API exists
-      console.log(response)
       setReviews(response);
       setIsRatingsModalOpen(true);
     } catch (error) {
@@ -96,8 +95,6 @@ const SPProfile: React.FC = () => {
   };
 
   const handleRatingsModalClose = () => setIsRatingsModalOpen(false);
-
-
 
   const handleImageChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -166,10 +163,6 @@ const SPProfile: React.FC = () => {
   const handleEditModalClose = () => setHandleDocumentsModal(false);
 
   const handleEditDocuments = () => {
-    console.log(
-      "Edit button clicked. Current serviceType:",
-      profile.serviceType
-    );
     if (spInfo.serviceType === "") {
       toast.error("Select any service type from Edit Profile");
     } else {
