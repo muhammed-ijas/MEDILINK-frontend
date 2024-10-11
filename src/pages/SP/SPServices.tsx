@@ -7,8 +7,7 @@ import clinickImage from "/logo/HomePage/clinickImage.png";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import {  toast } from "react-hot-toast";
-// import toast from "react-toastify"
+import {  toast ,Toaster} from "react-hot-toast";
 
 const SPServices = () => {
 
@@ -32,7 +31,7 @@ const SPServices = () => {
 
   return (
     <div className="">
-      {/* <Toaster position="top-center" /> */}
+      <Toaster position="top-center" />
       <section className="relative w-full h-screen bg-cover bg-center flex flex-col items-center justify-start pt-20">
         {/* Doctor Image */}
         <motion.img
