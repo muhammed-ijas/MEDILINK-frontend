@@ -14,7 +14,6 @@ import {
   getAmbulances,
   getHomeNurses,
 } from "../../api/user";
-import avatar from "/logo/HomePage/ProfileImage.png";
 import { useNavigate } from "react-router-dom";
 
 
@@ -41,7 +40,9 @@ interface Doctor {
   phone: string;
   availableFrom: string;
   availableTo: string;
-  ratings: Rating[]; // Adding ratings to Doctor interface
+  ratings: Rating[]; 
+  doctorProfileImage:string;
+  // Adding ratings to Doctor interface
 }
 
 // interface Hospital {
@@ -650,7 +651,7 @@ const UserAppointments: React.FC = () => {
                       onClick={() => handleCardClick(doctor._id, "doctor")}
                     >
                       <img
-                        src={avatar}
+                        src={doctor.doctorProfileImage}
                         alt="Doctor"
                         className="w-12 h-12 rounded-full mb-4"
                       />
@@ -663,7 +664,6 @@ const UserAppointments: React.FC = () => {
                       <p className="mb-1">{doctor.availableFrom}</p>
                       <p className="mb-1">{doctor.availableTo}</p>
 
-                      {/* Display average rating as stars */}
                       <div className="mt-2">{renderStars(averageRating)}</div>
                     </div>
                   );
@@ -676,6 +676,7 @@ const UserAppointments: React.FC = () => {
             <p>No data available</p>
           )}
         </div>
+
         {/* Pagination Controls */}
         <div className="flex justify-center mt-6">
           {Array.from({ length: totalPages }, (_, index) => (

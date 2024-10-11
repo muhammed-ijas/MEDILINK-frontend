@@ -44,6 +44,11 @@ const userRoutes={
 
     getEmergencyNumbers:"/user/getEmergencyNumbers",
 
+    getWalletDetails:"/user/getWalletDetails",
+
+    isWalletHaveMoney:"/user/isWalletHaveMoney",
+    confirmWalletPayment:"/user/confirmWalletPayment",
+
 }
 
 export default userRoutes ;

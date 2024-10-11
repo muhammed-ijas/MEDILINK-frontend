@@ -172,28 +172,35 @@ const DoctorDetailesPage: React.FC = () => {
               Select a Date
             </h2>
             <div className="flex flex-wrap justify-center">
-              {selectedDoctor?.availableDates
-                .filter((availableDate) => {
-                  const today = new Date().setHours(0, 0, 0, 0);
-                  const availableDateObj = new Date(
-                    availableDate.date
-                  ).setHours(0, 0, 0, 0);
-                  return availableDateObj >= today;
-                })
-                .map((availableDate) => (
-                  <button
-                    key={availableDate.date}
-                    className={`py-2 px-4 rounded-md m-2 ${
-                      selectedDate === availableDate.date
-                        ? "bg-blue-500 text-white"
-                        : "bg-gray-200 text-gray-700"
-                    } hover:bg-blue-600 hover:text-gray-300`}
-                    onClick={() => handleDateSelect(availableDate.date)}
-                  >
-                    {new Date(availableDate.date).toDateString()}
-                  </button>
-                ))}
-            </div>
+  {selectedDoctor?.availableDates.filter((availableDate) => {
+    const today = new Date().setHours(0, 0, 0, 0);
+    const availableDateObj = new Date(availableDate.date).setHours(0, 0, 0, 0);
+    return availableDateObj >= today;
+  }).length === 0 ? (
+    <p className="text-gray-500 text-lg mt-4">No available dates.</p>
+  ) : (
+    selectedDoctor?.availableDates
+      .filter((availableDate) => {
+        const today = new Date().setHours(0, 0, 0, 0);
+        const availableDateObj = new Date(availableDate.date).setHours(0, 0, 0, 0);
+        return availableDateObj >= today;
+      })
+      .map((availableDate) => (
+        <button
+          key={availableDate.date}
+          className={`py-2 px-4 rounded-md m-2 ${
+            selectedDate === availableDate.date
+              ? "bg-blue-500 text-white"
+              : "bg-gray-200 text-gray-700"
+          } hover:bg-blue-600 hover:text-gray-300`}
+          onClick={() => handleDateSelect(availableDate.date)}
+        >
+          {new Date(availableDate.date).toDateString()}
+        </button>
+      ))
+  )}
+</div>
+
             {selectedDate && (
               <div className="mt-6">
                 <h3 className="text-lg font-semibold mb-4 text-center">

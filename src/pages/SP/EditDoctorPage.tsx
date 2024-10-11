@@ -141,148 +141,151 @@ const EditDoctorPage = () => {
   }
 
   return (
-    <div className="p-6">
-      <Toaster position='top-center' />
-      <h1 className="text-2xl font-bold mb-4">Edit Doctor Details</h1>
-
-      <div className="mb-4">
-        <label className="block mb-1">Name</label>
-        <input
-          type="text"
-          name="name"
-          value={editableFields.name}
-          onChange={handleChange}
-          className="border rounded p-2 w-full"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label className="block mb-1">Qualification</label>
-        <input
-          type="text"
-          name="specialization"
-          value={editableFields.specialization}
-          onChange={handleChange}
-          className="border rounded p-2 w-full"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label className="block mb-1">Years of Experience</label>
-        <input
-          type="text"
-          name="yearsOfExperience"
-          value={editableFields.yearsOfExperience}
-          onChange={handleChange}
-          className="border rounded p-2 w-full"
-        />
-      </div>
-
-      <div className="mb-4">
-        <label className="block mb-1">Contact</label>
-        <input
-          type="text"
-          name="contact"
-          value={editableFields.contact}
-          onChange={handleChange}
-          className="border rounded p-2 w-full"
-        />
-      </div>
-
-      {/* Doctor Image Upload */}
-      <div className="mb-4 flex flex-col items-center">
-        <div className="relative flex-shrink-0 flex items-center justify-center">
-          {isImageLoading ? (
-            <div className="flex items-center justify-center w-32 h-32 md:w-48 md:h-48 rounded-full bg-gray-200">
-              <div
-                className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full text-blue-600"
-                role="status"
-              >
-                <span className="sr-only">Loading...</span>
+    <div className="p-8 max-w-2xl mx-auto bg-white shadow-lg rounded-lg">
+      <Toaster position="top-center" />
+      <h1 className="text-3xl font-bold mb-6 text-gray-800 text-center">Edit Doctor Details</h1>
+  
+      <div className="space-y-6">
+        {/* Name Input */}
+        <div>
+          <label className="block text-lg font-semibold text-gray-700 mb-2">Name</label>
+          <input
+            type="text"
+            name="name"
+            value={editableFields.name}
+            onChange={handleChange}
+            className="border-gray-300 border rounded-lg p-3 w-full focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+          />
+        </div>
+  
+        {/* Qualification Input */}
+        <div>
+          <label className="block text-lg font-semibold text-gray-700 mb-2">Qualification</label>
+          <input
+            type="text"
+            name="specialization"
+            value={editableFields.specialization}
+            onChange={handleChange}
+            className="border-gray-300 border rounded-lg p-3 w-full focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+          />
+        </div>
+  
+        {/* Experience Input */}
+        <div>
+          <label className="block text-lg font-semibold text-gray-700 mb-2">Years of Experience</label>
+          <input
+            type="text"
+            name="yearsOfExperience"
+            value={editableFields.yearsOfExperience}
+            onChange={handleChange}
+            className="border-gray-300 border rounded-lg p-3 w-full focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+          />
+        </div>
+  
+        {/* Contact Input */}
+        <div>
+          <label className="block text-lg font-semibold text-gray-700 mb-2">Contact</label>
+          <input
+            type="text"
+            name="contact"
+            value={editableFields.contact}
+            onChange={handleChange}
+            className="border-gray-300 border rounded-lg p-3 w-full focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition"
+          />
+        </div>
+  
+        {/* Doctor Image Upload */}
+        <div className="mb-8">
+          <div className="relative flex-shrink-0 flex items-center justify-center">
+            {isImageLoading ? (
+              <div className="flex items-center justify-center w-40 h-40 md:w-48 md:h-48 rounded-full bg-gray-200">
+                <div
+                  className="animate-spin inline-block w-10 h-10 border-4 rounded-full border-t-blue-600"
+                  role="status"
+                >
+                  <span className="sr-only">Loading...</span>
+                </div>
+              </div>
+            ) : editableFields.doctorProfileImage ? (
+              <img
+                src={editableFields.doctorProfileImage}
+                alt="Profile"
+                className="w-40 h-40 md:w-48 md:h-48 rounded-full object-cover shadow-md border-2 border-gray-300"
+              />
+            ) : (
+              <div className="w-40 h-40 md:w-48 md:h-48 bg-gradient-to-tr from-gray-100 to-gray-300 rounded-full flex items-center justify-center shadow-md border-2 border-gray-300">
+                <FontAwesomeIcon icon={faUser} className="text-gray-500 text-5xl" />
+              </div>
+            )}
+            <div className="absolute inset-0 flex items-center justify-center rounded-full overflow-hidden">
+              <div className="bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300 w-40 h-40 md:w-48 md:h-48 rounded-full flex items-center justify-center">
+                <label className="text-white cursor-pointer flex items-center space-x-2">
+                  <FontAwesomeIcon icon={faEdit} className="text-xl" />
+                  <span className="text-sm font-semibold">Edit</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImageChange(e, 'doctorProfileImage')}
+                    className="hidden"
+                  />
+                </label>
               </div>
             </div>
-          ) : editableFields.doctorProfileImage ? (
-            <img
-              src={editableFields.doctorProfileImage}
-              alt="Profile"
-              className="w-32 h-32 md:w-48 md:h-48 rounded-full object-cover shadow-md border-2 border-gray-300"
-            />
-          ) : (
-            <div className="flex items-center justify-center w-32 h-32 md:w-48 md:h-48 bg-gradient-to-tr from-gray-100 to-gray-300 rounded-full shadow-md border-2 border-gray-300">
-              <FontAwesomeIcon icon={faUser} className="text-gray-500 text-5xl" />
-            </div>
-          )}
-
-          <div className="absolute inset-0 flex items-center justify-center rounded-full overflow-hidden">
-            <div className="bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300 w-32 h-32 md:w-48 md:h-48 rounded-full flex items-center justify-center">
-              <label className="text-white cursor-pointer flex items-center space-x-2">
-                <FontAwesomeIcon icon={faEdit} className="text-xl" />
-                <span className="text-sm font-semibold">Edit</span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleImageChange(e, 'doctorProfileImage')}
-                  className="hidden"
-                />
-              </label>
-            </div>
           </div>
+          <p className="text-center text-lg font-semibold text-gray-700 mt-4">Add Doctor Image</p>
         </div>
-
-        <label className="text-lg font-semibold text-gray-700 mt-4 text-center">Add Doctor Image</label>
-      </div>
-
-      {/* Valid Certificate Upload */}
-      <div className="mb-4 flex flex-col items-center">
-        <div className="relative  flex items-center justify-center">
-          {isImageLoading ? (
-            <div className="flex items-center justify-center w-32 h-32 md:w-48 md:h-48  bg-gray-200">
-              <div
-                className="spinner-border animate-spin inline-block w-8 h-8 border-4  text-blue-600"
-                role="status"
-              >
-                <span className="sr-only">Loading...</span>
+  
+        {/* Valid Certificate Upload */}
+        <div className="mb-8">
+          <div className="relative flex-shrink-0 flex items-center justify-center">
+            {isImageLoading ? (
+              <div className="flex items-center justify-center w-40 h-40 md:w-48 md:h-48 bg-gray-200">
+                <div
+                  className="animate-spin inline-block w-10 h-10 border-4 rounded-full border-t-blue-600"
+                  role="status"
+                >
+                  <span className="sr-only">Loading...</span>
+                </div>
+              </div>
+            ) : editableFields.validCertificate ? (
+              <img
+                src={editableFields.validCertificate}
+                alt="Valid Certificate"
+                className="w-40 h-40 md:w-48 md:h-48 object-cover shadow-md border-2 border-gray-300"
+              />
+            ) : (
+              <div className="w-40 h-40 md:w-48 md:h-48 bg-gradient-to-tr from-gray-100 to-gray-300 rounded-md flex items-center justify-center shadow-md border-2 border-gray-300">
+                <FontAwesomeIcon icon={faFileAlt} className="text-gray-500 text-5xl" />
+              </div>
+            )}
+            <div className="absolute inset-0 flex items-center justify-center rounded-md overflow-hidden">
+              <div className="bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300 w-40 h-40 md:w-48 md:h-48 rounded-md flex items-center justify-center">
+                <label className="text-white cursor-pointer flex items-center space-x-2">
+                  <FontAwesomeIcon icon={faEdit} className="text-xl" />
+                  <span className="text-sm font-semibold">Edit</span>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => handleImageChange(e, 'validCertificate')}
+                    className="hidden"
+                  />
+                </label>
               </div>
             </div>
-          ) : editableFields.validCertificate ? (
-            <img
-              src={editableFields.validCertificate}
-              alt="Valid Certificate"
-              className="w-32 h-32 md:w-48 md:h-48  object-cover shadow-md border-2 border-gray-300"
-            />
-          ) : (
-            <div className="flex items-center justify-center w-32 h-32 md:w-48 md:h-48 bg-gradient-to-tr from-gray-100 to-gray-300  shadow-md border-2 border-gray-300">
-              <FontAwesomeIcon icon={faFileAlt} className="text-gray-500 text-5xl" />
-            </div>
-          )}
-
-          <div className="absolute inset-0 flex items-center justify-center  overflow-hidden">
-            <div className="bg-black bg-opacity-50 opacity-0 hover:opacity-100 transition-opacity duration-300 w-32 h-32 md:w-48 md:h-48  flex items-center justify-center">
-              <label className="text-white cursor-pointer flex items-center space-x-2">
-                <FontAwesomeIcon icon={faEdit} className="text-xl" />
-                <span className="text-sm font-semibold">Edit</span>
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) => handleImageChange(e, 'validCertificate')}
-                  className="hidden"
-                />
-              </label>
-            </div>
           </div>
+          <p className="text-center text-lg font-semibold text-gray-700 mt-4">Add Certificate</p>
         </div>
-
-        <label className="text-lg font-semibold text-gray-700 mt-4 text-center">Add Certificate</label>
+  
+        <button
+          className="w-full py-3 bg-indigo-600 text-white font-semibold rounded-lg hover:bg-indigo-700 transition-all"
+          onClick={handleSave}
+        >
+          Save
+        </button>
       </div>
-
-      <button 
-        className="bg-gray-800 text-white py-1 px-3 rounded-md hover:bg-gray-900 transition-all"
-        onClick={handleSave}
-      >
-        Save
-      </button>
     </div>
   );
+  
 };
 
 export default EditDoctorPage;

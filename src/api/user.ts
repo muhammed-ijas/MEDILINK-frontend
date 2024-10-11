@@ -457,3 +457,46 @@ export const getEmergencyNumbers= async () => {
     return errorHandle(err);
   }
 };
+
+export const getWalletDetails= async (id="") => {
+  try {
+    console.log("gogt the call ,",id)
+
+    const response = await Api.get(
+      `${userRoutes.getWalletDetails}/${id}`
+    );    
+    return response.data;
+
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+export const isWalletHaveMoney = async (id="") => {
+  try {
+    const response = await Api.get(`${userRoutes.isWalletHaveMoney}/${id}`);
+    return response.data;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+
+
+export const confirmWalletPayment = async (appointmentData:object) => {
+  try {
+
+    console.log(" id came here before going : ",appointmentData)
+
+  
+
+    const response = await Api.post(userRoutes.confirmWalletPayment, { appointmentData });
+
+    return response.data;
+  } catch (error) {
+    const err: Error = error as Error;
+    return errorHandle(err);
+  }
+};
+

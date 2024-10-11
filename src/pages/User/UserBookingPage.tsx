@@ -3,8 +3,9 @@ import { useEffect, useState } from "react";
 import { getDoctorDetails } from "../../api/user"; // Import your function from the appropriate file
 import { RootState } from "../../redux/store";
 import { useSelector } from "react-redux";
-import {loadStripe} from '@stripe/stripe-js';
+import { loadStripe } from "@stripe/stripe-js";
 import { createPaymentSession } from "../../api/user";
+import IsWalletHaveMoneyConfirmModal from "../../Components/user/IsWalletHaveMoneyConfirmModal";
 
 interface Doctor {
   _id: string;
@@ -18,8 +19,21 @@ interface LocationState {
   slot: string;
 }
 
-const UserBookingPage = () => {
+// Define a type for the body object
+type PaymentBodyType = {
+  amount: number;
+  currency: string;
+  userInfo: any; // You can replace 'any' with a more specific type if you have it
+  doctorId: string;
+  bookingDate: string;
+  timeSlot: string;
+  patientName: string;
+  patientAge: number | "";
+  patientEmail: string;
+  patientPhone: string;
+};
 
+const UserBookingPage = () => {
   const { userInfo } = useSelector((state: RootState) => state.auth);
 
   const location = useLocation();
@@ -34,7 +48,11 @@ const UserBookingPage = () => {
   const [patientAge, setPatientAge] = useState<number | "">("");
   const [patientEmail, setPatientEmail] = useState<string>("");
   const [patientPhone, setPatientPhone] = useState<string>("");
-  
+
+  //moneychecking wallet open close
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [paymentBody, setPaymentBody] = useState<PaymentBodyType | null>(null); // State to hold the payment body
+
   // Validation errors state
   const [errors, setErrors] = useState({
     patientName: "",
@@ -43,13 +61,10 @@ const UserBookingPage = () => {
     patientPhone: "",
   });
 
-
   //stripe
-  const stripePromise = loadStripe("pk_test_51PwKSd07lqBJqvJJyAybqVw6TNnXpaX9wq45ruu7k8sO2lkol3TlJ7p3i1knnXNtBUbSAIqnUk5E4RkG09AxU01d00uTDGIeEL");
-
-
-
-
+  const stripePromise = loadStripe(
+    "pk_test_51PwKSd07lqBJqvJJyAybqVw6TNnXpaX9wq45ruu7k8sO2lkol3TlJ7p3i1knnXNtBUbSAIqnUk5E4RkG09AxU01d00uTDGIeEL"
+  );
 
   useEffect(() => {
     if (doctorId) {
@@ -101,21 +116,14 @@ const UserBookingPage = () => {
     return formValid;
   };
 
-
-
-  const handleConfirmBooking = async () => {
-
+  const handleWalletPayment = async () => {
     if (!validateForm()) {
       return; // Don't proceed if form is invalid
     }
 
-    const stripe = await stripePromise;
-
-    const body = {
-      amount: 10, 
-      currency: 'INR',
-      successUrl: 'http://medilink.vercel.app//user/success',
-      cancelUrl: 'http://medilink.vercel.app//user/cancel',
+    const body: PaymentBodyType = {
+      amount: 10,
+      currency: "INR",
       userInfo,
       doctorId,
       bookingDate,
@@ -124,25 +132,47 @@ const UserBookingPage = () => {
       patientAge,
       patientEmail,
       patientPhone,
-   };
-   
+    };
+
+    setPaymentBody(body);
+
+    setIsModalOpen(true);
+  };
+
+  const handleConfirmBooking = async () => {
+    if (!validateForm()) {
+      return; // Don't proceed if form is invalid
+    }
+
+    const stripe = await stripePromise;
+
+    const body = {
+      amount: 10,
+      currency: "INR",
+      successUrl: "http://medilink.vercel.app//user/success",
+      cancelUrl: "http://medilink.vercel.app/user/cancel",
+      userInfo,
+      doctorId,
+      bookingDate,
+      timeSlot,
+      patientName,
+      patientAge,
+      patientEmail,
+      patientPhone,
+    };
+
     const response = await createPaymentSession(body);
 
-    console.log("rsponse fomn api funxtiom :" ,response);
-  
     const sessionId = response.id;
 
-    console.log("session id :",sessionId)
-  
     const result = await stripe?.redirectToCheckout({
       sessionId: sessionId,
     });
-  
+
     if (result?.error) {
-      console.error('Error in Stripe Checkout:', result.error.message);
+      console.error("Error in Stripe Checkout:", result.error.message);
     }
   };
-
 
   if (!doctorId || !date || !slot) {
     return <p>Error: Missing booking information.</p>;
@@ -151,11 +181,15 @@ const UserBookingPage = () => {
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <div className="w-full max-w-lg bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-2xl font-bold mb-6 text-center">Confirm Your Booking</h1>
+        <h1 className="text-2xl font-bold mb-6 text-center">
+          Confirm Your Booking
+        </h1>
 
         {doctorDetails ? (
           <div className="doctor-info mb-6 text-center">
-            <h2 className="text-xl font-semibold">Doctor: {doctorDetails.name}</h2>
+            <h2 className="text-xl font-semibold">
+              Doctor: {doctorDetails.name}
+            </h2>
             <p>Specialization: {doctorDetails.specialization}</p>
           </div>
         ) : (
@@ -173,7 +207,9 @@ const UserBookingPage = () => {
 
         <form className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700">Patient Name</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Patient Name
+            </label>
             <input
               type="text"
               value={patientName}
@@ -182,12 +218,15 @@ const UserBookingPage = () => {
               placeholder="Enter your name"
               required
             />
-                        {errors.patientName && <p className="text-red-500 text-xs mt-1">{errors.patientName}</p>}
-
+            {errors.patientName && (
+              <p className="text-red-500 text-xs mt-1">{errors.patientName}</p>
+            )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Age</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Age
+            </label>
             <input
               type="number"
               value={patientAge}
@@ -196,12 +235,15 @@ const UserBookingPage = () => {
               placeholder="Enter your age"
               required
             />
-                        {errors.patientAge && <p className="text-red-500 text-xs mt-1">{errors.patientAge}</p>}
-
+            {errors.patientAge && (
+              <p className="text-red-500 text-xs mt-1">{errors.patientAge}</p>
+            )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Email Address</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Email Address
+            </label>
             <input
               type="email"
               value={patientEmail}
@@ -210,12 +252,15 @@ const UserBookingPage = () => {
               placeholder="Enter your email"
               required
             />
-                        {errors.patientEmail && <p className="text-red-500 text-xs mt-1">{errors.patientEmail}</p>}
-
+            {errors.patientEmail && (
+              <p className="text-red-500 text-xs mt-1">{errors.patientEmail}</p>
+            )}
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700">Phone Number</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Phone Number
+            </label>
             <input
               type="tel"
               value={patientPhone}
@@ -224,25 +269,41 @@ const UserBookingPage = () => {
               placeholder="Enter your phone number"
               required
             />
-                        {errors.patientPhone && <p className="text-red-500 text-xs mt-1">{errors.patientPhone}</p>}
-
+            {errors.patientPhone && (
+              <p className="text-red-500 text-xs mt-1">{errors.patientPhone}</p>
+            )}
           </div>
 
-          <div className="flex justify-between items-center mt-6">
-            <p className="text-sm text-gray-700">Pay ₹10 to Book Appointment</p>
-            <button
-              type="button"
-              onClick={handleConfirmBooking}
-              className="px-4 py-2 bg-green-500 text-white rounded-md shadow-sm hover:bg-green-600"
-            >
-              Confirm Booking
-            </button>
+          <div className="mt-6 space-y-4">
+            <div className="flex items-center justify-between p-4 bg-white shadow rounded-lg">
+              <button
+                type="button"
+                onClick={handleConfirmBooking}
+                className="px-6 py-2 bg-green-500 text-white rounded-md shadow hover:bg-green-600 transition-colors duration-200"
+              >
+                Stripe Payment ₹50
+              </button>
+              <button
+                type="button"
+                onClick={handleWalletPayment}
+                className="px-6 py-2 bg-blue-500 text-white rounded-md shadow hover:bg-blue-600 transition-colors duration-200"
+              >
+                Wallet Payment ₹50
+              </button>
+            </div>
           </div>
         </form>
+
+        {isModalOpen && paymentBody && (
+          <IsWalletHaveMoneyConfirmModal
+            isOpen={isModalOpen}
+            closeModal={() => setIsModalOpen(false)}
+            body={paymentBody} // Pass userInfo for userId
+          />
+        )}
       </div>
     </div>
   );
 };
 
 export default UserBookingPage;
-
