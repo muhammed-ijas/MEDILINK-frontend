@@ -1,10 +1,9 @@
 import { motion } from "framer-motion";
 import aboutImage from "/logo/HomePage/image7.png";
-import homenurseImage from "/logo/HomePage/homenurseImage.png";
 import { useEffect } from "react";
 
-const UserHome = () => {
-  
+const UserAbout = () => {
+
   useEffect(() => {
     const cards = document.querySelectorAll(".service-card");
 
@@ -32,7 +31,11 @@ const UserHome = () => {
   }, []);
 
   return (
-    <div>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}  // Start slightly below and transparent
+      animate={{ opacity: 1, y: 0 }}   // End at normal position and fully opaque
+      transition={{ duration: 0.6, ease: "easeOut" }}  // Smooth transition
+    >
       {/* about section */}
       <section className="relative p-8 bg-white flex flex-col md:flex-row items-center overflow-hidden">
         {/* Diagonal Slice Background */}
@@ -74,7 +77,6 @@ const UserHome = () => {
         </div>
       </section>
 
-
       <style >{`
         .service-card {
           transition: transform 0.3s ease-in-out;
@@ -92,128 +94,6 @@ const UserHome = () => {
         }
       `}</style>
 
-{/* Goals of Us Section */}
-<section className="relative p-8">
-  {/* Background ClipPath */}
-  <div
-          className="absolute inset-0 bg-black opacity-90"
-          style={{
-            clipPath: "polygon(0 0, 100% 0, 100% 100%, 60% 100%, 0 100%)",
-            zIndex: -1, // Place behind content
-          }}
-        ></div>
-
-        {/* Black Overlay for Image */}
-        <div
-          className="absolute inset-0 bg-black"
-          style={{
-            clipPath: "polygon(0 50%, 100% 0, 100% 60%, 50% 100%, 0 100%)",
-            zIndex: 0,
-          }}
-        ></div>
-
-       
-  
-  <div className="flex items-center justify-between max-w-6xl mx-auto text-white relative z-10">
-    {/* Text Section */}
-    <div className="w-full md:w-1/2 p-4">
-      <h2 className="text-3xl font-bold mb-4">Our Goals</h2>
-      <p className="text-lg">
-        At Medilink, our goal is to transform the healthcare experience by
-        seamlessly integrating a variety of services into a single,
-        user-friendly platform. We are dedicated to continuously enhancing
-        our offerings to better serve our users and partners. Our future
-        plans include expanding our network of service providers,
-        incorporating advanced features for more efficient service
-        delivery, and ensuring a high standard of quality and reliability.
-        We aim to be the go-to solution for all healthcare needs,
-        fostering a healthier and more connected community.
-      </p>
-    </div>
-
-    {/* Image Section */}
-    <motion.div
-      className="w-full md:w-1/2 p-4"
-      initial={{ opacity: 0, rotate: -10 }}
-      animate={{ opacity: 1, rotate: 0 }}
-      transition={{ duration: 1 }}
-    >
-      <img
-        src={homenurseImage}
-        alt="Our Goals"
-        className="w-full h-auto object-cover rounded-lg"
-      />
-    </motion.div>
-  </div>
-</section>
-
-
-      {/* Contact Section */}
-     {/* Contact Section */}
-<section className="p-8 bg-white text-center">
-  <h2 className="text-3xl font-bold mb-4">Contact Us</h2>
-  <p className="text-lg mb-4">
-    Have questions or need support? Get in touch with us.
-  </p>
-
-  {/* Contact Form */}
-  <form 
-    className="max-w-lg mx-auto space-y-4"
-    action="/send-message" // Change to your form handling endpoint
-    method="POST"
-  >
-    <div className="flex flex-col space-y-2">
-      <label htmlFor="name" className="text-left">
-        Name
-        <input 
-          type="text" 
-          id="name" 
-          name="name" 
-          placeholder="Your Name" 
-          className="p-2 border border-gray-300 rounded-md w-full" 
-          required 
-        />
-      </label>
-      
-      <label htmlFor="email" className="text-left">
-        Email
-        <input 
-          type="email" 
-          id="email" 
-          name="email" 
-          placeholder="Your Email" 
-          className="p-2 border border-gray-300 rounded-md w-full" 
-          required 
-        />
-      </label>
-      
-      <label htmlFor="message" className="text-left">
-        Message
-        <textarea 
-          id="message" 
-          name="message" 
-          placeholder="Your Message" 
-          className="p-2 border border-gray-300 rounded-md w-full" 
-          rows={4}
-          required 
-        ></textarea>
-      </label>
-    </div>
-    
-    <button 
-      type="submit" 
-      className="mt-4 px-6 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-    >
-      Send Message
-    </button>
-  </form>
-
-  <p className="mt-4 text-blue-500 hover:underline">
-    <a href="/user/contact">Contact Page</a>
-  </p>
-</section>
-
-
       {/* Appointment Button */}
       <div className="fixed bottom-4 right-4">
         <a
@@ -223,8 +103,8 @@ const UserHome = () => {
           Book Appointment
         </a>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
-export default UserHome;
+export default UserAbout;

@@ -20,9 +20,9 @@ const errorHandle = (error: Error | AxiosError) => {
                 window.location.href = "/user/blocked"
                 
             }else if(axiosError.response.status === 400) {
-                // console.log("400 ,",errorResponse)
                 toast.error(errorResponse.message);
-            } else if (errorResponse.message) {
+            }
+             else if (errorResponse.message) {
                 toast.error(errorResponse.message);
             }else {
                 console.log("Error response has no more message");

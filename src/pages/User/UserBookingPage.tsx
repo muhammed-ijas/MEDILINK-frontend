@@ -149,8 +149,8 @@ const UserBookingPage = () => {
     const body = {
       amount: 10,
       currency: "INR",
-      successUrl: "http://medilink.vercel.app//user/success",
-      cancelUrl: "http://medilink.vercel.app/user/cancel",
+      successUrl: "http://localhost:3000//user/success",
+      cancelUrl: "http://localhost:3000/user/cancel",
       userInfo,
       doctorId,
       bookingDate,
@@ -298,7 +298,7 @@ const UserBookingPage = () => {
           <IsWalletHaveMoneyConfirmModal
             isOpen={isModalOpen}
             closeModal={() => setIsModalOpen(false)}
-            body={paymentBody} // Pass userInfo for userId
+            body={paymentBody} 
           />
         )}
       </div>

@@ -248,6 +248,12 @@ const SingleAppointmentDetails: React.FC<ModalProps> = ({
                 >
                   Submit
                 </button>
+                {/* <button
+                  onClick={submitCancellation}
+                  className="bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700"
+                >
+                  Submit
+                </button> */}
               </div>
             </div>
           </div>

@@ -1,4 +1,4 @@
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaSearch } from "react-icons/fa";
 import homenurseImage from "/logo/HomePage/homenurseImage.png";
@@ -15,7 +15,6 @@ import {
   getHomeNurses,
 } from "../../api/user";
 import { useNavigate } from "react-router-dom";
-
 
 const ITEMS_PER_PAGE = 10; // Define the number of items per page
 
@@ -40,20 +39,10 @@ interface Doctor {
   phone: string;
   availableFrom: string;
   availableTo: string;
-  ratings: Rating[]; 
-  doctorProfileImage:string;
+  ratings: Rating[];
+  doctorProfileImage: string;
   // Adding ratings to Doctor interface
 }
-
-// interface Hospital {
-//   _id: string;
-//   name: string;
-//   area: string;
-//   city: string;
-//   district: string;
-//   phone: string;
-//   profileImage: string;
-// }
 
 interface Rating {
   userId: string;
@@ -126,10 +115,11 @@ const UserAppointments: React.FC = () => {
 
   const [_loading, setLoading] = useState<boolean>(true); // Loading state
 
-  const [_userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null); // User's location
+  const [_userLocation, setUserLocation] = useState<{
+    lat: number;
+    lng: number;
+  } | null>(null); // User's location
   const [nearestData, setNearestData] = useState<any[]>([]); // To store nearest data
-
-
 
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -139,7 +129,7 @@ const UserAppointments: React.FC = () => {
   const debouncedFetch = useCallback(
     debounce((searchValue) => {
       fetchData(searchValue); // Only call fetchData after a delay
-    }, 1000), // 100ms delay - appo 1 second ayrkum 
+    }, 1000), // 100ms delay - appo 1 second ayrkum
     [activeFilter, currentPage] // Dependencies
   );
 
@@ -181,9 +171,8 @@ const UserAppointments: React.FC = () => {
     setLoading(false); // End loading
   };
 
-
-   // Function to get the user's location
-   const getUserLocation = () => {
+  // Function to get the user's location
+  const getUserLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -200,16 +189,22 @@ const UserAppointments: React.FC = () => {
     }
   };
 
-
-   // Haversine formula to calculate distance between two lat/lng points in km
-   const calculateDistance = (lat1: number, lng1: number, lat2: number, lng2: number) => {
+  // Haversine formula to calculate distance between two lat/lng points in km
+  const calculateDistance = (
+    lat1: number,
+    lng1: number,
+    lat2: number,
+    lng2: number
+  ) => {
     const R = 6371; // Radius of the Earth in kilometers
     const dLat = (lat2 - lat1) * (Math.PI / 180);
     const dLng = (lng2 - lng1) * (Math.PI / 180);
     const a =
       Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(lat1 * (Math.PI / 180)) * Math.cos(lat2 * (Math.PI / 180)) *
-      Math.sin(dLng / 2) * Math.sin(dLng / 2);
+      Math.cos(lat1 * (Math.PI / 180)) *
+        Math.cos(lat2 * (Math.PI / 180)) *
+        Math.sin(dLng / 2) *
+        Math.sin(dLng / 2);
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     const distance = R * c;
     return distance; // Distance in kilometers
@@ -219,7 +214,12 @@ const UserAppointments: React.FC = () => {
   const calculateNearest = (userLat: number, userLng: number) => {
     const nearestProviders = data
       .map((provider: any) => {
-        const distance = calculateDistance(userLat, userLng, provider.latitude, provider.longitude);
+        const distance = calculateDistance(
+          userLat,
+          userLng,
+          provider.latitude,
+          provider.longitude
+        );
         return { ...provider, distance };
       })
       .sort((a, b) => a.distance - b.distance); // Sort by distance
@@ -247,9 +247,8 @@ const UserAppointments: React.FC = () => {
       | "homeNurses"
   ) => {
     setActiveFilter(filter);
-    setCurrentPage(1); 
+    setCurrentPage(1);
     setNearestData([]); // Clear nearest data
-
   };
 
   const handlePageChange = (page: number) => {
@@ -257,7 +256,7 @@ const UserAppointments: React.FC = () => {
   };
 
   const handleCardClick = (id: string, type: string) => {
-    console.log("clicked button , ",id,type)
+    console.log("clicked button , ", id, type);
 
     if (type === "hospital" || type === "clinic") {
       navigate(`/user/hospitalClinicDetailedPage/${id}`);
@@ -297,15 +296,15 @@ const UserAppointments: React.FC = () => {
             </span>
           </div>
 
-            {/* Show Nearest Button */}
-      {activeFilter !== "departments" && activeFilter !== "doctors" && (
-        <button
-          className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition"
-          onClick={getUserLocation} // Get user's location
-        >
-          Show Nearest Providers
-        </button>
-      )}
+          {/* Show Nearest Button */}
+          {activeFilter !== "departments" && activeFilter !== "doctors" && (
+            <button
+              className="bg-blue-500 text-white px-4 py-2 rounded-full hover:bg-blue-700 transition"
+              onClick={getUserLocation} // Get user's location
+            >
+              Show Nearest Providers
+            </button>
+          )}
 
           {/* Filter Buttons */}
           <div className="flex justify-center flex-wrap gap-4 mt-4">
@@ -380,29 +379,31 @@ const UserAppointments: React.FC = () => {
       {/* Results Section */}
       <section className=" mt-11 p-6">
         <div className="max-w-6xl mx-auto grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-        {nearestData && nearestData.length > 0 ? (
-      nearestData.map((item) => (
-        <div
-          key={item._id}
-          className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center text-center cursor-pointer"
-          onClick={() => handleCardClick(item._id, item.serviceType)}
-        >
-          <img
-            src={item.profileImage}
-            alt="Provider"
-            className="w-12 h-12 rounded-full mb-4"
-          />
-          <h3 className="text-xl font-semibold mb-2">{item.name}</h3>
-          <p className="mb-1">
-            {item.area}, {item.city}, {item.district}
-          </p>
-          <p>{item.phone}</p>
-          <p className="text-gray-500">
-            {item.distance ? `${item.distance.toFixed(2)} km away` : "Distance not available"}
-          </p>
-        </div>
-      ))
-    ) : data && data.length > 0 ? (
+          {nearestData && nearestData.length > 0 ? (
+            nearestData.map((item) => (
+              <div
+                key={item._id}
+                className="bg-white p-4 rounded-lg shadow-lg flex flex-col items-center text-center cursor-pointer"
+                onClick={() => handleCardClick(item._id, item.serviceType)}
+              >
+                <img
+                  src={item.profileImage}
+                  alt="Provider"
+                  className="w-12 h-12 rounded-full mb-4"
+                />
+                <h3 className="text-xl font-semibold mb-2">{item.name}</h3>
+                <p className="mb-1">
+                  {item.area}, {item.city}, {item.district}
+                </p>
+                <p>{item.phone}</p>
+                <p className="text-gray-500">
+                  {item.distance
+                    ? `${item.distance.toFixed(2)} km away`
+                    : "Distance not available"}
+                </p>
+              </div>
+            ))
+          ) : data && data.length > 0 ? (
             data.map(
               (
                 item:
@@ -490,7 +491,6 @@ const UserAppointments: React.FC = () => {
                     </div>
                   );
                 }
-               
 
                 if (activeFilter === "hospitals") {
                   const hospital = item as Hospital;
@@ -673,7 +673,11 @@ const UserAppointments: React.FC = () => {
               }
             )
           ) : (
-            <p>No data available</p>
+            <div className="flex flex-col items-center justify-center h-full">
+              <FaSearch className="text-6xl text-gray-400 animate-bounce" />{" "}
+              {/* Icon with bounce effect */}
+              <p className="mt-4 text-gray-500 text-lg">No data found</p>
+            </div>
           )}
         </div>
 
