@@ -1,7 +1,7 @@
 import axios from "axios";
 import errorHandle from "../api/error";
 
-const BASE_URL = "http://localhost:3000/api"
+const BASE_URL = "https://medilink-backend-3.onrender.com/api"
 
 const Api = axios.create({
     baseURL: BASE_URL,
